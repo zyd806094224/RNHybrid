@@ -1,0 +1,36 @@
+pluginManagement {
+    repositories {
+        //在其他maven仓库前添加
+        maven {
+            // All of React Native (JS, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
+        maven {
+            // Android JSC is installed from npm
+            url("$rootDir/../node_modules/jsc-android/dist")
+        }
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        //在其他maven仓库前添加
+        maven {
+            // All of React Native (JS, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
+        maven {
+            // Android JSC is installed from npm
+            url("$rootDir/../node_modules/jsc-android/dist")
+        }
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "android"
+include ':app'
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle");
+applyNativeModulesSettingsGradle(settings)
