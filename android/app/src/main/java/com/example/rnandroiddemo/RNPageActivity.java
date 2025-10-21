@@ -26,8 +26,8 @@ public class RNPageActivity extends AppCompatActivity implements DefaultHardware
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
                 .setCurrentActivity(this)
-//                .setBundleAssetName("index.android.bundle")
-                .setJSBundleFile(bundleFilePath)
+//                .setBundleAssetName("index.android.bundle") //使用本地文件
+                .setJSBundleFile(bundleFilePath) //使用远程地址
                 .setJSMainModulePath("index")
                 .addPackage(new MainReactPackage())
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
