@@ -9,6 +9,8 @@ import com.facebook.react.ReactRootView;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
+import com.swmansion.rnscreens.RNScreensPackage;
+import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 
 public class RNPageActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
 
@@ -28,8 +30,13 @@ public class RNPageActivity extends AppCompatActivity implements DefaultHardware
                 .setCurrentActivity(this)
 //                .setBundleAssetName("index.android.bundle") //使用本地文件
                 .setJSBundleFile(bundleFilePath) //使用远程地址
+//                .setJSBundleFile("http://localhost:8081/index.bundle?platform=android&dev=true&minify=false&app=com.example.rnandroiddemo&modulesOnly=false&runModule=true") //使用远程地址
                 .setJSMainModulePath("index")
                 .addPackage(new MainReactPackage())
+                //路由需要
+                .addPackage(new RNScreensPackage())
+                //路由需要
+                .addPackage(new SafeAreaContextPackage())
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();

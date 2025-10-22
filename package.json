@@ -12,7 +12,11 @@
   "dependencies": {
     "eslint-scope": "5.1.1",
     "react": "17.0.2",
-    "react-native": "0.66.2"
+    "react-native": "0.66.2",
+    "@react-navigation/native": "^6.1.18",
+    "@react-navigation/native-stack": "^6.11.0",
+    "react-native-safe-area-context": "3.4.1",
+    "react-native-screens": "3.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
