@@ -14,10 +14,7 @@ const DetailsScreen = ({navigation}) => {
         <Text style={styles.title}>Details Screen</Text>
         <Text style={styles.description}>This is the details page where you can see more information.</Text>
         <View style={styles.buttonContainer}>
-          <Button
-            title="Go back"
-            onPress={() => navigation.goBack()}
-          />
+          <Button title="Go back" onPress={() => navigation.goBack()} />
           <View style={styles.spacer} />
           <Button
             title="Go to Home"
