@@ -2,6 +2,8 @@
 
 基础的React Native页面嵌入Android应用内部的混合开发Demo。
 
+需要node16版本
+
 ## 项目简介
 
 本项目演示了如何将React Native页面集成到原生Android应用中，实现混合开发模式。通过这种方式，可以在现有的原生Android应用中使用React Native技术来构建部分功能界面，兼具原生应用的性能和React Native的开发效率。
