@@ -1,18 +1,18 @@
 plugins {
     id 'com.android.application'
+    id 'com.facebook.react'
 }
 
 android {
-    compileSdk 32
-
+    ndkVersion rootProject.ext.ndkVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    namespace "com.example.rnandroiddemo"
     defaultConfig {
         applicationId "com.example.rnandroiddemo"
-        minSdk 21
-        targetSdk 32
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -28,8 +28,12 @@ android {
 }
 
 dependencies {
-    implementation "com.facebook.react:react-native:+"
-    implementation "org.webkit:android-jsc:+"
+    implementation "com.facebook.react:react-android:0.72.17"
+    if (hermesEnabled.toBoolean()) {
+        implementation 'com.facebook.react:hermes-android:0.72.17'
+    } else {
+        implementation 'org.webkit:android-jsc:+'
+    }
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'

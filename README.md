@@ -86,7 +86,7 @@
 
 ### 环境要求
 
-- Node.js = 16.x
+- Node.js >= 16.x
 - Java JDK 11 或以上
 - Android Studio 和 Android SDK
 - React Native CLI
