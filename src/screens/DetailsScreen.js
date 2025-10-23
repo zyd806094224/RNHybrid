@@ -23,7 +23,12 @@ const DetailsScreen = ({navigation}) => {
           <View style={styles.spacer} />
           <Button
             title="Go to Profile"
-            onPress={() => navigation.navigate('Profile')}
+            onPress={() => navigation.navigate('ProfileScreen')}
+          />
+          <View style={styles.spacer} />
+          <Button
+            title="Go to FlatList"
+            onPress={() => navigation.navigate('FlatListScreen')}
           />
         </View>
       </View>

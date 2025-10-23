@@ -24,6 +24,12 @@ const HomeScreen = ({navigation}) => {
             onPress={() => navigation.navigate('ProfileScreen')}
             style={{backgroundColor: '#FF9800'}}
           />
+          <View style={styles.spacer} />
+          <CustomButton
+            title="Go to FlatList"
+            onPress={() => navigation.navigate('FlatListScreen')}
+            style={{backgroundColor: '#9C27B0'}}
+          />
         </View>
       </View>
     </SafeAreaView>

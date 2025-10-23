@@ -2,26 +2,39 @@ import React from 'react';
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   SafeAreaView,
 } from 'react-native';
+import CustomButton from '../components/Button';
 
 const ProfileScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>Profile Screen</Text>
-        <Text style={styles.description}>This is your profile page.</Text>
+        <Text style={styles.description}>This is the profile page where you can see user information.</Text>
         <View style={styles.buttonContainer}>
-          <Button
-            title="Go to Home"
-            onPress={() => navigation.navigate('Home')}
+          <CustomButton
+            title="Go back"
+            onPress={() => navigation.goBack()}
           />
           <View style={styles.spacer} />
-          <Button
+          <CustomButton
+            title="Go to Home"
+            onPress={() => navigation.navigate('Home')}
+            style={{backgroundColor: '#FF9800'}}
+          />
+          <View style={styles.spacer} />
+          <CustomButton
             title="Go to Details"
             onPress={() => navigation.navigate('Details')}
+            style={{backgroundColor: '#2196F3'}}
+          />
+          <View style={styles.spacer} />
+          <CustomButton
+            title="Go to FlatList"
+            onPress={() => navigation.navigate('FlatListScreen')}
+            style={{backgroundColor: '#9C27B0'}}
           />
         </View>
       </View>
