@@ -30,6 +30,12 @@ const HomeScreen = ({navigation}) => {
             onPress={() => navigation.navigate('FlatListScreen')}
             style={{backgroundColor: '#9C27B0'}}
           />
+          <View style={styles.spacer} />
+          <CustomButton
+              title="Go to AlgorithmScreen"
+              onPress={() => navigation.navigate('AlgorithmScreen')}
+              style={{backgroundColor: '#9C27B0'}}
+          />
         </View>
       </View>
     </SafeAreaView>
