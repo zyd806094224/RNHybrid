@@ -35,6 +35,10 @@ function _generateData() {
         id: 2,
         title: '快速排序'
     })
+    data.push({
+        id: 3,
+        title: '有序折返数组查值'
+    })
     return data
 }
 
@@ -55,6 +59,10 @@ const algorithms = {
     // 快排
     quickSort: (arr, left, right) => {
         quick(arr, left, right)
+    },
+    //折返数组查找
+    foldingArrayFind: (arr, target) => {
+        return foldingArrayFind(arr, target)
     }
 
 };
@@ -73,6 +81,12 @@ function _onItemClick(item) {
             const arr = [23, 1, 34, 2, 343, 4]
             algorithms.quickSort(arr, 0, arr.length - 1)
             console.log(arr)
+        },
+        3: () => {
+            const arr = [89, 90, 12, 23, 44, 67]
+            const target = 897
+            let index = algorithms.foldingArrayFind(arr, target)
+            console.log('index:' + index)
         }
     };
 
@@ -81,6 +95,32 @@ function _onItemClick(item) {
         handler();
     }
 }
+
+function foldingArrayFind(arr, target) {
+    let left = 0;
+    let right = arr.length - 1
+    while (left <= right) {
+        let mid = Math.floor(left + (right - left) / 2) //向下取整
+        if (arr[mid] === target) {
+            return mid
+        }
+        if (arr[left] <= arr[mid]) {
+            if (target >= arr[left] && target < arr[mid]) {
+                right = mid - 1
+            } else {
+                left = mid + 1
+            }
+        } else {
+            if (target > arr[mid] && target <= arr[right]) {
+                left = mid + 1
+            } else {
+                right = mid - 1
+            }
+        }
+    }
+    return -1
+}
+
 
 function quick(arr, left, right) {
     if (left >= right) {
