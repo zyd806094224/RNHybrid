@@ -14,8 +14,9 @@ const AlgorithmScreen = ({navigation}) => {
             <FlatList data={
                 data
             } renderItem={
+                ({item}) => _renderItem(item) //不涉及this 建议直接这样调用 下面两种方式有性能开销
                 // ({item}) => _renderItem.call(this, item) //call会立即执行 结尾不需要处理
-                ({item}) => _renderItem.bind(this, item)() //bind并不会立即执行，结尾需要加()
+                // ({item}) => _renderItem.bind(this, item)() //bind并不会立即执行，结尾需要加()
             } keyExtractor={
                 item => item.id
             }
@@ -29,6 +30,10 @@ function _generateData() {
     data.push({
         id: 1,
         title: '01背包'
+    })
+    data.push({
+        id: 2,
+        title: '快速排序'
     })
     return data
 }
@@ -46,8 +51,12 @@ const algorithms = {
     backpack01: (weight, value, W) => {
         // 01背包算法实现
         return _process(weight, value, W);
+    },
+    // 快排
+    quickSort: (arr, left, right) => {
+        quick(arr, left, right)
     }
-    // 可以添加更多算法
+
 };
 
 function _onItemClick(item) {
@@ -59,6 +68,11 @@ function _onItemClick(item) {
             const W = 5;
             let number = algorithms.backpack01(weight, value, W);
             console.log(number);
+        },
+        2: () => {
+            const arr = [23, 1, 34, 2, 343, 4]
+            algorithms.quickSort(arr, 0, arr.length - 1)
+            console.log(arr)
         }
     };
 
@@ -66,6 +80,41 @@ function _onItemClick(item) {
     if (handler) {
         handler();
     }
+}
+
+function quick(arr, left, right) {
+    if (left >= right) {
+        return
+    }
+    let P = arr[right]
+    let part = partition(arr, left, right, P)
+    quick(arr, left, part[0] - 1)
+    quick(arr, part[1] + 1, right)
+}
+
+/**
+ * 返回等于区域的左右边界，可能有重复值，返回数组
+ * @param arr
+ * @param left
+ * @param right
+ * @param P
+ */
+function partition(arr, left, right, P) {
+    let less = left - 1;
+    let more = right + 1;
+    while (left < more) {
+        if (arr[left] > P) {
+            [arr[left], arr[more - 1]] = [arr[more - 1], arr[left]]
+            more--
+        } else if (arr[left] < P) {
+            [arr[less + 1], arr[left]] = [arr[left], arr[less + 1]]
+            left++
+            less++
+        } else {
+            left++
+        }
+    }
+    return [less + 1, more - 1]
 }
 
 /**
