@@ -24,27 +24,6 @@
     // 隐藏导航栏以实现全屏效果
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
-    // 创建返回按钮
-    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [backButton setTitle:@"返回" forState:UIControlStateNormal];
-    backButton.titleLabel.font = [UIFont systemFontOfSize:18];
-    [backButton sizeToFit];
-    backButton.backgroundColor = [UIColor systemBlueColor];
-    backButton.layer.cornerRadius = 8.0;
-    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:backButton];
-    
-    // 设置返回按钮约束
-    backButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint activateConstraints:@[
-        [backButton.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:20],
-        [backButton.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:50],
-        [backButton.widthAnchor constraintGreaterThanOrEqualToConstant:60],
-        [backButton.heightAnchor constraintGreaterThanOrEqualToConstant:30]
-    ]];
-    
     // 初始化React Native视图
     NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
     
@@ -65,10 +44,37 @@
         [self.reactRootView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [self.reactRootView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
     ]];
+    
+    // 创建返回按钮（在React Native视图之后添加，确保在最上层）
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [backButton setTitle:@"返回" forState:UIControlStateNormal];
+    backButton.titleLabel.font = [UIFont systemFontOfSize:18];
+    [backButton sizeToFit];
+    backButton.backgroundColor = [UIColor systemBlueColor];
+    backButton.layer.cornerRadius = 8.0;
+    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:backButton];
+    
+    // 设置返回按钮约束
+    backButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [backButton.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:20],
+        [backButton.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:50],
+        [backButton.widthAnchor constraintGreaterThanOrEqualToConstant:60],
+        [backButton.heightAnchor constraintGreaterThanOrEqualToConstant:30]
+    ]];
 }
 
 - (void)goBack {
-    [self.navigationController popViewControllerAnimated:YES];
+    // 检查是否有可以返回的页面，如果没有则返回到主页面
+    if (self.navigationController.viewControllers.count > 1) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        // 如果没有可返回的页面，dismiss整个导航控制器
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 #pragma mark - RCTRootViewDelegate
