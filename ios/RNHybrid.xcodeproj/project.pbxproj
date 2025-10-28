@@ -1,0 +1,605 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		285CB49E8DD9298EF7473939 /* libPods-RNHybrid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 652B25D0B34C856ACA09A467 /* libPods-RNHybrid.a */; };
+		39CBE1F1249B002C43E543F5 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0009959CF533A0A6929752A4 /* AppDelegate.mm */; };
+		54F0AE22A9816301243AEB20 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE469EE774A6393555B31CF /* Foundation.framework */; };
+		57C4BFEC2D27576600F74713 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE469EE774A6393555B31CF /* Foundation.framework */; };
+		716F3C85A6B44B0C9D26596A /* AppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 34EA291F78D8F99304529D84 /* AppDelegate.h */; };
+		8B262B1AACAF725C1E20F56B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 73ABB86FFB07F01E374E6820 /* PrivacyInfo.xcprivacy */; };
+		9EC1EFC4E7EB98DA0318075C /* libPods-RNHybrid-RNHybridTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1B9D9040A2F88F4DA281FA2 /* libPods-RNHybrid-RNHybridTests.a */; };
+		B7CBE74AAED6BD61AB72643A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 889A741C91236C16E764C99E /* main.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0009959CF533A0A6929752A4 /* AppDelegate.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = AppDelegate.mm; path = RNHybrid/AppDelegate.mm; sourceTree = "<group>"; };
+		003933657EB86D5787CD71B7 /* RNHybridTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNHybridTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		34EA291F78D8F99304529D84 /* AppDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RNHybrid/AppDelegate.h; sourceTree = "<group>"; };
+		5965695F53B44BF24A1F3C1A /* Pods-RNHybrid-RNHybridTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid-RNHybridTests.debug.xcconfig"; path = "Target Support Files/Pods-RNHybrid-RNHybridTests/Pods-RNHybrid-RNHybridTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5FB8548E641531CB606468AB /* Pods-RNHybrid.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid.release.xcconfig"; path = "Target Support Files/Pods-RNHybrid/Pods-RNHybrid.release.xcconfig"; sourceTree = "<group>"; };
+		652B25D0B34C856ACA09A467 /* libPods-RNHybrid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNHybrid.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		73ABB86FFB07F01E374E6820 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		7E206297E397E45BDD17DA1A /* Pods-RNHybrid-RNHybridTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid-RNHybridTests.release.xcconfig"; path = "Target Support Files/Pods-RNHybrid-RNHybridTests/Pods-RNHybrid-RNHybridTests.release.xcconfig"; sourceTree = "<group>"; };
+		889A741C91236C16E764C99E /* main.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RNHybrid/main.m; sourceTree = "<group>"; };
+		C61156CF4603A6DB7A3E8A9A /* RNHybrid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNHybrid.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2E3F3D4540144D9E5289707 /* Pods-RNHybrid.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid.debug.xcconfig"; path = "Target Support Files/Pods-RNHybrid/Pods-RNHybrid.debug.xcconfig"; sourceTree = "<group>"; };
+		F1B9D9040A2F88F4DA281FA2 /* libPods-RNHybrid-RNHybridTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNHybrid-RNHybridTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEE469EE774A6393555B31CF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6B518667EA680FA7DF46C633 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57C4BFEC2D27576600F74713 /* Foundation.framework in Frameworks */,
+				285CB49E8DD9298EF7473939 /* libPods-RNHybrid.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B9A51E13655BB5F596F03853 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54F0AE22A9816301243AEB20 /* Foundation.framework in Frameworks */,
+				9EC1EFC4E7EB98DA0318075C /* libPods-RNHybrid-RNHybridTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6F5668F26FE0117E92ED38CA /* RNHybridTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = RNHybridTests;
+			sourceTree = "<group>";
+		};
+		7A54F82F9358B0F9F8BB1E83 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FD191A0D02BE5F727304D3A8 /* iOS */,
+				652B25D0B34C856ACA09A467 /* libPods-RNHybrid.a */,
+				F1B9D9040A2F88F4DA281FA2 /* libPods-RNHybrid-RNHybridTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9165E05E3AE9A933A5B0ED1C = {
+			isa = PBXGroup;
+			children = (
+				D664D714C6979E99AA1EC911 /* Products */,
+				7A54F82F9358B0F9F8BB1E83 /* Frameworks */,
+				C672A79B10C56E791ECB8981 /* RNHybrid */,
+				6F5668F26FE0117E92ED38CA /* RNHybridTests */,
+				C92493C1595BCD49D4823DDA /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		C672A79B10C56E791ECB8981 /* RNHybrid */ = {
+			isa = PBXGroup;
+			children = (
+				34EA291F78D8F99304529D84 /* AppDelegate.h */,
+				0009959CF533A0A6929752A4 /* AppDelegate.mm */,
+				889A741C91236C16E764C99E /* main.m */,
+			);
+			name = RNHybrid;
+			sourceTree = "<group>";
+		};
+		C92493C1595BCD49D4823DDA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5FB8548E641531CB606468AB /* Pods-RNHybrid.release.xcconfig */,
+				D2E3F3D4540144D9E5289707 /* Pods-RNHybrid.debug.xcconfig */,
+				7E206297E397E45BDD17DA1A /* Pods-RNHybrid-RNHybridTests.release.xcconfig */,
+				5965695F53B44BF24A1F3C1A /* Pods-RNHybrid-RNHybridTests.debug.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		D664D714C6979E99AA1EC911 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C61156CF4603A6DB7A3E8A9A /* RNHybrid.app */,
+				003933657EB86D5787CD71B7 /* RNHybridTests.xctest */,
+				73ABB86FFB07F01E374E6820 /* PrivacyInfo.xcprivacy */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FD191A0D02BE5F727304D3A8 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				FEE469EE774A6393555B31CF /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		3FFD3BDE341EADC3E03E5A3A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				716F3C85A6B44B0C9D26596A /* AppDelegate.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		16DE083364A68B0F60345F64 /* RNHybrid */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 61D850A36B6EE87ED82CD8FF /* Build configuration list for PBXNativeTarget "RNHybrid" */;
+			buildPhases = (
+				C0BAA83465C29B5A4DE81E73 /* [CP] Check Pods Manifest.lock */,
+				59F11B3873543310A207D323 /* Sources */,
+				6B518667EA680FA7DF46C633 /* Frameworks */,
+				FBB199C3F73EDD154E33B80C /* Resources */,
+				3FFD3BDE341EADC3E03E5A3A /* Headers */,
+				2DEEA26A192ADD708C0D17A7 /* [CP] Embed Pods Frameworks */,
+				4BB9F4BA84D2083EFEE323B1 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RNHybrid;
+			productName = RNHybrid;
+			productReference = C61156CF4603A6DB7A3E8A9A /* RNHybrid.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7A691EE06CC91473FAAB366B /* RNHybridTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AF1227C430BBBB24F8B439C1 /* Build configuration list for PBXNativeTarget "RNHybridTests" */;
+			buildPhases = (
+				68A27E1AF3F54006082BFA67 /* [CP] Check Pods Manifest.lock */,
+				6DE4856F956BED642C1B76C8 /* Sources */,
+				B9A51E13655BB5F596F03853 /* Frameworks */,
+				3D1081EDCAAC06FB43C0DC30 /* Resources */,
+				A46E4D2EAC13CC5EEB803699 /* [CP] Embed Pods Frameworks */,
+				8CB5A8247451B914B31BC210 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RNHybridTests;
+			productName = RNHybridTests;
+			productReference = 003933657EB86D5787CD71B7 /* RNHybridTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8AB45945F10B454190779DEC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = F828D15424E4BDF63296A18C /* Build configuration list for PBXProject "RNHybrid" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9165E05E3AE9A933A5B0ED1C;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = D664D714C6979E99AA1EC911 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				16DE083364A68B0F60345F64 /* RNHybrid */,
+				7A691EE06CC91473FAAB366B /* RNHybridTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3D1081EDCAAC06FB43C0DC30 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBB199C3F73EDD154E33B80C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B262B1AACAF725C1E20F56B /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2DEEA26A192ADD708C0D17A7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RNHybrid/Pods-RNHybrid-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNHybrid/Pods-RNHybrid-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4BB9F4BA84D2083EFEE323B1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RNHybrid/Pods-RNHybrid-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNHybrid/Pods-RNHybrid-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		68A27E1AF3F54006082BFA67 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RNHybrid-RNHybridTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8CB5A8247451B914B31BC210 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RNHybrid-RNHybridTests/Pods-RNHybrid-RNHybridTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNHybrid-RNHybridTests/Pods-RNHybrid-RNHybridTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A46E4D2EAC13CC5EEB803699 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RNHybrid-RNHybridTests/Pods-RNHybrid-RNHybridTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNHybrid-RNHybridTests/Pods-RNHybrid-RNHybridTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C0BAA83465C29B5A4DE81E73 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RNHybrid-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		59F11B3873543310A207D323 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39CBE1F1249B002C43E543F5 /* AppDelegate.mm in Sources */,
+				B7CBE74AAED6BD61AB72643A /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6DE4856F956BED642C1B76C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		24A68801594A5E208836332B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7E206297E397E45BDD17DA1A /* Pods-RNHybrid-RNHybridTests.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5557CDEB5293730C3CC776C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2E3F3D4540144D9E5289707 /* Pods-RNHybrid.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "-";
+				INFOPLIST_FILE = RNHybrid/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.rnhybrid;
+				SDKROOT = iphonesimulator;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		568B4FC2F74C06F4740055DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		6A790A54CDAED0C30B6512CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5965695F53B44BF24A1F3C1A /* Pods-RNHybrid-RNHybridTests.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		6C67981AC5473025E32F2328 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5FB8548E641531CB606468AB /* Pods-RNHybrid.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "-";
+				INFOPLIST_FILE = RNHybrid/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.rnhybrid;
+				SDKROOT = iphonesimulator;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		92B7BB30C9867B7741D0CD56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		61D850A36B6EE87ED82CD8FF /* Build configuration list for PBXNativeTarget "RNHybrid" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6C67981AC5473025E32F2328 /* Release */,
+				5557CDEB5293730C3CC776C6 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AF1227C430BBBB24F8B439C1 /* Build configuration list for PBXNativeTarget "RNHybridTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				24A68801594A5E208836332B /* Release */,
+				6A790A54CDAED0C30B6512CE /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F828D15424E4BDF63296A18C /* Build configuration list for PBXProject "RNHybrid" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				568B4FC2F74C06F4740055DF /* Debug */,
+				92B7BB30C9867B7741D0CD56 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8AB45945F10B454190779DEC /* Project object */;
+}
