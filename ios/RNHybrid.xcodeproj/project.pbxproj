@@ -7,14 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		084F1854EA1A538469741784 /* MainViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B741EB0E5F886BE73C0EF541 /* MainViewController.h */; };
+		19DD6122E327FACB19BC56B3 /* SplashViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F575DA5717F827A487A8CF7 /* SplashViewController.h */; };
+		19F538D290F4EFDE0F2E3A9C /* RNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 827D44DA8E54F0C0A8931C47 /* RNViewController.m */; };
 		285CB49E8DD9298EF7473939 /* libPods-RNHybrid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 652B25D0B34C856ACA09A467 /* libPods-RNHybrid.a */; };
 		39CBE1F1249B002C43E543F5 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0009959CF533A0A6929752A4 /* AppDelegate.mm */; };
 		54F0AE22A9816301243AEB20 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE469EE774A6393555B31CF /* Foundation.framework */; };
 		57C4BFEC2D27576600F74713 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE469EE774A6393555B31CF /* Foundation.framework */; };
+		5B8E5B5AF76288AA0DC11E80 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C473F9520F8D082E0EE2D38F /* MainViewController.m */; };
+		687359BD9E4E4912188B0E76 /* RNViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B1D940EE4BD43590C40F72FA /* RNViewController.h */; };
 		716F3C85A6B44B0C9D26596A /* AppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 34EA291F78D8F99304529D84 /* AppDelegate.h */; };
 		8B262B1AACAF725C1E20F56B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 73ABB86FFB07F01E374E6820 /* PrivacyInfo.xcprivacy */; };
 		9EC1EFC4E7EB98DA0318075C /* libPods-RNHybrid-RNHybridTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1B9D9040A2F88F4DA281FA2 /* libPods-RNHybrid-RNHybridTests.a */; };
 		B7CBE74AAED6BD61AB72643A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 889A741C91236C16E764C99E /* main.m */; };
+		D70F0C138F9DDDFE4FD8650C /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67DEAB2698C7069A8E65984E /* SplashViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,9 +30,15 @@
 		5965695F53B44BF24A1F3C1A /* Pods-RNHybrid-RNHybridTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid-RNHybridTests.debug.xcconfig"; path = "Target Support Files/Pods-RNHybrid-RNHybridTests/Pods-RNHybrid-RNHybridTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5FB8548E641531CB606468AB /* Pods-RNHybrid.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid.release.xcconfig"; path = "Target Support Files/Pods-RNHybrid/Pods-RNHybrid.release.xcconfig"; sourceTree = "<group>"; };
 		652B25D0B34C856ACA09A467 /* libPods-RNHybrid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNHybrid.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		67DEAB2698C7069A8E65984E /* SplashViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SplashViewController.m; path = RNHybrid/SplashViewController.m; sourceTree = "<group>"; };
 		73ABB86FFB07F01E374E6820 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		7E206297E397E45BDD17DA1A /* Pods-RNHybrid-RNHybridTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid-RNHybridTests.release.xcconfig"; path = "Target Support Files/Pods-RNHybrid-RNHybridTests/Pods-RNHybrid-RNHybridTests.release.xcconfig"; sourceTree = "<group>"; };
+		827D44DA8E54F0C0A8931C47 /* RNViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RNViewController.m; path = RNHybrid/RNViewController.m; sourceTree = "<group>"; };
 		889A741C91236C16E764C99E /* main.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RNHybrid/main.m; sourceTree = "<group>"; };
+		8F575DA5717F827A487A8CF7 /* SplashViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SplashViewController.h; path = RNHybrid/SplashViewController.h; sourceTree = "<group>"; };
+		B1D940EE4BD43590C40F72FA /* RNViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RNViewController.h; path = RNHybrid/RNViewController.h; sourceTree = "<group>"; };
+		B741EB0E5F886BE73C0EF541 /* MainViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = RNHybrid/MainViewController.h; sourceTree = "<group>"; };
+		C473F9520F8D082E0EE2D38F /* MainViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = RNHybrid/MainViewController.m; sourceTree = "<group>"; };
 		C61156CF4603A6DB7A3E8A9A /* RNHybrid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNHybrid.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2E3F3D4540144D9E5289707 /* Pods-RNHybrid.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid.debug.xcconfig"; path = "Target Support Files/Pods-RNHybrid/Pods-RNHybrid.debug.xcconfig"; sourceTree = "<group>"; };
 		F1B9D9040A2F88F4DA281FA2 /* libPods-RNHybrid-RNHybridTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNHybrid-RNHybridTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,6 +92,12 @@
 				C672A79B10C56E791ECB8981 /* RNHybrid */,
 				6F5668F26FE0117E92ED38CA /* RNHybridTests */,
 				C92493C1595BCD49D4823DDA /* Pods */,
+				8F575DA5717F827A487A8CF7 /* SplashViewController.h */,
+				67DEAB2698C7069A8E65984E /* SplashViewController.m */,
+				B741EB0E5F886BE73C0EF541 /* MainViewController.h */,
+				C473F9520F8D082E0EE2D38F /* MainViewController.m */,
+				B1D940EE4BD43590C40F72FA /* RNViewController.h */,
+				827D44DA8E54F0C0A8931C47 /* RNViewController.m */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,6 +107,12 @@
 				34EA291F78D8F99304529D84 /* AppDelegate.h */,
 				0009959CF533A0A6929752A4 /* AppDelegate.mm */,
 				889A741C91236C16E764C99E /* main.m */,
+				8F575DA5717F827A487A8CF7 /* SplashViewController.h */,
+				67DEAB2698C7069A8E65984E /* SplashViewController.m */,
+				B741EB0E5F886BE73C0EF541 /* MainViewController.h */,
+				C473F9520F8D082E0EE2D38F /* MainViewController.m */,
+				B1D940EE4BD43590C40F72FA /* RNViewController.h */,
+				827D44DA8E54F0C0A8931C47 /* RNViewController.m */,
 			);
 			name = RNHybrid;
 			sourceTree = "<group>";
@@ -131,6 +155,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				716F3C85A6B44B0C9D26596A /* AppDelegate.h in Headers */,
+				19DD6122E327FACB19BC56B3 /* SplashViewController.h in Headers */,
+				084F1854EA1A538469741784 /* MainViewController.h in Headers */,
+				687359BD9E4E4912188B0E76 /* RNViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +387,9 @@
 			files = (
 				39CBE1F1249B002C43E543F5 /* AppDelegate.mm in Sources */,
 				B7CBE74AAED6BD61AB72643A /* main.m in Sources */,
+				D70F0C138F9DDDFE4FD8650C /* SplashViewController.m in Sources */,
+				5B8E5B5AF76288AA0DC11E80 /* MainViewController.m in Sources */,
+				19F538D290F4EFDE0F2E3A9C /* RNViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
