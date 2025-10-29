@@ -11,6 +11,7 @@
 @property (nonatomic, strong) NSTimer *countdownTimer;
 @property (nonatomic, assign) NSInteger countdownSeconds;
 @property (nonatomic, strong) UILabel *countdownLabel;
+@property (nonatomic, assign) BOOL isViewDidAppear;
 
 @end
 
@@ -44,6 +45,16 @@
     
     // 开始倒计时
     [self startCountdown];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    self.isViewDidAppear = YES;
+    
+    // 如果倒计时已经结束但未跳转，则执行跳转
+    if (self.countdownSeconds <= 0) {
+        [self countdownFinished];
+    }
 }
 
 - (void)setupCountdownLabel {
@@ -91,8 +102,12 @@
     [self.countdownTimer invalidate];
     self.countdownTimer = nil;
     
-    // 跳转到主页面
-    [self transitionToMainViewController];
+    // 确保视图已经加载完成再跳转
+    if (self.isViewDidAppear) {
+        // 跳转到主页面
+        [self transitionToMainViewController];
+    }
+    // 如果视图尚未加载完成，不执行任何操作，等待viewDidAppear时再处理
 }
 
 - (void)transitionToMainViewController {
@@ -112,7 +127,14 @@
         [self.countdownTimer invalidate];
         self.countdownTimer = nil;
     }
-    [self transitionToMainViewController];
+    
+    // 确保视图已经加载完成再跳转
+    if (self.isViewDidAppear) {
+        [self transitionToMainViewController];
+    } else {
+        // 如果视图尚未加载完成，直接设置倒计时结束标志，等待viewDidAppear时再处理
+        self.countdownSeconds = 0;
+    }
 }
 
 @end
