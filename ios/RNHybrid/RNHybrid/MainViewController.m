@@ -51,7 +51,7 @@
     
     [self.view addSubview:label];
     
-    // 设置标签约束，实现全屏居中
+    // 设置标约束，实现全屏居中
     label.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [label.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],

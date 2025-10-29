@@ -28,10 +28,22 @@
 				<string>35F9.1</string>
 			</array>
 		</dict>
+		<dict>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>CHK5 - Disk space information</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryBootTime</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>CHK6 - Boot time information</string>
+			</array>
+		</dict>
 	</array>
-	<key>NSPrivacyCollectedDataTypes</key>
-	<array/>
-	<key>NSPrivacyTracking</key>
-	<false/>
 </dict>
 </plist>
