@@ -282,11 +282,15 @@
     
     // 创建React Native根视图
     @try {
+        //透传参数
+        NSDictionary *initialParams = @{
+                @"param1": @"ios"
+            };
         // 强制走本地服务器  zyd
-        //finalBundleURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+        finalBundleURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
         self.reactRootView = [[RCTRootView alloc] initWithBundleURL:finalBundleURL
                                                             moduleName:@"RNHybrid"
-                                                     initialProperties:nil
+                                                     initialProperties:initialParams
                                                          launchOptions:nil];
         
         self.reactRootView.delegate = self;

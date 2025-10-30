@@ -8,23 +8,25 @@
 
 import React from 'react';
 import {
-  SafeAreaView,
-  StyleSheet
+    SafeAreaView,
+    StyleSheet
 } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
 
-const App = () => {
-  return (
-      <SafeAreaView style={styles.container}>
-        <AppNavigator />
-      </SafeAreaView>
-  );
+const App = (props) => {
+    const {param1} = props
+    console.log('props', param1)
+    return (
+        <SafeAreaView style={styles.container}>
+            <AppNavigator/>
+        </SafeAreaView>
+    );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+    container: {
+        flex: 1,
+    },
 });
 
 export default App;

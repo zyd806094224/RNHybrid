@@ -54,9 +54,11 @@ public class RNPageActivity extends AppCompatActivity implements DefaultHardware
                 .setUseDeveloperSupport(true) //是否开启调试模式
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();
+        Bundle initialProps = new Bundle();
+        initialProps.putString("param1","android");
 
         // 这个"RNHybrid"名字一定要和我们在index.js中注册的名字保持一致AppRegistry.registerComponent()
-        mReactRootView.startReactApplication(mReactInstanceManager, "RNHybrid", null);
+        mReactRootView.startReactApplication(mReactInstanceManager, "RNHybrid", initialProps);
         setContentView(mReactRootView);
     }
 
