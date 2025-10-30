@@ -14,6 +14,9 @@
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, strong) UILabel *loadingLabel;
 @property (nonatomic, assign) BOOL isBundleDownloaded;
+@property (nonatomic, assign) BOOL hasTriedToInitializeReactNative;
+@property (nonatomic, assign) BOOL isViewFirstTimeAppeared;
+@property (nonatomic, assign) BOOL didShowErrorMessage;
 
 @end
 
@@ -34,9 +37,18 @@
     
     // 初始化下载状态
     self.isBundleDownloaded = NO;
-    
-    // 开始下载bundle文件
+    self.hasTriedToInitializeReactNative = NO;
+    self.isViewFirstTimeAppeared = NO;
+    self.didShowErrorMessage = NO;
+
+#if DEBUG
+    // DEBUG模式下，直接从Metro开发服务器加载
+    [self initializeReactNativeWithBundle:nil];
+#else
+    // RELEASE模式下，从网络下载bundle文件
     [self downloadBundleFile];
+#endif
+
 }
 
 - (void)setupLoadingUI {
@@ -78,6 +90,13 @@
         return;
     }
     
+    // 检查URL是否有效
+    if (!bundleURL || bundleURL.host.length == 0) {
+        NSLog(@"Invalid bundle URL, falling back to dev server");
+        [self initializeReactNativeWithBundle:nil];
+        return;
+    }
+    
     // 创建下载任务
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
@@ -111,6 +130,43 @@
     return YES;
 }
 
+- (void)showLoadErrorUI {
+    // 确保在主线程执行UI更新
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // 停止并隐藏加载UI
+        [self.loadingIndicator stopAnimating];
+        [self.loadingIndicator setHidden:YES];
+        [self.loadingLabel setHidden:YES];
+
+        // 创建错误标签
+        UILabel *errorLabel = [[UILabel alloc] init];
+        errorLabel.text = @"页面加载失败，请稍后重试。";
+        errorLabel.textAlignment = NSTextAlignmentCenter;
+        errorLabel.numberOfLines = 0;
+        errorLabel.textColor = [UIColor redColor];
+        errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:errorLabel];
+
+        // 创建返回按钮
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        [backButton setTitle:@"返回" forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
+        backButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:backButton];
+
+        // 设置约束
+        [NSLayoutConstraint activateConstraints:@[
+            [errorLabel.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+            [errorLabel.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
+            [errorLabel.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.view.leadingAnchor constant:20],
+            [errorLabel.trailingAnchor constraintLessThanOrEqualToAnchor:self.view.trailingAnchor constant:-20],
+
+            [backButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+            [backButton.topAnchor constraintEqualToAnchor:errorLabel.bottomAnchor constant:20]
+        ]];
+    });
+}
+
 #pragma mark - NSURLSessionDownloadDelegate
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location {
@@ -131,7 +187,11 @@
     BOOL moveSuccess = [[NSFileManager defaultManager] moveItemAtURL:location toURL:[NSURL fileURLWithPath:filePath] error:&error];
     
     if (!moveSuccess || error) {
-        NSLog(@"Error moving file: %@", error.localizedDescription);
+        if (error && [error isKindOfClass:[NSError class]]) {
+            NSLog(@"Error moving file: %@", error.localizedDescription);
+        } else {
+            NSLog(@"Unknown error moving file");
+        }
         // 如果下载失败，使用默认方式加载
         dispatch_async(dispatch_get_main_queue(), ^{
             [self initializeReactNativeWithBundle:nil];
@@ -157,11 +217,15 @@
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
     if (error) {
-        NSLog(@"Download completed with error: %@", error.localizedDescription);
-        
-        // 处理连接失败的情况
-        if (error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorTimedOut) {
-            NSLog(@"Cannot connect to server. Falling back to local bundle.");
+        if ([error isKindOfClass:[NSError class]]) {
+            NSLog(@"Download completed with error: %@", error.localizedDescription);
+            
+            // 处理连接失败的情况
+            if (error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorTimedOut) {
+                NSLog(@"Cannot connect to server. Falling back to local bundle.");
+            }
+        } else {
+            NSLog(@"Download completed with unknown error");
         }
         
         // 回退到本地bundle或开发服务器
@@ -170,7 +234,7 @@
         });
     } else {
         // 下载成功但还没有处理的情况
-        if (![self isBundleDownloaded]) {
+        if (![self isBundleDownloaded] && ![self hasTriedToInitializeReactNative]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self initializeReactNativeWithBundle:nil];
             });
@@ -179,6 +243,22 @@
 }
 
 - (void)initializeReactNativeWithBundle:(NSURL *)bundleURL {
+    // 防止重复初始化
+    if (self.hasTriedToInitializeReactNative) {
+        return;
+    }
+    self.hasTriedToInitializeReactNative = YES;
+    
+    NSURL *finalBundleURL;
+
+#if DEBUG
+    NSLog(@"DEBUG mode: Using Metro dev server.");
+    finalBundleURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+#else
+    NSLog(@"RELEASE mode: Using downloaded bundle.");
+    finalBundleURL = bundleURL;
+#endif
+    
     NSLog(@"Initializing React Native with bundle URL: %@", bundleURL);
     
     // 停止并隐藏加载指示器
@@ -186,61 +266,55 @@
     [self.loadingIndicator removeFromSuperview];
     [self.loadingLabel removeFromSuperview];
     
-    NSURL *finalBundleURL = bundleURL;
-    
-    // 如果传入的bundleURL为nil，检查本地已下载的文件
-    if (finalBundleURL == nil) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *localBundlePath = [documentsDirectory stringByAppendingPathComponent:@"index.ios.bundle"];
-        
-        // 验证本地bundle文件是否有效
-        if ([self isValidBundleFileAtPath:localBundlePath]) {
-            finalBundleURL = [NSURL fileURLWithPath:localBundlePath];
-            NSLog(@"Using existing local bundle: %@", localBundlePath);
-        } else {
-            // 文件不存在或无效，回退到开发服务器
-            finalBundleURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
-            NSLog(@"Local bundle not valid, falling back to dev server: %@", finalBundleURL);
-        }
-    }
-    
     // 防御性检查，确保bundleURL不为空
     if (finalBundleURL == nil) {
         NSLog(@"Error: Bundle URL is nil, cannot initialize React Native");
-        // 显示错误信息
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"加载失败"
-                                                                       message:@"无法加载React Native页面，请检查网络连接后重试"
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self goBack];
-        }];
-        [alert addAction:okAction];
-        [self presentViewController:alert animated:YES completion:nil];
+        
+        // 避免重复显示错误
+        if (self.didShowErrorMessage) {
+            return;
+        }
+        self.didShowErrorMessage = YES;
+        
+        [self showLoadErrorUI];
         return;
     }
     
     // 创建React Native根视图
-    self.reactRootView = [[RCTRootView alloc] initWithBundleURL:finalBundleURL
-                                                        moduleName:@"RNHybrid"
-                                                 initialProperties:nil
-                                                     launchOptions:nil];
-    
-    self.reactRootView.delegate = self;
-    
-    [self.view addSubview:self.reactRootView];
-    
-    // 设置约束
-    self.reactRootView.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint activateConstraints:@[
-        [self.reactRootView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [self.reactRootView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [self.reactRootView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-        [self.reactRootView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
-    ]];
-    
-    // 添加返回按钮
-    [self addBackButton];
+    @try {
+        // 强制走本地服务器  zyd
+        //finalBundleURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+        self.reactRootView = [[RCTRootView alloc] initWithBundleURL:finalBundleURL
+                                                            moduleName:@"RNHybrid"
+                                                     initialProperties:nil
+                                                         launchOptions:nil];
+        
+        self.reactRootView.delegate = self;
+        
+        [self.view addSubview:self.reactRootView];
+        
+        // 设置约束
+        self.reactRootView.translatesAutoresizingMaskIntoConstraints = NO;
+        [NSLayoutConstraint activateConstraints:@[
+            [self.reactRootView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+            [self.reactRootView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+            [self.reactRootView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+            [self.reactRootView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
+        ]];
+        
+        // 添加返回按钮
+        [self addBackButton];
+    } @catch (NSException *exception) {
+        NSLog(@"Exception occurred while initializing React Native: %@", exception.reason);
+
+        // 避免重复显示错误
+        if (self.didShowErrorMessage) {
+            return;
+        }
+        self.didShowErrorMessage = YES;
+
+        [self showLoadErrorUI];
+    }
 }
 
 - (void)addBackButton {
@@ -267,11 +341,15 @@
 }
 
 - (void)goBack {
-    // 检查是否有可以返回的页面，如果没有则返回到主页面
-    if (self.navigationController.viewControllers.count > 1) {
+    // 如果RN页面是被push进来的，则pop返回
+    if (self.navigationController && self.navigationController.viewControllers.count > 1 && self.navigationController.topViewController == self) {
         [self.navigationController popViewControllerAnimated:YES];
-    } else {
-        // 如果没有可返回的页面，dismiss整个导航控制器
+    }
+    // 如果RN页面（或其所在的导航控制器）是被present出来的，则dismiss返回
+    else if (self.presentingViewController) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else if (self.navigationController.presentingViewController) {
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
@@ -280,6 +358,17 @@
 
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
     // 可选：处理根视图大小变化
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    // 标记视图已经出现过
+    if (!self.isViewFirstTimeAppeared) {
+        self.isViewFirstTimeAppeared = YES;
+        
+        // 可以在这里处理一些需要在视图完全显示后才执行的逻辑
+    }
 }
 
 @end

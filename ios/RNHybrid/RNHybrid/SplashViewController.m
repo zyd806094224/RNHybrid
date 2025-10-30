@@ -12,6 +12,7 @@
 @property (nonatomic, assign) NSInteger countdownSeconds;
 @property (nonatomic, strong) UILabel *countdownLabel;
 @property (nonatomic, assign) BOOL isViewDidAppear;
+@property (nonatomic, assign) BOOL hasStartedCountdown;
 
 @end
 
@@ -42,14 +43,17 @@
         [welcomeLabel.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
         [welcomeLabel.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
     ]];
-    
-    // 开始倒计时
-    [self startCountdown];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     self.isViewDidAppear = YES;
+    
+    // 确保只启动一次倒计时
+    if (!self.hasStartedCountdown) {
+        self.hasStartedCountdown = YES;
+        [self startCountdown];
+    }
     
     // 如果倒计时已经结束但未跳转，则执行跳转
     if (self.countdownSeconds <= 0) {
