@@ -13,6 +13,7 @@
 @property (nonatomic, strong) RCTRootView *reactRootView;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, strong) UILabel *loadingLabel;
+@property (nonatomic, assign) BOOL isBundleDownloaded;
 
 @end
 
@@ -30,6 +31,9 @@
     
     // 添加加载指示器和标签
     [self setupLoadingUI];
+    
+    // 初始化下载状态
+    self.isBundleDownloaded = NO;
     
     // 开始下载bundle文件
     [self downloadBundleFile];
@@ -134,6 +138,7 @@
         });
     } else {
         NSLog(@"Successfully downloaded bundle to: %@", filePath);
+        self.isBundleDownloaded = YES;
         // 验证下载的文件
         if ([self isValidBundleFileAtPath:filePath]) {
             // 下载成功，使用下载的bundle文件
@@ -163,6 +168,13 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self initializeReactNativeWithBundle:nil];
         });
+    } else {
+        // 下载成功但还没有处理的情况
+        if (![self isBundleDownloaded]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self initializeReactNativeWithBundle:nil];
+            });
+        }
     }
 }
 
@@ -191,6 +203,21 @@
             finalBundleURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
             NSLog(@"Local bundle not valid, falling back to dev server: %@", finalBundleURL);
         }
+    }
+    
+    // 防御性检查，确保bundleURL不为空
+    if (finalBundleURL == nil) {
+        NSLog(@"Error: Bundle URL is nil, cannot initialize React Native");
+        // 显示错误信息
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"加载失败"
+                                                                       message:@"无法加载React Native页面，请检查网络连接后重试"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self goBack];
+        }];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
     }
     
     // 创建React Native根视图

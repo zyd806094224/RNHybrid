@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,7 @@
 		084F1854EA1A538469741784 /* MainViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B741EB0E5F886BE73C0EF541 /* MainViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		19DD6122E327FACB19BC56B3 /* SplashViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F575DA5717F827A487A8CF7 /* SplashViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		19F538D290F4EFDE0F2E3A9C /* RNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 827D44DA8E54F0C0A8931C47 /* RNViewController.m */; };
+		2A07E9852EB23B080027D5D0 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A07E9842EB23B080027D5D0 /* Launch Screen.storyboard */; };
 		39CBE1F1249B002C43E543F5 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0009959CF533A0A6929752A4 /* AppDelegate.mm */; };
 		54F0AE22A9816301243AEB20 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE469EE774A6393555B31CF /* Foundation.framework */; };
 		57C4BFEC2D27576600F74713 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE469EE774A6393555B31CF /* Foundation.framework */; };
@@ -25,7 +26,8 @@
 
 /* Begin PBXFileReference section */
 		0009959CF533A0A6929752A4 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = RNHybrid/AppDelegate.mm; sourceTree = "<group>"; };
-		003933657EB86D5787CD71B7 /* RNHybridTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNHybridTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		003933657EB86D5787CD71B7 /* RNHybrid.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNHybrid.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A07E9842EB23B080027D5D0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		34EA291F78D8F99304529D84 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RNHybrid/AppDelegate.h; sourceTree = "<group>"; };
 		3A3C4A5EE05DB3326A0BE5CF /* Pods-RNHybrid-RNHybridTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid-RNHybridTests.debug.xcconfig"; path = "Target Support Files/Pods-RNHybrid-RNHybridTests/Pods-RNHybrid-RNHybridTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5A6D131540C26F11841FEF40 /* libPods-RNHybrid-RNHybridTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNHybrid-RNHybridTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,8 +110,8 @@
 				C473F9520F8D082E0EE2D38F /* MainViewController.m */,
 				B1D940EE4BD43590C40F72FA /* RNViewController.h */,
 				827D44DA8E54F0C0A8931C47 /* RNViewController.m */,
+				2A07E9842EB23B080027D5D0 /* Launch Screen.storyboard */,
 			);
-			name = RNHybrid;
 			path = RNHybrid;
 			sourceTree = "<group>";
 		};
@@ -117,7 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				C61156CF4603A6DB7A3E8A9A /* RNHybrid.app */,
-				003933657EB86D5787CD71B7 /* RNHybridTests.xctest */,
+				003933657EB86D5787CD71B7 /* RNHybrid.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -130,7 +132,6 @@
 				3A3C4A5EE05DB3326A0BE5CF /* Pods-RNHybrid-RNHybridTests.debug.xcconfig */,
 				A93FF24637B9B342189619FF /* Pods-RNHybrid-RNHybridTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -187,7 +188,7 @@
 			);
 			name = RNHybridTests;
 			productName = RNHybridTests;
-			productReference = 003933657EB86D5787CD71B7 /* RNHybridTests.xctest */;
+			productReference = 003933657EB86D5787CD71B7 /* RNHybrid.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -196,7 +197,7 @@
 		8AB45945F10B454190779DEC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildSystemType = 2;
+				DefaultBuildSystemTypeForWorkspace = 2;
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
@@ -236,6 +237,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A07E9852EB23B080027D5D0 /* Launch Screen.storyboard in Resources */,
 				8B262B1AACAF725C1E20F56B /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -350,6 +352,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CCBBED25898EE1495C43CDCC /* Pods-RNHybrid.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -373,6 +377,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CD2C06424F0501CEC7CC84DA /* Pods-RNHybrid.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
