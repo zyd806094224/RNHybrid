@@ -121,8 +121,16 @@
     // 设置导航控制器全屏显示（隐藏状态栏）
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
     
+    // 替换当前窗口的根视图控制器，使启动页彻底消失
+    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+    keyWindow.rootViewController = navController;
+    
     // 动画过渡到主页面
-    [self presentViewController:navController animated:YES completion:nil];
+    [UIView transitionWithView:keyWindow
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:nil
+                    completion:nil];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
