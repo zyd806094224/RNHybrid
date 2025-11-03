@@ -6,6 +6,7 @@ import DetailsScreen from '../screens/DetailsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import FlatListScreen from '../screens/FlatListScreen';
 import AlgorithmScreen from "../screens/AlgorithmScreen";
+import TypeScriptScreen from '../screens/TypeScriptScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -75,6 +76,14 @@ const AppNavigator = () => {
                     component={AlgorithmScreen}
                     options={{
                         title: 'process列表',
+                        animation: 'slide_from_right',
+                    }}
+                />
+                <Stack.Screen
+                    name="TypeScriptScreen"
+                    component={TypeScriptScreen}
+                    options={{
+                        title: 'TypeScript Screen',
                         animation: 'slide_from_right',
                     }}
                 />

@@ -38,6 +38,12 @@ const HomeScreen = ({navigation}) => {
                         onPress={() => navigation.navigate('AlgorithmScreen')}
                         style={{backgroundColor: '#9C27B0'}}
                     />
+                    <View style={styles.spacer}/>
+                    <CustomButton
+                        title="Go to TypeScriptScreen"
+                        onPress={() => navigation.navigate('TypeScriptScreen', {message: 'Hello from HomeScreen!'})}
+                        style={{backgroundColor: '#007AFF'}}
+                    />
                 </View>
             </View>
         </SafeAreaView>
