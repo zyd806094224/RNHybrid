@@ -13,6 +13,7 @@ const HomeScreen = ({navigation}) => {
             <View style={styles.content}>
                 <Text style={styles.title}>Home Screen</Text>
                 <Text style={styles.description}>Welcome to the React Native App!</Text>
+                <Text style={styles.hotUpdateTag}>Pushy 热更新测试 - 2026.04.17</Text>
                 <View style={styles.buttonContainer}>
                     <CustomButton
                         title="Go to Details"
@@ -72,6 +73,12 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         color: '#666',
         textAlign: 'center',
+    },
+    hotUpdateTag: {
+        fontSize: 14,
+        marginBottom: 20,
+        color: '#4CAF50',
+        fontWeight: 'bold',
     },
     buttonContainer: {
         width: '80%',

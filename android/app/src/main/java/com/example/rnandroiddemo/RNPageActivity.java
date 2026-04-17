@@ -22,6 +22,9 @@ import com.facebook.react.shell.MainReactPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 
+import cn.reactnative.modules.update.UpdateContext;
+import cn.reactnative.modules.update.UpdatePackage;
+
 public class RNPageActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
 
     private ReactRootView mReactRootView;
@@ -38,22 +41,24 @@ public class RNPageActivity extends AppCompatActivity implements DefaultHardware
     }
 
     private void initializeReactNative() {
-        String bundleFilePath = getApplication().getFilesDir() + "/index.android.bundle";
-
         mReactRootView = new ReactRootView(this);
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
                 .setCurrentActivity(this)
-                .setJSBundleFile(bundleFilePath) // 自定义内部存储路径 使用远程地址
+                .setJSBundleFile(UpdateContext.getBundleUrl(this, "assets://index.android.bundle"))
                 .setJSMainModulePath("index")
                 .addPackage(new MainReactPackage())
                 // 路由需要
                 .addPackage(new RNScreensPackage())
                 // 路由需要
                 .addPackage(new SafeAreaContextPackage())
+                // 热更新
+                .addPackage(new UpdatePackage())
                 .setUseDeveloperSupport(true) //是否开启调试模式
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();
+        // 混编项目必须设置自定义 InstanceManager
+        UpdateContext.setCustomInstanceManager(mReactInstanceManager);
         Bundle initialProps = new Bundle();
         initialProps.putString("param1","android");
 
