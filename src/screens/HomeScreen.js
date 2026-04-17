@@ -13,7 +13,7 @@ const HomeScreen = ({navigation}) => {
             <View style={styles.content}>
                 <Text style={styles.title}>Home Screen</Text>
                 <Text style={styles.description}>Welcome to the React Native App!</Text>
-                <Text style={styles.hotUpdateTag}>Pushy 热更新测试 - 2026.04.17</Text>
+                <Text style={styles.hotUpdateTag}>Pushy 热更新测试 - 2026.04.17 23:07</Text>
                 <View style={styles.buttonContainer}>
                     <CustomButton
                         title="Go to Details"
