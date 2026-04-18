@@ -29,6 +29,7 @@ public class RNPageActivity extends AppCompatActivity implements DefaultHardware
 
     private ReactRootView mReactRootView;
     private ReactInstanceManager mReactInstanceManager;
+    private static ReactInstanceManager sReactInstanceManager;
     private static final String BUNDLE_URL = "http://106.15.7.132:888/download/index.android.bundle";
     private static final String TAG = "RNPageActivity";
 
@@ -42,23 +43,29 @@ public class RNPageActivity extends AppCompatActivity implements DefaultHardware
 
     private void initializeReactNative() {
         mReactRootView = new ReactRootView(this);
-        mReactInstanceManager = ReactInstanceManager.builder()
-                .setApplication(getApplication())
-                .setCurrentActivity(this)
-                .setJSBundleFile(UpdateContext.getBundleUrl(this, "assets://index.android.bundle"))
-                .setJSMainModulePath("index")
-                .addPackage(new MainReactPackage())
-                // 路由需要
-                .addPackage(new RNScreensPackage())
-                // 路由需要
-                .addPackage(new SafeAreaContextPackage())
-                // 热更新
-                .addPackage(new UpdatePackage())
-                .setUseDeveloperSupport(true) //是否开启调试模式
-                .setInitialLifecycleState(LifecycleState.RESUMED)
-                .build();
-        // 混编项目必须设置自定义 InstanceManager
-        UpdateContext.setCustomInstanceManager(mReactInstanceManager);
+
+        if (sReactInstanceManager == null) {
+            sReactInstanceManager = ReactInstanceManager.builder()
+                    .setApplication(getApplication())
+                    .setCurrentActivity(this)
+                    .setJSBundleFile(UpdateContext.getBundleUrl(this, "assets://index.android.bundle"))
+                    .setJSMainModulePath("index")
+                    .addPackage(new MainReactPackage())
+                    // 路由需要
+                    .addPackage(new RNScreensPackage())
+                    // 路由需要
+                    .addPackage(new SafeAreaContextPackage())
+                    // 热更新
+                    .addPackage(new UpdatePackage())
+                    .setUseDeveloperSupport(true) //是否开启调试模式
+                    .setInitialLifecycleState(LifecycleState.RESUMED)
+                    .build();
+            // 混编项目必须设置自定义 InstanceManager
+            UpdateContext.setCustomInstanceManager(sReactInstanceManager);
+        }
+
+        mReactInstanceManager = sReactInstanceManager;
+
         Bundle initialProps = new Bundle();
         initialProps.putString("param1","android");
 
@@ -124,14 +131,28 @@ public class RNPageActivity extends AppCompatActivity implements DefaultHardware
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onHostResume(this, this);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onHostPause(this);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostDestroy(this);
-        }
         if (mReactRootView != null) {
             mReactRootView.unmountReactApplication();
+            mReactRootView = null;
         }
     }
 }
