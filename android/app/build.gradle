@@ -1,18 +1,28 @@
 plugins {
     id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
     id 'com.facebook.react'
+    id 'kotlin-kapt'
 }
 
 android {
     ndkVersion rootProject.ext.ndkVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
     namespace "com.example.rnandroiddemo"
+
     defaultConfig {
-        applicationId "com.example.rnandroiddemo"
+        applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 103
-        versionName "1.0.3"
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+
+        // ARouter
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
     }
 
     signingConfigs {
@@ -23,6 +33,7 @@ android {
             keyPassword 'rnhybrid123'
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -31,30 +42,72 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
 dependencies {
+    // React Native
     implementation "com.facebook.react:react-android:0.72.17"
     if (hermesEnabled.toBoolean()) {
         implementation 'com.facebook.react:hermes-android:0.72.17'
     } else {
         implementation 'org.webkit:android-jsc:+'
     }
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
     // From node_modules
-    // 添加 react-native-screens 依赖 路由跳转需要
     implementation project(':react-native-screens')
-    // 添加 react-native-safe-area-context 依赖  路由跳转需要
     implementation project(':react-native-safe-area-context')
-    // 热更新
     implementation project(':react-native-update')
+
+    // AndroidX
+    implementation libs.coreKtx
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.constraintlayout
+    implementation libs.liveDataKtx
+    implementation libs.viewModelKtx
+    implementation libs.navigationFragment
+    implementation libs.navigationUI
+    implementation libs.lifecycleCommon
+    implementation libs.multidex
+
+    // Network
+    implementation libs.retrofit2
+    implementation libs.retrofit2Gson
+    implementation libs.loggingInterceptor
+    implementation libs.gson
+    implementation libs.mmkv
+
+    // ARouter
+    implementation libs.arouterApi
+    kapt libs.arouterCompiler
+
+    // Refresh
+    implementation libs.refreshLayout
+    implementation libs.refreshHeader
+    implementation libs.refreshFooter
+
+    // Permissions
+    implementation libs.xxPermissions
+
+    // Test
+    testImplementation libs.junit
+    androidTestImplementation libs.extJunit
+    androidTestImplementation libs.espressoCore
+
+    // Internal modules
+    implementation project(path: ':lib_framework')
+    implementation project(path: ':lib_network')
+    implementation project(path: ':lib_rn')
 }

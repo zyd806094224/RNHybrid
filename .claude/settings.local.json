@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E '\\\\.\\(gradle|xml|java|kt\\)$')",
+      "Bash(grep -E \"\\\\.\\(properties|gradle\\)$\")",
+      "Bash(find . -name \"build.gradle\" -exec grep -l \"implementation\" {})"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+ext {
+    signingConfig = [
+            storePassword: 'rnhybrid123',
+            keyAlias     : 'release',
+            keyPassword  : 'rnhybrid123'
+    ]
+
+    android = [
+            applicationId    : "com.example.rnandroiddemo",
+            compileSdk       : 33,
+            minSdk           : 21,
+            targetSdk        : 33,
+            versionCode      : 104,
+            versionName      : "1.0.4",
+    ]
+}

@@ -28,10 +28,18 @@ dependencyResolutionManagement {
         }
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "android"
+
+// 业务模块
+include ':lib_framework'
+include ':lib_network'
+include ':lib_rn'
 include ':app'
+
+// RN 模块
 include ':react-native-screens'
 project(':react-native-screens').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-screens/android')
 include ':react-native-safe-area-context'
