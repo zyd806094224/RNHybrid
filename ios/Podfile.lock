@@ -284,6 +284,17 @@ PODS:
     - glog
   - react-native-safe-area-context (4.14.1):
     - React-Core
+  - react-native-update (10.39.1):
+    - RCT-Folly (= 2021.07.22.00)
+    - React
+    - React-Core
+    - react-native-update/RCTPushy (= 10.39.1)
+    - SSZipArchive
+  - react-native-update/RCTPushy (10.39.1):
+    - RCT-Folly (= 2021.07.22.00)
+    - React
+    - React-Core
+    - SSZipArchive
   - React-NativeModulesApple (0.72.17):
     - React-callinvoker
     - React-Core
@@ -393,6 +404,7 @@ PODS:
     - React-Core
     - React-RCTImage
   - SocketRocket (0.6.1)
+  - SSZipArchive (2.4.3)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -418,6 +430,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-update (from `../node_modules/react-native-update`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -442,6 +455,7 @@ SPEC REPOS:
   trunk:
     - fmt
     - SocketRocket
+    - SSZipArchive
 
 EXTERNAL SOURCES:
   boost:
@@ -486,6 +500,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-update:
+    :path: "../node_modules/react-native-update"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-perflogger:
@@ -548,6 +564,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 853b8631b908636bb09ef77cb217376c38a0c8ff
   React-logger: afa402da502a35728c9073804b1802861783a996
   react-native-safe-area-context: 758e894ca5a9bd1868d2a9cfbca7326a2b6bf9dc
+  react-native-update: be550b8bc6b358db642e6ad5984a97f37ed88b22
   React-NativeModulesApple: 0847f5c5c2a4ca66da4ed0bc6caebab6961fb3a4
   React-perflogger: 785b0063af5178298a61b54bb46aae9a19c7bbb5
   React-RCTActionSheet: 84f37b34bd77249263ace75471d6664393c29972
@@ -567,6 +584,7 @@ SPEC CHECKSUMS:
   ReactCommon: df06b043f9ded6450dc8fc6d991dc240d4f6b397
   RNScreens: c6ae949c292bee8ed7f355ab2adcfc9a51629951
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
   Yoga: ef534101bb891fb09bae657417f34d399c1efe38
 
 PODFILE CHECKSUM: 6d7742b616c47ffba8db49709938ebf8ac51ac61
