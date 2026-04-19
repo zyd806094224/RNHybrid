@@ -3,6 +3,7 @@ package com.example.rnandroiddemo
 import android.content.Intent
 import android.os.Bundle
 import com.demo.framework.base.BaseActivity
+import com.demo.framework.utils.StatusBarSettingHelper
 import com.example.rnandroiddemo.rn.RNPageActivity
 
 class MainActivity : BaseActivity() {
@@ -10,6 +11,9 @@ class MainActivity : BaseActivity() {
     override fun getLayoutResId(): Int = R.layout.activity_main
 
     override fun initView(savedInstanceState: Bundle?) {
+        StatusBarSettingHelper.setStatusBarTranslucent(this)
+        StatusBarSettingHelper.statusBarLightMode(this, true)
+        StatusBarSettingHelper.setRootViewFitsSystemWindows(this, true)
         findViewById<android.widget.Button>(R.id.btn).setOnClickListener {
             startActivity(Intent(this, RNPageActivity::class.java))
         }

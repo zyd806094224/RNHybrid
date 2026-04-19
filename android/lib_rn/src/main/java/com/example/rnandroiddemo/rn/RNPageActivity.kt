@@ -2,6 +2,7 @@ package com.example.rnandroiddemo.rn
 
 import android.os.Bundle
 import com.demo.framework.base.BaseActivity
+import com.demo.framework.utils.StatusBarSettingHelper
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactRootView
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
@@ -23,7 +24,8 @@ class RNPageActivity : BaseActivity(), DefaultHardwareBackBtnHandler {
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        // 视图在 initializeReactNative 中设置
+        StatusBarSettingHelper.setStatusBarTranslucent(this)
+        StatusBarSettingHelper.statusBarLightMode(this, true)
     }
 
     private fun initializeReactNative() {

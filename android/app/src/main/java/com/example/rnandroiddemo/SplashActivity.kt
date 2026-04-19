@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import com.demo.framework.base.BaseActivity
+import com.demo.framework.utils.StatusBarSettingHelper
 
 class SplashActivity : BaseActivity() {
 
     override fun getLayoutResId(): Int = R.layout.activity_splash
 
     override fun initView(savedInstanceState: Bundle?) {
+        StatusBarSettingHelper.setStatusBarTranslucent(this)
         // 防止从后台恢复时重复显示闪屏
         if (!isTaskRoot) {
             finish()
