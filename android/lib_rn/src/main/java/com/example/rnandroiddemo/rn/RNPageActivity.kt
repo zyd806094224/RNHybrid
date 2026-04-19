@@ -1,11 +1,15 @@
 package com.example.rnandroiddemo.rn
 
 import android.os.Bundle
+import android.view.View
+import android.widget.FrameLayout
 import com.demo.framework.base.BaseActivity
 import com.demo.framework.utils.StatusBarSettingHelper
+import com.facebook.react.ReactInstanceEventListener
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactRootView
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
+import com.example.rnandroiddemo.rn.R
 
 /**
  * RN 载体页 Activity
@@ -15,29 +19,70 @@ class RNPageActivity : BaseActivity(), DefaultHardwareBackBtnHandler {
 
     private var mReactRootView: ReactRootView? = null
     private var mReactInstanceManager: ReactInstanceManager? = null
+    private var mRootContainer: FrameLayout? = null
+    private var mLoadingContainer: View? = null
+    private var mRnContentLoaded = false
 
-    override fun getLayoutResId(): Int = 0
-
-    override fun setContentLayout() {
-        // 使用 ReactRootView 替代传统布局
-        initializeReactNative()
-    }
+    override fun getLayoutResId(): Int = R.layout.activity_rn_page
 
     override fun initView(savedInstanceState: Bundle?) {
         StatusBarSettingHelper.setStatusBarTranslucent(this)
         StatusBarSettingHelper.statusBarLightMode(this, true)
+
+        mRootContainer = findViewById(R.id.root_container)
+        mLoadingContainer = findViewById(R.id.loading_container)
+
+        initializeReactNative()
     }
 
     private fun initializeReactNative() {
         mReactRootView = ReactRootView(this)
         mReactInstanceManager = ReactNativeManager.getReactInstanceManager(application, this)
 
+        // 监听 ReactContext 初始化完成，移除 loading
+        mReactInstanceManager?.addReactInstanceEventListener(object : ReactInstanceEventListener {
+            override fun onReactContextInitialized(context: com.facebook.react.bridge.ReactContext) {
+                runOnUiThread {
+                    removeLoading()
+                }
+            }
+        })
+
+        // 如果 ReactContext 已经存在（非首次加载），直接移除 loading
+        if (mReactInstanceManager?.currentReactContext != null) {
+            removeLoading()
+        }
+
         val initialProps = Bundle().apply {
             putString("param1", "android")
         }
 
         mReactRootView?.startReactApplication(mReactInstanceManager, "RNHybrid", initialProps)
-        setContentView(mReactRootView)
+    }
+
+    private fun removeLoading() {
+        if (mRnContentLoaded) return
+        mRnContentLoaded = true
+
+        // 将 ReactRootView 添加到容器
+        mReactRootView?.let { rv ->
+            mRootContainer?.addView(
+                rv,
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+        }
+
+        // 移除 loading
+        mLoadingContainer?.let { loading ->
+            loading.animate()
+                .alpha(0f)
+                .setDuration(200)
+                .withEndAction {
+                    mRootContainer?.removeView(loading)
+                }
+                .start()
+        }
     }
 
     override fun invokeDefaultOnBackPressed() {
@@ -70,5 +115,8 @@ class RNPageActivity : BaseActivity(), DefaultHardwareBackBtnHandler {
         super.onDestroy()
         mReactRootView?.unmountReactApplication()
         mReactRootView = null
+        mRootContainer?.removeAllViews()
+        mRootContainer = null
+        mLoadingContainer = null
     }
 }

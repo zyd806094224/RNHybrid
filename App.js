@@ -16,6 +16,7 @@ import AppNavigator from './src/navigation/AppNavigator';
 
 const pushy = new Pushy({
     appKey: 'iE2tRmGMuFRkLnbsmpApZLHV',
+    updateStrategy: __DEV__ ? 'alwaysAlert' : 'silentAndLater',
 });
 
 const App = (props) => {
