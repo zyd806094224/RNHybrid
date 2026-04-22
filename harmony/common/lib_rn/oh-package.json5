@@ -1,0 +1,14 @@
+{
+  "name": "lib_rn",
+  "version": "1.0.0",
+  "description": "React Native 混合开发模块",
+  "main": "Index.ets",
+  "author": "",
+  "license": "",
+  "packageType": "InterfaceHar",
+  "dependencies": {
+    "component": "file:../component",
+    "@hadss/hmrouter": "^1.2.2",
+    "@rnoh/react-native-openharmony": "0.72.96"
+  }
+}
