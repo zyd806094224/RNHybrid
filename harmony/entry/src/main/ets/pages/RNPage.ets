@@ -2,14 +2,21 @@ import { HMLifecycleState, HMRouter, HMRouterMgr } from '@hadss/hmrouter';
 import {
   RNApp,
   RNOHCoreContext,
+  RNOHLogger,
   AnyJSBundleProvider,
   MetroJSBundleProvider,
   ResourceJSBundleProvider,
   TraceJSBundleProviderDecorator,
+  ComponentBuilderContext,
 } from '@rnoh/react-native-openharmony';
 import { PushyFileJSBundleProvider } from 'pushy';
 import { RouterUrl } from 'component';
 import { createRNPackages } from '../RNPackagesFactory';
+
+@Builder
+export function buildCustomRNComponent(ctx: ComponentBuilderContext) {}
+
+const wrappedCustomRNComponentBuilder = wrapBuilder(buildCustomRNComponent)
 
 /**
  * RN 载体页面 - 使用 RNOH 原生渲染 React Native
@@ -19,8 +26,10 @@ import { createRNPackages } from '../RNPackagesFactory';
 @Component
 export struct RNPage {
   @StorageLink('RNOHCoreContext') private rnohCoreContext: RNOHCoreContext | undefined = undefined
+  private logger!: RNOHLogger
 
   aboutToAppear(): void {
+    this.logger = this.rnohCoreContext!.logger.clone("RNPage")
     const owner = HMRouterMgr.getCurrentLifecycleOwner();
     owner?.addObserver(HMLifecycleState.onBackPressed, () => {
       return false;
@@ -39,6 +48,7 @@ export struct RNPage {
             arkTsComponentNames: [],
           },
           appKey: "RNHybrid",
+          wrappedCustomRNComponentBuilder: wrappedCustomRNComponentBuilder,
           jsBundleProvider: new TraceJSBundleProviderDecorator(
             new AnyJSBundleProvider([
               new MetroJSBundleProvider(),

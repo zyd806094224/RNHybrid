@@ -9,19 +9,30 @@
 import React from 'react';
 import {
     SafeAreaView,
-    StyleSheet
+    StyleSheet,
+    Platform
 } from 'react-native';
-import {Pushy, UpdateProvider} from 'react-native-update';
 import AppNavigator from './src/navigation/AppNavigator';
-
-const pushy = new Pushy({
-    appKey: 'iE2tRmGMuFRkLnbsmpApZLHV',
-    updateStrategy: __DEV__ ? 'alwaysAlert' : 'silentAndLater',
-});
 
 const App = (props) => {
     const {param1} = props
     console.log('props', param1)
+
+    if (Platform.OS === 'harmony') {
+        return (
+            <SafeAreaView style={styles.container}>
+                <AppNavigator/>
+            </SafeAreaView>
+        );
+    }
+
+    // Android/iOS: use pushy hot update
+    const {Pushy, UpdateProvider} = require('react-native-update');
+    const pushy = new Pushy({
+        appKey: 'iE2tRmGMuFRkLnbsmpApZLHV',
+        updateStrategy: __DEV__ ? 'alwaysAlert' : 'silentAndLater',
+    });
+
     return (
         <UpdateProvider client={pushy}>
             <SafeAreaView style={styles.container}>

@@ -9,6 +9,6 @@
   "dependencies": {
     "component": "file:../component",
     "@hadss/hmrouter": "^1.2.2",
-    "@rnoh/react-native-openharmony": "0.72.96"
+    "@rnoh/react-native-openharmony": "0.72.53"
   }
 }
