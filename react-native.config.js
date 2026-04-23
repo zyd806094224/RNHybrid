@@ -1,5 +1,1 @@
-module.exports = {
-  platforms: {
-    harmony: {},
-  },
-};
+module.exports = {};

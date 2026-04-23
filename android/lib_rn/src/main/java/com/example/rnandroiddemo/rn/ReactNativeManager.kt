@@ -26,19 +26,29 @@ object ReactNativeManager {
         currentActivity: Activity? = null
     ): ReactInstanceManager {
         if (reactInstanceManager == null) {
-            reactInstanceManager = ReactInstanceManager.builder()
+            val builder = ReactInstanceManager.builder()
                 .setApplication(application)
                 .setCurrentActivity(currentActivity)
-                .setJSBundleFile(UpdateContext.getBundleUrl(application, "assets://index.android.bundle"))
                 .setJSMainModulePath("index")
                 .addPackage(MainReactPackage())
                 .addPackage(RNScreensPackage())
                 .addPackage(SafeAreaContextPackage())
                 .addPackage(UpdatePackage())
-                .setUseDeveloperSupport(true)
+                .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
-                .build()
-            UpdateContext.setCustomInstanceManager(reactInstanceManager)
+
+            if (BuildConfig.DEBUG) {
+                // Debug 模式：不设置 JSBundleFile，连接 Metro 开发服务器实现热更新
+            } else {
+                // Release 模式：加载离线包或热更新包
+                builder.setJSBundleFile(UpdateContext.getBundleUrl(application, "assets://index.android.bundle"))
+            }
+
+            reactInstanceManager = builder.build()
+
+            if (!BuildConfig.DEBUG) {
+                UpdateContext.setCustomInstanceManager(reactInstanceManager)
+            }
         }
         return reactInstanceManager!!
     }
