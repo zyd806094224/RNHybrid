@@ -15,7 +15,6 @@ const harmonyStubs = {
     'react-native-safe-area-context': path.resolve(__dirname, 'src/stubs/react-native-safe-area-context.js'),
     '@react-navigation/native': path.resolve(__dirname, 'src/stubs/@react-navigation-native.js'),
     '@react-navigation/native-stack': path.resolve(__dirname, 'src/stubs/@react-navigation-native-stack.js'),
-    'react-native-update': path.resolve(__dirname, 'src/stubs/react-native-update.js'),
 };
 
 const originalResolveRequest = harmonyConfig.resolver.resolveRequest;
