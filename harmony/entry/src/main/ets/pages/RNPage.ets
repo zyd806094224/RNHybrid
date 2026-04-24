@@ -9,7 +9,7 @@ import {
   TraceJSBundleProviderDecorator,
   ComponentBuilderContext,
 } from '@rnoh/react-native-openharmony';
-import { PushyFileJSBundleProvider } from 'pushy';
+import { PushyFileJSBundleProvider } from 'pushy/src/main/ets/PushyFileJSBundleProvider';
 import { RouterUrl } from 'component';
 import { createRNPackages } from '../RNPackagesFactory';
 

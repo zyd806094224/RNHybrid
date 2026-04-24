@@ -1,8 +1,7 @@
 {
   "modelVersion": "5.0.4",
   "dependencies": {
-    "@hadss/hmrouter-plugin": "^1.2.2",
-    "pushy": "file:../../node_modules/react-native-update/harmony"
+    "@hadss/hmrouter-plugin": "^1.2.2"
   },
   "execution": {
     // "analyze": "normal",                     /* Define the build analyze mode. Value: [ "normal" | "advanced" | false ]. Default: "normal" */
