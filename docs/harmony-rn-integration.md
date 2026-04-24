@@ -314,40 +314,79 @@ npx pushy selectApp --platform harmony
 ### 5.2 上传基线包
 
 ```bash
-# 1. 在 DevEco 中 Build HAP（Build → Build Hap(s)）
+# 1. 在 DevEco Studio 中 Build App（Build → Build Hap(s)/App(s) → Build App(s)）
 
-# 2. 将 HAP 改后缀为 .app 并上传
-cp harmony/entry/build/default/outputs/default/entry-default-signed.hap /tmp/entry-default-signed.app
-npx pushy uploadApp /tmp/entry-default-signed.app
+# 2. 上传未签名的 app 包到 Pushy
+npx pushy uploadApp harmony/build/outputs/default/harmony-default-unsigned.app
 ```
 
-> Pushy CLI 要求鸿蒙基线包后缀为 `.app`，HAP 本质是 zip，直接改后缀即可。上传时会解析里面的 `rawfile/bundle.harmony.js` 和 `rawfile/meta.json`。
+上传后 Pushy 会记录该包的 `versionName`（来自 `harmony/AppScope/app.json5`）和 `pushy_build_time`（来自 `rawfile/meta.json`），用于后续热更新版本比对。
 
-### 5.3 发布热更新
+### 5.3 完整发布流程（从零开始）
+
+> **核心原则**：上传到 Pushy 的包和上架应用市场的包，必须是**同一次构建产物**。因为 Pushy 通过 `pushy_build_time`（构建时自动写入 `meta.json`）来匹配基线包，重新 Build 会生成不同的时间戳导致 `buildtime-mismatch` 错误。
 
 ```bash
-# 1. 打包热更 bundle
-npx pushy bundle --platform harmony
+# 步骤1: 生成内置 JS Bundle（会更新 rawfile/bundle.harmony.js 和 meta.json）
+pushy bundle --platform harmony
 
-# 2. 上传并发布（按提示操作）
-#    - 是否上传：Y
-#    - 输入版本名称和描述
-#    - 是否应用到原生包：Y
-#    - 输入原生包 id（上传基线包时获得的 id）
+# 步骤2: 在 DevEco Studio 中 Build App（Build → Build Hap(s)/App(s) → Build App(s)）
+# 产物在 harmony/build/outputs/default/harmony-default-unsigned.app
 
-# 或分开操作
-npx pushy uploadApp <ppk文件路径>
-npx pushy publish --platform harmony
+# 步骤3: 上传到 Pushy 服务器（记录基线版本信息）
+pushy uploadApp harmony/build/outputs/default/harmony-default-unsigned.app
+
+# 步骤4: 同一个 app 包做签名，然后上架华为应用市场
+# 注意：不要重新 Build，用步骤2同一个产物去签名上架
+
+# 步骤5: 安装到设备测试
+hdc install harmony/build/outputs/default/harmony-default-unsigned.app
 ```
 
-### 5.4 热更新生效流程
+### 5.4 发布热更新
+
+> 只修改 JS 代码时，不需要重新打原生包，直接执行以下命令即可。
+
+```bash
+# 修改 JS 代码后，打包并上传热更新
+pushy bundle --platform harmony
+# 按提示操作：
+#   - 是否上传：Y
+#   - 输入版本名称和描述
+#   - 是否应用到原生包：Y
+```
+
+热更新生效后，用户的 app 无需重新安装，下次启动即可加载新版本。
+
+### 5.5 热更新生效流程
 
 1. 用户打开 app → Pushy JS 代码检查更新 → 下载 ppk 到本地
 2. 用户**关闭 app 再重新打开** → `PushyFileJSBundleProvider` 加载已下载的 bundle → 页面更新
 
 > 热更包下载后需要**重启 app** 才能生效。
 
-### 5.5 命令行安装 HAP
+### 5.6 发布新版原生包
+
+当需要修改原生代码或配置时（纯 JS 修改不需要），需要发布新的原生基线包：
+
+```bash
+# 1. 修改 app.json5 中的版本号（必须改，否则 buildtime-mismatch）
+#    "versionName": "1.0.0" → "1.0.1"
+
+# 2. 重新生成 JS Bundle
+pushy bundle --platform harmony
+
+# 3. 在 DevEco Studio 中 Build App(s)
+
+# 4. 上传新的基线包到 Pushy
+pushy uploadApp harmony/build/outputs/default/harmony-default-unsigned.app
+
+# 5. 同一个包签名后上架应用市场
+```
+
+> **每次重新打原生包必须修改 `versionName`**，这是强制要求。相同的 `versionName` 会导致编译时间戳不一致，热更新无法生效。
+
+### 5.7 命令行安装 HAP
 
 ```bash
 # hdc 工具路径
@@ -402,3 +441,5 @@ npx react-native bundle-harmony --dev
 5. **Build Mode**：DEBUG 模式下 Metro 优先加载，测试热更新建议使用 Release 模式
 6. **`.update` 文件**：Pushy 登录凭证，不要提交到 Git
 7. **`update.json`**：包含 appId 和 appKey，可以提交到 Git
+8. **同一次构建原则**：上传 Pushy 的包和上架应用市场的包必须是同一次 Build 的产物，重新 Build 会导致 `pushy_build_time` 变化从而引发 `buildtime-mismatch` 错误
+9. **版本号必须递增**：每次重新打原生包发布时，必须修改 `harmony/AppScope/app.json5` 中的 `versionName`，否则热更新无法生效
