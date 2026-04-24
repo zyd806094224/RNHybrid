@@ -127194,7 +127194,7 @@ __d(function (global, _$$_REQUIRE, _$$_IMPORT_DEFAULT, _$$_IMPORT_ALL, module, e
           children: "Welcome to the React Native App!"
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
           style: styles.hotUpdateTag,
-          children: "Pushy \u70ED\u66F4\u65B0\u6D4B\u8BD5 - 2026.04.19 14:14"
+          children: "Pushy \u70ED\u66F4\u65B0\u6D4B\u8BD5 - 2026.04.24 09:44"
         }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
           style: styles.buttonContainer,
           children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Button.default, {

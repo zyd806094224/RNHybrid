@@ -52,11 +52,11 @@ export struct RNPage {
           jsBundleProvider: new TraceJSBundleProviderDecorator(
             new AnyJSBundleProvider([
               new MetroJSBundleProvider(),
-              new PushyFileJSBundleProvider(this.rnohCoreContext!.uiAbilityContext),
               new ResourceJSBundleProvider(
                 this.rnohCoreContext!.uiAbilityContext.resourceManager,
                 'bundle.harmony.js'
               ),
+              new PushyFileJSBundleProvider(this.rnohCoreContext!.uiAbilityContext),
             ]),
             this.rnohCoreContext!.logger
           ),
