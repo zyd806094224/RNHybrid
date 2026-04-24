@@ -6,5 +6,9 @@
     "ios": {
         "appId": 32423,
         "appKey": "AJougFK8VqPUQV5VGX23Xs7B"
+    },
+    "harmony": {
+        "appId": 32475,
+        "appKey": "vqqcPSQlhd3ln-M7QRu4J3m1"
     }
 }

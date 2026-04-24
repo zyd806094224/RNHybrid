@@ -18,18 +18,15 @@ const App = (props) => {
     const {param1} = props
     console.log('props', param1)
 
-    if (Platform.OS === 'harmony') {
-        return (
-            <SafeAreaView style={styles.container}>
-                <AppNavigator/>
-            </SafeAreaView>
-        );
-    }
-
-    // Android/iOS: use pushy hot update
+    // Pushy hot update for all platforms
     const {Pushy, UpdateProvider} = require('react-native-update');
+    const appKeys = {
+        android: 'iE2tRmGMuFRkLnbsmpApZLHV',
+        ios: 'AJougFK8VqPUQV5VGX23Xs7B',
+        harmony: 'vqqcPSQlhd3ln-M7QRu4J3m1',
+    };
     const pushy = new Pushy({
-        appKey: 'iE2tRmGMuFRkLnbsmpApZLHV',
+        appKey: appKeys[Platform.OS],
         updateStrategy: __DEV__ ? 'alwaysAlert' : 'silentAndLater',
     });
 
