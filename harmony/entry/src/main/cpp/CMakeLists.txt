@@ -18,4 +18,9 @@ add_library(rnoh_app SHARED
     "${RNOH_CPP_DIR}/RNOHAppNapiBridge.cpp"
 )
 
+set(NODE_MODULES "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../node_modules")
+set(PUSHY_CPP_DIR "${NODE_MODULES}/react-native-update/harmony/pushy/src/main/cpp")
+target_include_directories(rnoh_app PRIVATE "${PUSHY_CPP_DIR}")
+target_sources(rnoh_app PRIVATE "${PUSHY_CPP_DIR}/PushyTurboModule.cpp")
+
 target_link_libraries(rnoh_app PUBLIC rnoh)
