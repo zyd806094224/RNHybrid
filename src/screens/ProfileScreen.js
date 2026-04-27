@@ -3,16 +3,16 @@ import {
     View,
     Text,
     StyleSheet,
-    SafeAreaView,
 } from 'react-native';
 import CustomButton from '../components/Button';
+import SafeContainer from '../components/SafeContainer';
 
 const ProfileScreen = ({navigation, route}) => {
     // 从路由参数中获取传递的数据
     const {testId} = route.params || {};
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeContainer style={styles.container}>
             <View style={styles.content}>
                 <Text style={styles.title}>Profile Screen</Text>
                 <Text style={styles.description}>This is the profile page where you can see user information.</Text>
@@ -46,7 +46,7 @@ const ProfileScreen = ({navigation, route}) => {
                     />
                 </View>
             </View>
-        </SafeAreaView>
+        </SafeContainer>
     );
 };
 

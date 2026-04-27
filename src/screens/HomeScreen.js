@@ -3,13 +3,13 @@ import {
     View,
     Text,
     StyleSheet,
-    SafeAreaView,
 } from 'react-native';
 import CustomButton from '../components/Button';
+import SafeContainer from '../components/SafeContainer';
 
 const HomeScreen = ({navigation}) => {
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeContainer style={styles.container}>
             <View style={styles.content}>
                 <Text style={styles.title}>Home Screen</Text>
                 <Text style={styles.description}>Welcome to the React Native App!</Text>
@@ -47,7 +47,7 @@ const HomeScreen = ({navigation}) => {
                     />
                 </View>
             </View>
-        </SafeAreaView>
+        </SafeContainer>
     );
 };
 

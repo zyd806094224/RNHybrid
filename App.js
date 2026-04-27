@@ -8,11 +8,11 @@
 
 import React from 'react';
 import {
-    SafeAreaView,
     StyleSheet,
     Platform
 } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
+import SafeContainer from './src/components/SafeContainer';
 
 const App = (props) => {
     const {param1} = props
@@ -32,9 +32,9 @@ const App = (props) => {
 
     return (
         <UpdateProvider client={pushy}>
-            <SafeAreaView style={styles.container}>
+            <SafeContainer style={styles.container}>
                 <AppNavigator/>
-            </SafeAreaView>
+            </SafeContainer>
         </UpdateProvider>
     );
 };

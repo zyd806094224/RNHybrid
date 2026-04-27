@@ -3,10 +3,10 @@ import {
     View,
     Text,
     StyleSheet,
-    SafeAreaView,
     FlatList,
     TouchableOpacity,
 } from 'react-native';
+import SafeContainer from '../components/SafeContainer';
 
 // 生成100条假数据
 const generateData = () => {
@@ -32,7 +32,7 @@ const FlatListScreen = ({navigation}) => {
     );
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeContainer style={styles.container}>
             <FlatList
                 data={data}
                 renderItem={renderItem}
@@ -46,7 +46,7 @@ const FlatListScreen = ({navigation}) => {
                 updateCellsBatchingPeriod={50}    // 更新批次间隔
                 showsVerticalScrollIndicator={false} // 隐藏滚动条提升性能
             />
-        </SafeAreaView>
+        </SafeContainer>
     );
 };
 

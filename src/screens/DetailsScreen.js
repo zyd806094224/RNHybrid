@@ -4,12 +4,12 @@ import {
   Text,
   Button,
   StyleSheet,
-  SafeAreaView,
 } from 'react-native';
+import SafeContainer from '../components/SafeContainer';
 
 const DetailsScreen = ({navigation}) => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeContainer style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>Details Screen</Text>
         <Text style={styles.description}>This is the details page where you can see more information.</Text>
@@ -32,7 +32,7 @@ const DetailsScreen = ({navigation}) => {
           />
         </View>
       </View>
-    </SafeAreaView>
+    </SafeContainer>
   );
 };
 
