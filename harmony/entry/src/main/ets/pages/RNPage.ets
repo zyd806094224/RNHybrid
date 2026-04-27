@@ -32,7 +32,8 @@ export struct RNPage {
     this.logger = this.rnohCoreContext!.logger.clone("RNPage")
     const owner = HMRouterMgr.getCurrentLifecycleOwner();
     owner?.addObserver(HMLifecycleState.onBackPressed, () => {
-      return false;
+      this.rnohCoreContext?.dispatchBackPress();
+      return true;
     });
   }
 

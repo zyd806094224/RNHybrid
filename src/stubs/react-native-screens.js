@@ -1,23 +1,29 @@
 import React from 'react';
 import { View } from 'react-native';
 
-// Disable native screens - use plain Views as stubs
-export function enableScreens() {}
-export function enableFreeze() {}
-export function shouldUseActivityState() { return false; }
+// react-native-screens stub for harmony - minimal implementation
+export function Screen({ children }) {
+  return <View style={{ flex: 1 }}>{children}</View>;
+}
 
-export const Screen = ({ children, ...props }) => <View {...props}>{children}</View>;
-export const ScreenStack = ({ children, ...props }) => <View {...props}>{children}</View>;
-export const ScreenStackHeaderConfig = (props) => null;
-export const ScreenStackItem = ({ children, ...props }) => <View {...props}>{children}</View>;
+export function ScreenContainer({ children }) {
+  return <View style={{ flex: 1 }}>{children}</View>;
+}
 
-export const InnerScreen = Screen;
+export function ScreenStack({ children }) {
+  return <View style={{ flex: 1 }}>{children}</View>;
+}
 
-export default {
-  enableScreens,
-  enableFreeze,
-  shouldUseActivityState,
-  Screen,
-  ScreenStack,
-  ScreenStackHeaderConfig,
-};
+export function ScreenStackItem({ children }) {
+  return <View style={{ flex: 1 }}>{children}</View>;
+}
+
+export const ScreenStackHeaderConfig = () => null;
+export const ScreenStackHeaderSubview = () => null;
+
+export function useHeaderHeight() {
+  return 0;
+}
+
+export const enableScreens = () => {};
+export const screensEnabled = () => true;

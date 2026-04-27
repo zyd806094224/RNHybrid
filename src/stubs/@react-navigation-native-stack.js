@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, BackHandler } from 'react-native';
 
 // 简易 JS 导航栈，不依赖任何原生组件（SafeAreaView/Screen 等）
 const StackContext = createContext(null);
@@ -13,6 +13,25 @@ function StackProvider({ children, initialRouteName }) {
 
   const goBack = useCallback(() => {
     setStack(prev => prev.length > 1 ? prev.slice(0, -1) : prev);
+  }, []);
+
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      let handled = false;
+      setStack(prev => {
+        if (prev.length > 1) {
+          handled = true;
+          return prev.slice(0, -1);
+        }
+        return prev;
+      });
+      if (!handled) {
+        // RN 导航栈已到根页面，通知原生侧返回上一页
+        BackHandler.exitApp();
+      }
+      return true; // 始终拦截，由原生 defaultBackPressHandler 处理退出
+    });
+    return () => subscription.remove();
   }, []);
 
   const current = stack[stack.length - 1];

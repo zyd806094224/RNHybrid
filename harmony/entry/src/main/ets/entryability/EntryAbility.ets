@@ -2,6 +2,7 @@ import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.Ab
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { Logger } from 'component';
+import { HMRouterMgr } from '@hadss/hmrouter';
 import { RNInstancesCoordinator, StandardRNOHLogger } from '@rnoh/react-native-openharmony';
 
 const DOMAIN = 0x0000;
@@ -18,7 +19,9 @@ export default class EntryAbility extends UIAbility {
     const rnCoordinator = RNInstancesCoordinator.create({
       logger: rnohLogger,
       uiAbilityContext: this.context,
-      defaultBackPressHandler: () => {},
+      defaultBackPressHandler: () => {
+        HMRouterMgr.pop();
+      },
       rnohWorkerScriptUrl: undefined,
     }, {
       disableCleaningRNInstances: false,
