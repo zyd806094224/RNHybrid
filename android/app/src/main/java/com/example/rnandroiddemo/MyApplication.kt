@@ -11,11 +11,16 @@ import com.demo.framework.manager.AppFrontBack
 import com.demo.framework.manager.AppFrontBackListener
 import com.demo.framework.manager.AppManager
 import com.demo.framework.utils.DeviceInfoUtils
+import com.example.rnandroiddemo.rn.CustomOkHttpClientFactory
+import com.facebook.react.modules.network.OkHttpClientProvider
 
 class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        // RN OkHttp 信任自签名证书
+        OkHttpClientProvider.setOkHttpClientFactory(CustomOkHttpClientFactory(this))
 
         // 框架初始化
         AppHelper.init(this, BuildConfig.DEBUG)
