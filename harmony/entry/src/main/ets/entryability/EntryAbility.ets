@@ -4,6 +4,7 @@ import { window } from '@kit.ArkUI';
 import { Logger } from 'component';
 import { HMRouterMgr } from '@hadss/hmrouter';
 import { RNInstancesCoordinator, StandardRNOHLogger } from '@rnoh/react-native-openharmony';
+import { fileIo } from '@kit.CoreFileKit';
 
 const DOMAIN = 0x0000;
 
@@ -32,6 +33,9 @@ export default class EntryAbility extends UIAbility {
       } : undefined,
     });
     AppStorage.setOrCreate('RNOHCoreContext', rnCoordinator.getRNOHCoreContext());
+
+    // 将自签名证书从 rawfile 拷贝到沙箱目录，供 HTTP 请求的 caPath 使用
+    this.copyCertToSandbox();
 
     this.context.eventHub.on('initCompleted', () => {
       Logger.i(TAG, 'application init completed')
@@ -65,5 +69,37 @@ export default class EntryAbility extends UIAbility {
 
   onBackground(): void {
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');
+  }
+
+  /**
+   * 将自签名证书从 rawfile 拷贝到应用沙箱目录
+   * @ohos.net.http 的 caPath 只能访问沙箱路径，无法直接读取 rawfile
+   */
+  private copyCertToSandbox(): void {
+    const certFileName = 'server_cert.pem';
+    const sandboxDir = this.context.filesDir;
+    const sandboxPath = sandboxDir + '/' + certFileName;
+
+    try {
+      // 沙箱中已存在则跳过
+      if (fileIo.accessSync(sandboxPath)) {
+        AppStorage.setOrCreate('serverCertPath', sandboxPath);
+        hilog.info(DOMAIN, TAG, '证书已存在: %{public}s', sandboxPath);
+        return;
+      }
+    } catch (e) {
+      // 文件不存在，继续拷贝
+    }
+
+    try {
+      const rawFd = this.context.resourceManager.getRawFileContentSync(certFileName);
+      const file = fileIo.openSync(sandboxPath, fileIo.OpenMode.CREATE | fileIo.OpenMode.WRITE_ONLY);
+      fileIo.writeSync(file.fd, rawFd.buffer);
+      fileIo.closeSync(file);
+      AppStorage.setOrCreate('serverCertPath', sandboxPath);
+      hilog.info(DOMAIN, TAG, '证书拷贝成功: %{public}s', sandboxPath);
+    } catch (err) {
+      hilog.error(DOMAIN, TAG, '证书拷贝失败: %{public}s', JSON.stringify(err));
+    }
   }
 }

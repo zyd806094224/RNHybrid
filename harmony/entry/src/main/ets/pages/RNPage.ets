@@ -47,6 +47,12 @@ export struct RNPage {
             enableBackgroundExecutor: false,
             enableCAPIArchitecture: true,
             arkTsComponentNames: [],
+            caPathProvider: (url: string) => {
+              if (url && url.includes('106.15.7.132')) {
+                return AppStorage.get<string>('serverCertPath') ?? '';
+              }
+              return '';
+            },
           },
           appKey: "RNHybrid",
           wrappedCustomRNComponentBuilder: wrappedCustomRNComponentBuilder,
