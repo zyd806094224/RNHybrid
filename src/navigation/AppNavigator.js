@@ -7,6 +7,8 @@ import ProfileScreen from '../screens/ProfileScreen';
 import FlatListScreen from '../screens/FlatListScreen';
 import AlgorithmScreen from "../screens/AlgorithmScreen";
 import TypeScriptScreen from '../screens/TypeScriptScreen';
+import AccountListScreen from '../screens/AccountListScreen';
+import AccountEditScreen from '../screens/AccountEditScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -84,6 +86,22 @@ const AppNavigator = () => {
                     component={TypeScriptScreen}
                     options={{
                         title: 'TypeScript Screen',
+                        animation: 'slide_from_right',
+                    }}
+                />
+                <Stack.Screen
+                    name="AccountList"
+                    component={AccountListScreen}
+                    options={{
+                        title: '密码管理',
+                        animation: 'slide_from_right',
+                    }}
+                />
+                <Stack.Screen
+                    name="AccountEdit"
+                    component={AccountEditScreen}
+                    options={{
+                        title: '编辑账号',
                         animation: 'slide_from_right',
                     }}
                 />
