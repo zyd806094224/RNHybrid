@@ -1,13 +1,41 @@
 import React from 'react';
-import { View, SafeAreaView, Platform } from 'react-native';
+import { View, SafeAreaView, Platform, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-// 鸿蒙的 SafeAreaView 使用 padding 模拟安全区域，存在时序问题导致 paddingBottom 计算异常，
-// 内容被挤到顶部。鸿蒙的安全区域已由原生侧处理，直接使用 View。
-const Container = Platform.OS === 'harmony' ? View : SafeAreaView;
-
+/**
+ * 安全区域容器
+ * - iOS/Android: useSafeAreaInsets 精确获取刘海/状态栏高度
+ * - 鸿蒙: 安全区域由原生侧处理，直接使用 View
+ */
 const SafeContainer = (props) => {
-    const { children, ...rest } = props;
-    return <Container {...rest}>{children}</Container>;
+    const { children, style, ...rest } = props;
+
+    if (Platform.OS === 'harmony') {
+        return <View style={style} {...rest}>{children}</View>;
+    }
+
+    return <SafeContainerInner style={style} {...rest}>{children}</SafeContainerInner>;
 };
+
+const SafeContainerInner = (props) => {
+    const { children, style, ...rest } = props;
+    const insets = useSafeAreaInsets();
+
+    if (Platform.OS === 'ios') {
+        return <SafeAreaView style={style} {...rest}>{children}</SafeAreaView>;
+    }
+
+    return (
+        <View style={[styles.androidContainer, { paddingTop: insets.top }, style]} {...rest}>
+            {children}
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    androidContainer: {
+        flex: 1,
+    },
+});
 
 export default SafeContainer;

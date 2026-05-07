@@ -9,10 +9,11 @@
 import React from 'react';
 import {
     StyleSheet,
-    Platform
+    Platform,
+    View
 } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from './src/navigation/AppNavigator';
-import SafeContainer from './src/components/SafeContainer';
 
 const App = (props) => {
     const {param1} = props
@@ -31,11 +32,13 @@ const App = (props) => {
     });
 
     return (
-        <UpdateProvider client={pushy}>
-            <SafeContainer style={styles.container}>
-                <AppNavigator/>
-            </SafeContainer>
-        </UpdateProvider>
+        <SafeAreaProvider>
+            <UpdateProvider client={pushy}>
+                <View style={styles.container}>
+                    <AppNavigator/>
+                </View>
+            </UpdateProvider>
+        </SafeAreaProvider>
     );
 };
 
