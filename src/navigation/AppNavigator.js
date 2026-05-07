@@ -1,6 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {ActivityIndicator, View} from 'react-native';
+import {isLoggedIn} from '../api/auth';
+import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import DetailsScreen from '../screens/DetailsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -36,17 +39,43 @@ const screenOptions = {
 };
 
 const AppNavigator = () => {
+    const [loggedIn, setLoggedIn] = useState(null); // null = 加载中
+
+    // 启动时检查本地 token（MMKV 同步读取）
+    useEffect(() => {
+        setLoggedIn(isLoggedIn());
+    }, []);
+
+    // 显示加载中
+    if (loggedIn === null) {
+        return (
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                <ActivityIndicator size="large" color="#2196F3" />
+            </View>
+        );
+    }
+
+    const handleLoginSuccess = () => {
+        setLoggedIn(true);
+    };
+
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="Home"
+                key={loggedIn ? 'home' : 'login'}
+                initialRouteName={loggedIn ? 'Home' : 'Login'}
                 screenOptions={screenOptions}>
+                <Stack.Screen
+                    name="Login"
+                    options={{headerShown: false}}>
+                    {props => <LoginScreen {...props} onLoginSuccess={handleLoginSuccess} />}
+                </Stack.Screen>
                 <Stack.Screen
                     name="Home"
                     component={HomeScreen}
                     options={{
                         title: '主页',
-                        headerLeft: () => null, // 主页不显示返回按钮
+                        headerLeft: () => null,
                     }}
                 />
                 <Stack.Screen
@@ -91,20 +120,20 @@ const AppNavigator = () => {
                 />
                 <Stack.Screen
                     name="AccountList"
-                    component={AccountListScreen}
                     options={{
                         title: '密码管理',
                         animation: 'slide_from_right',
-                    }}
-                />
+                    }}>
+                    {props => <AccountListScreen {...props} onAuthExpired={() => setLoggedIn(false)} />}
+                </Stack.Screen>
                 <Stack.Screen
                     name="AccountEdit"
-                    component={AccountEditScreen}
                     options={{
                         title: '编辑账号',
                         animation: 'slide_from_right',
-                    }}
-                />
+                    }}>
+                    {props => <AccountEditScreen {...props} onAuthExpired={() => setLoggedIn(false)} />}
+                </Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
     );

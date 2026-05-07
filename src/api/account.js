@@ -1,12 +1,19 @@
 /**
  * 账号密码管理 - API 接口层
  *
- * 当前使用本地 Mock 数据，后续对接后端只需替换各函数内部的实现即可。
- * 接口规范：
- *   - 所有函数返回 Promise
- *   - 返回格式统一为 { code: 0, data: T, message: string }
- *   - code === 0 表示成功，非 0 表示失败
+ * 对接后端 REST API，后端返回格式：{ code: 200, msg: "...", data: T }
+ * 前端统一转换为：{ code: 0, data: T, message: string }
+ *
+ * 自动从 AsyncStorage 读取 token 添加到请求头
+ * 接口返回 401 时自动清除登录状态
  */
+
+import { getToken, clearAuth } from './auth';
+
+// ==================== 配置 ====================
+
+// 后端服务地址
+const BASE_URL = 'https://106.15.7.132:8443';
 
 // ==================== 数据模型 ====================
 
@@ -21,104 +28,90 @@ export const CATEGORIES = {
   other: { key: 'other', label: '其他' },
 };
 
-// ==================== Mock 数据 ====================
+// ==================== HTTP 工具函数 ====================
 
-let mockData = [
-  {
-    id: '1',
-    title: '微信',
-    category: 'social',
-    username: 'wx_zhaoyudong',
-    password: 'Wx@2024secure',
-    url: 'https://weixin.qq.com',
-    remark: '个人微信号',
-    createdAt: '2025-12-01 10:00:00',
-    updatedAt: '2025-12-01 10:00:00',
-  },
-  {
-    id: '2',
-    title: 'GitHub',
-    category: 'work',
-    username: 'zhaoyudong',
-    password: 'Gh#Dev2024!',
-    url: 'https://github.com',
-    remark: '工作账号',
-    createdAt: '2025-12-05 14:30:00',
-    updatedAt: '2025-12-05 14:30:00',
-  },
-  {
-    id: '3',
-    title: '支付宝',
-    category: 'finance',
-    username: '138****8888',
-    password: 'Alipay$2024',
-    url: 'https://www.alipay.com',
-    remark: '',
-    createdAt: '2025-12-10 09:15:00',
-    updatedAt: '2025-12-10 09:15:00',
-  },
-  {
-    id: '4',
-    title: '掘金',
-    category: 'work',
-    username: 'dev_zhaoyd',
-    password: 'Jj@2024blog',
-    url: 'https://juejin.cn',
-    remark: '技术博客账号',
-    createdAt: '2025-12-15 16:00:00',
-    updatedAt: '2025-12-15 16:00:00',
-  },
-  {
-    id: '5',
-    title: '网易云音乐',
-    category: 'other',
-    username: 'music_lover@qq.com',
-    password: 'Music#163',
-    url: 'https://music.163.com',
-    remark: '',
-    createdAt: '2026-01-02 11:20:00',
-    updatedAt: '2026-01-02 11:20:00',
-  },
-];
+/**
+ * 通用请求方法
+ * - 自动携带 token
+ * - 后端 { code: 200, msg, data } 转为前端 { code: 0, data, message }
+ * - 检测 401/token 过期自动清除登录态
+ */
+async function request(url, options = {}) {
+  const token = getToken();
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
 
-let nextId = 6;
+  try {
+    const response = await fetch(`${BASE_URL}${url}`, {
+      ...options,
+      headers,
+    });
 
-// ==================== 工具函数 ====================
+    // HTTP 401 表示 token 过期或无效
+    if (response.status === 401) {
+      await clearAuth();
+      return {
+        code: 401,
+        data: null,
+        message: '登录已过期，请重新登录',
+      };
+    }
 
-const delay = (ms = 300) => new Promise(resolve => setTimeout(resolve, ms));
+    const json = await response.json();
 
-const now = () => {
-  const d = new Date();
-  const pad = n => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-};
+    // 后端业务层也返回了未认证错误码
+    if (json.code === 401) {
+      await clearAuth();
+      return {
+        code: 401,
+        data: null,
+        message: '登录已过期，请重新登录',
+      };
+    }
+
+    // 后端成功 code 为 200，前端统一为 0
+    if (json.code === 200) {
+      return { code: 0, data: json.data ?? json.rows ?? null };
+    }
+
+    return {
+      code: json.code || -1,
+      data: null,
+      message: json.msg || '请求失败',
+    };
+  } catch (error) {
+    return {
+      code: -1,
+      data: null,
+      message: error.message || '网络异常，请检查网络连接',
+    };
+  }
+}
 
 // ==================== 接口实现 ====================
 
 /**
  * 获取账号列表
- * GET /api/accounts
+ * GET /api/accounts?keyword=xxx&category=xxx
  * @param {Object} params - { keyword?: string, category?: string }
  * @returns {Promise<{ code: number, data: Account[] }>}
  */
 export async function getAccountList(params = {}) {
-  await delay();
-  let list = [...mockData];
-
-  if (params.category && params.category !== 'all') {
-    list = list.filter(item => item.category === params.category);
-  }
-
+  const query = new URLSearchParams();
   if (params.keyword) {
-    const kw = params.keyword.toLowerCase();
-    list = list.filter(
-      item =>
-        item.title.toLowerCase().includes(kw) ||
-        item.username.toLowerCase().includes(kw),
-    );
+    query.append('title', params.keyword);
   }
-
-  return { code: 0, data: list };
+  if (params.category && params.category !== 'all') {
+    query.append('category', params.category);
+  }
+  const qs = query.toString();
+  const url = `/api/accounts${qs ? '?' + qs : ''}`;
+  return request(url);
 }
 
 /**
@@ -128,12 +121,7 @@ export async function getAccountList(params = {}) {
  * @returns {Promise<{ code: number, data: Account }>}
  */
 export async function getAccountDetail(id) {
-  await delay();
-  const item = mockData.find(a => a.id === id);
-  if (!item) {
-    return { code: -1, data: null, message: '账号不存在' };
-  }
-  return { code: 0, data: { ...item } };
+  return request(`/api/accounts/${id}`);
 }
 
 /**
@@ -143,21 +131,10 @@ export async function getAccountDetail(id) {
  * @returns {Promise<{ code: number, data: Account }>}
  */
 export async function createAccount(data) {
-  await delay();
-  const timestamp = now();
-  const account = {
-    id: String(nextId++),
-    title: data.title || '',
-    category: data.category || 'other',
-    username: data.username || '',
-    password: data.password || '',
-    url: data.url || '',
-    remark: data.remark || '',
-    createdAt: timestamp,
-    updatedAt: timestamp,
-  };
-  mockData.unshift(account);
-  return { code: 0, data: { ...account } };
+  return request('/api/accounts', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
 }
 
 /**
@@ -168,23 +145,10 @@ export async function createAccount(data) {
  * @returns {Promise<{ code: number, data: Account }>}
  */
 export async function updateAccount(id, data) {
-  await delay();
-  const index = mockData.findIndex(a => a.id === id);
-  if (index === -1) {
-    return { code: -1, data: null, message: '账号不存在' };
-  }
-  const updated = {
-    ...mockData[index],
-    title: data.title ?? mockData[index].title,
-    category: data.category ?? mockData[index].category,
-    username: data.username ?? mockData[index].username,
-    password: data.password ?? mockData[index].password,
-    url: data.url ?? mockData[index].url,
-    remark: data.remark ?? mockData[index].remark,
-    updatedAt: now(),
-  };
-  mockData[index] = updated;
-  return { code: 0, data: { ...updated } };
+  return request(`/api/accounts/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
 }
 
 /**
@@ -194,11 +158,7 @@ export async function updateAccount(id, data) {
  * @returns {Promise<{ code: number, data: null }>}
  */
 export async function deleteAccount(id) {
-  await delay();
-  const index = mockData.findIndex(a => a.id === id);
-  if (index === -1) {
-    return { code: -1, data: null, message: '账号不存在' };
-  }
-  mockData.splice(index, 1);
-  return { code: 0, data: null };
+  return request(`/api/accounts/${id}`, {
+    method: 'DELETE',
+  });
 }

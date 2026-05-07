@@ -20,8 +20,8 @@ const CATEGORY_OPTIONS = [
   CATEGORIES.other,
 ];
 
-const AccountEditScreen = ({ navigation, route }) => {
-  const isEdit = !!(route.params && route.params.id);
+const AccountEditScreen = ({ navigation, route, onAuthExpired }) => {
+  const isEdit = !!(route.params && route.params.accountId);
   const existing = (route.params && route.params.account) || {};
 
   const [title, setTitle] = useState(existing.title || '');
@@ -59,13 +59,21 @@ const AccountEditScreen = ({ navigation, route }) => {
       };
 
       if (isEdit) {
-        const res = await updateAccount(existing.id, data);
+        const res = await updateAccount(existing.accountId, data);
+        if (res.code === 401) {
+          onAuthExpired && onAuthExpired();
+          return;
+        }
         if (res.code !== 0) {
           Alert.alert('错误', res.message || '更新失败');
           return;
         }
       } else {
         const res = await createAccount(data);
+        if (res.code === 401) {
+          onAuthExpired && onAuthExpired();
+          return;
+        }
         if (res.code !== 0) {
           Alert.alert('错误', res.message || '创建失败');
           return;
@@ -84,7 +92,11 @@ const AccountEditScreen = ({ navigation, route }) => {
         text: '删除',
         style: 'destructive',
         onPress: async () => {
-          await deleteAccount(existing.id);
+          const res = await deleteAccount(existing.accountId);
+          if (res.code === 401) {
+            onAuthExpired && onAuthExpired();
+            return;
+          }
           navigation.goBack();
         },
       },

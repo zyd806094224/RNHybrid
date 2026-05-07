@@ -39,10 +39,23 @@ function StackProvider({ children, initialRouteName }) {
   );
 }
 
-function Screen({ component: Component, name }) {
+function Screen({ component: Component, name, children }) {
   const ctx = useContext(StackContext);
   if (!ctx || ctx.current.name !== name) return null;
-  return <Component navigation={{ navigate: ctx.navigate, goBack: ctx.goBack }} route={{ params: ctx.current.params || {} }} />;
+  const navigation = {
+    navigate: ctx.navigate,
+    goBack: ctx.goBack,
+    addListener: (event, callback) => {
+      // stub: 'focus' 事件在每次 Screen 匹配时已触发渲染，返回空清理函数
+      return () => {};
+    },
+  };
+  const route = { params: ctx.current.params || {} };
+  // 支持函数子组件模式: <Screen>{props => <Component {...props} />}</Screen>
+  if (children && typeof children === 'function') {
+    return children({ navigation, route });
+  }
+  return <Component navigation={navigation} route={route} />;
 }
 
 function Navigator({ initialRouteName, screenOptions, children }) {

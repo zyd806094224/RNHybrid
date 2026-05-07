@@ -13,7 +13,7 @@ import { getAccountList, deleteAccount, CATEGORIES } from '../api/account';
 
 const CATEGORY_LIST = Object.values(CATEGORIES);
 
-const AccountListScreen = ({ navigation }) => {
+const AccountListScreen = ({ navigation, onAuthExpired }) => {
   const [accounts, setAccounts] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
@@ -27,13 +27,17 @@ const AccountListScreen = ({ navigation }) => {
         keyword: keyword.trim(),
         category: activeCategory,
       });
+      if (res.code === 401) {
+        onAuthExpired && onAuthExpired();
+        return;
+      }
       if (res.code === 0) {
         setAccounts(res.data);
       }
     } finally {
       setLoading(false);
     }
-  }, [keyword, activeCategory]);
+  }, [keyword, activeCategory, onAuthExpired]);
 
   useEffect(() => {
     fetchData();
@@ -58,7 +62,11 @@ const AccountListScreen = ({ navigation }) => {
         text: '删除',
         style: 'destructive',
         onPress: async () => {
-          await deleteAccount(item.id);
+          const res = await deleteAccount(item.accountId);
+          if (res.code === 401) {
+            onAuthExpired && onAuthExpired();
+            return;
+          }
           fetchData();
         },
       },
@@ -85,7 +93,7 @@ const AccountListScreen = ({ navigation }) => {
       style={styles.card}
       onPress={() =>
         navigation.navigate('AccountEdit', {
-          id: item.id,
+          accountId: item.accountId,
           account: item,
         })
       }
@@ -128,13 +136,13 @@ const AccountListScreen = ({ navigation }) => {
         <View style={styles.cardInfoRow}>
           <Text style={styles.cardLabel}>密码</Text>
           <TouchableOpacity
-            onPress={() => togglePassword(item.id)}
+            onPress={() => togglePassword(item.accountId)}
             style={styles.passwordRow}>
             <Text style={styles.cardValue}>
-              {visiblePasswords[item.id] ? item.password : '••••••••'}
+              {visiblePasswords[item.accountId] ? item.password : '••••••••'}
             </Text>
             <Text style={styles.eyeIcon}>
-              {visiblePasswords[item.id] ? '隐藏' : '显示'}
+              {visiblePasswords[item.accountId] ? '隐藏' : '显示'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -211,7 +219,7 @@ const AccountListScreen = ({ navigation }) => {
       {/* 列表 */}
       <FlatList
         data={accounts}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.accountId}
         renderItem={renderItem}
         ListEmptyComponent={renderEmpty}
         contentContainerStyle={
