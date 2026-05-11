@@ -66,3 +66,16 @@ export async function login(username, password) {
 export function logout() {
   clearAuth();
 }
+
+// ==================== 原生 token 注入 ====================
+
+/**
+ * 接收原生侧注入的 token（通过 initialProps 传入）
+ * 鸿蒙/iOS/Android 统一通过此方法注入，RN 侧无需感知平台差异
+ */
+export function setAuthFromNative(token, username) {
+  if (token) {
+    store.token = token;
+    store.username = username || '';
+  }
+}

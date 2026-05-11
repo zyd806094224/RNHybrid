@@ -26,19 +26,21 @@
                 android:src="@mipmap/ic_launcher_round" />
 
             <TextView
+                android:id="@+id/tv_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="张三"
+                android:text="未登录"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_user_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Android 开发工程师"
+                android:text="点击去登录"
                 android:textColor="#B3FFFFFF"
                 android:textSize="13sp" />
 
@@ -247,6 +249,7 @@
                     android:background="#FFF0F0F0" />
 
                 <TextView
+                    android:id="@+id/tv_logout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:gravity="center_vertical"

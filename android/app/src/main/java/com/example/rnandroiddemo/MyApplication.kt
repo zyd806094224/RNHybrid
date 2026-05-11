@@ -11,6 +11,7 @@ import com.demo.framework.manager.AppFrontBack
 import com.demo.framework.manager.AppFrontBackListener
 import com.demo.framework.manager.AppManager
 import com.demo.framework.utils.DeviceInfoUtils
+import com.example.rnandroiddemo.auth.AuthManager
 import com.example.rnandroiddemo.rn.CustomOkHttpClientFactory
 import com.facebook.react.modules.network.OkHttpClientProvider
 
@@ -25,6 +26,7 @@ class MyApplication : Application() {
         // 框架初始化
         AppHelper.init(this, BuildConfig.DEBUG)
         AppManager.init(this)
+        AuthManager.init(this)
         DeviceInfoUtils.init(this)
 
         // Activity 生命周期管理

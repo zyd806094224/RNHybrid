@@ -3,6 +3,7 @@ package com.example.rnandroiddemo.rn
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.demo.framework.base.BaseActivity
 import com.demo.framework.utils.StatusBarSettingHelper
 import com.facebook.react.ReactInstanceEventListener
@@ -15,6 +16,7 @@ import com.example.rnandroiddemo.rn.R
  * RN 载体页 Activity
  * 承载 ReactRootView，使用 ReactNativeManager 管理单例 ReactInstanceManager
  */
+@Route(path = "/rn/page")
 class RNPageActivity : BaseActivity(), DefaultHardwareBackBtnHandler {
 
     private var mReactRootView: ReactRootView? = null
@@ -55,6 +57,8 @@ class RNPageActivity : BaseActivity(), DefaultHardwareBackBtnHandler {
 
         val initialProps = Bundle().apply {
             putString("param1", "android")
+            putString("token", intent.getStringExtra("token") ?: "")
+            putString("username", intent.getStringExtra("username") ?: "")
         }
 
         mReactRootView?.startReactApplication(mReactInstanceManager, "RNHybrid", initialProps)

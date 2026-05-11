@@ -36,6 +36,11 @@
             android:exported="true"
             android:launchMode="singleTask" />
 
+        <activity
+            android:name=".auth.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RnAndroidDemo" />
+
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
 
         <activity

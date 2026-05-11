@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ActivityIndicator, View} from 'react-native';
-import {isLoggedIn} from '../api/auth';
+import {isLoggedIn, setAuthFromNative} from '../api/auth';
 import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import DetailsScreen from '../screens/DetailsScreen';
@@ -38,12 +38,17 @@ const screenOptions = {
     headerShown: false, //隐藏默认标题
 };
 
-const AppNavigator = () => {
+const AppNavigator = ({nativeToken, nativeUsername}) => {
     const [loggedIn, setLoggedIn] = useState(null); // null = 加载中
 
-    // 启动时检查本地 token（MMKV 同步读取）
+    // 启动时检查登录态：优先使用原生注入的 token，降级到 JS 端存储
     useEffect(() => {
-        setLoggedIn(isLoggedIn());
+        if (nativeToken) {
+            setAuthFromNative(nativeToken, nativeUsername);
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(isLoggedIn());
+        }
     }, []);
 
     // 显示加载中
