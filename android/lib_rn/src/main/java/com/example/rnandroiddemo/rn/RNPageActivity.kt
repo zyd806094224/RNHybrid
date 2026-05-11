@@ -34,7 +34,24 @@ class RNPageActivity : BaseActivity(), DefaultHardwareBackBtnHandler {
         mRootContainer = findViewById(R.id.root_container)
         mLoadingContainer = findViewById(R.id.loading_container)
 
+        // RN 侧 token 过期回调
+        AuthModule.tokenExpiredCallback = {
+            tokenExpiredListener?.onTokenExpired()
+        }
+
         initializeReactNative()
+    }
+
+    /**
+     * token 过期监听接口，由外部（app 模块）设置
+     * 避免 lib_rn 直接依赖 app 模块的 AuthManager 和 ARouter
+     */
+    interface OnTokenExpiredListener {
+        fun onTokenExpired()
+    }
+
+    companion object {
+        var tokenExpiredListener: OnTokenExpiredListener? = null
     }
 
     private fun initializeReactNative() {
@@ -117,6 +134,8 @@ class RNPageActivity : BaseActivity(), DefaultHardwareBackBtnHandler {
 
     override fun onDestroy() {
         super.onDestroy()
+        AuthModule.isHandling = false
+        AuthModule.tokenExpiredCallback = null
         mReactRootView?.unmountReactApplication()
         mReactRootView = null
         mRootContainer?.removeAllViews()

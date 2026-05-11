@@ -13,6 +13,7 @@ import com.demo.framework.manager.AppManager
 import com.demo.framework.utils.DeviceInfoUtils
 import com.example.rnandroiddemo.auth.AuthManager
 import com.example.rnandroiddemo.rn.CustomOkHttpClientFactory
+import com.example.rnandroiddemo.rn.RNPageActivity
 import com.facebook.react.modules.network.OkHttpClientProvider
 
 class MyApplication : Application() {
@@ -49,6 +50,21 @@ class MyApplication : Application() {
             ARouter.openDebug()
         }
         ARouter.init(this)
+
+        // RN 页面 token 过期监听：清除登录态 → 关闭 RN 页面 → 跳转登录页
+        RNPageActivity.tokenExpiredListener = object : RNPageActivity.OnTokenExpiredListener {
+            override fun onTokenExpired() {
+                AuthManager.logout()
+                val topActivity = ActivityManager.top()
+                if (topActivity is RNPageActivity) {
+                    topActivity.finish()
+                }
+                ARouter.getInstance()
+                    .build("/auth/login")
+                    .greenChannel()
+                    .navigation()
+            }
+        }
     }
 
     private fun registerActivityLifecycle() {

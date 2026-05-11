@@ -34,6 +34,7 @@ object ReactNativeManager {
                 .addPackage(RNScreensPackage())
                 .addPackage(SafeAreaContextPackage())
                 .addPackage(UpdatePackage())
+                .addPackage(AuthPackage())
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
 

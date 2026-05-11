@@ -8,7 +8,7 @@
  * 接口返回 401 时自动清除登录状态
  */
 
-import { getToken, clearAuth } from './auth';
+import { getToken, clearAuth, handleTokenExpired } from './auth';
 
 // ==================== 配置 ====================
 
@@ -54,6 +54,9 @@ async function request(url, options = {}) {
 
     // HTTP 401 表示 token 过期或无效
     if (response.status === 401) {
+      if (handleTokenExpired()) {
+        return { code: 401, data: null, message: '登录已过期，请重新登录' };
+      }
       await clearAuth();
       return {
         code: 401,
@@ -66,6 +69,9 @@ async function request(url, options = {}) {
 
     // 后端业务层也返回了未认证错误码
     if (json.code === 401) {
+      if (handleTokenExpired()) {
+        return { code: 401, data: null, message: '登录已过期，请重新登录' };
+      }
       await clearAuth();
       return {
         code: 401,

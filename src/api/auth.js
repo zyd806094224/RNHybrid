@@ -4,9 +4,14 @@
  * 纯 JS 内存存储，类似浏览器 localStorage，零原生依赖，三端通用
  */
 
+import { NativeModules, Platform } from 'react-native';
+
 const BASE_URL = 'https://106.15.7.132:8443';
 
 const store = {};
+
+// 标记 token 是否由原生侧注入（决定 401 时走原生登录还是 JS 端登录）
+let nativeAuth = false;
 
 // ==================== Token 管理 ====================
 
@@ -77,5 +82,28 @@ export function setAuthFromNative(token, username) {
   if (token) {
     store.token = token;
     store.username = username || '';
+    nativeAuth = true;
   }
+}
+
+// ==================== Token 过期处理 ====================
+
+/**
+ * token 过期处理
+ * - 原生注入的 token：通知原生侧跳转原生登录页
+ * - JS 端自行登录：返回 true 由 JS 端自行处理（显示 LoginScreen）
+ */
+export function handleTokenExpired() {
+  if (nativeAuth && Platform.OS === 'android') {
+    NativeModules.AuthModule.onTokenExpired();
+    return true; // 已由原生处理
+  }
+  return false; // JS 端自行处理
+}
+
+/**
+ * 判断是否为原生注入的登录态
+ */
+export function isNativeAuth() {
+  return nativeAuth;
 }

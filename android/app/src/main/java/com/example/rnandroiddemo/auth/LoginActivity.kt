@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.demo.framework.base.BaseMvvmActivity
 import com.demo.framework.utils.StatusBarSettingHelper
 import com.example.rnandroiddemo.databinding.ActivityLoginBinding
+import com.example.rnandroiddemo.rn.AuthModule
 import com.example.rnandroiddemo.ui.login.LoginViewModel
 
 @Route(path = "/auth/login")
@@ -48,6 +49,9 @@ class LoginActivity : BaseMvvmActivity<ActivityLoginBinding, LoginViewModel>() {
                 )
                 setResult(Activity.RESULT_OK)
                 finish()
+
+                // 重置 token 过期防重入标志
+                AuthModule.isHandling = false
 
                 // 如果有被拦截器中断的待跳转路由，自动恢复
                 PendingRoute.continueRoute()
