@@ -2,11 +2,15 @@ package com.example.rnandroiddemo.auth
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.demo.framework.base.BaseMvvmActivity
 import com.demo.framework.utils.StatusBarSettingHelper
+import com.example.rnandroiddemo.R
 import com.example.rnandroiddemo.databinding.ActivityLoginBinding
 import com.example.rnandroiddemo.rn.AuthModule
 import com.example.rnandroiddemo.ui.login.LoginViewModel
@@ -20,6 +24,7 @@ class LoginActivity : BaseMvvmActivity<ActivityLoginBinding, LoginViewModel>() {
         StatusBarSettingHelper.setRootViewFitsSystemWindows(this, true)
 
         observeViewModel()
+        setupPasswordToggle()
 
         mBinding.btnLogin.setOnClickListener {
             val username = mBinding.etUsername.text.toString().trim()
@@ -71,5 +76,21 @@ class LoginActivity : BaseMvvmActivity<ActivityLoginBinding, LoginViewModel>() {
         mBinding.btnLogin.visibility = if (loading) View.GONE else View.VISIBLE
         mBinding.etUsername.isEnabled = !loading
         mBinding.etPassword.isEnabled = !loading
+    }
+
+    private var passwordVisible = false
+
+    private fun setupPasswordToggle() {
+        mBinding.ivTogglePwd.setOnClickListener {
+            passwordVisible = !passwordVisible
+            if (passwordVisible) {
+                mBinding.etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                mBinding.ivTogglePwd.setImageResource(R.drawable.ic_visibility_on)
+            } else {
+                mBinding.etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                mBinding.ivTogglePwd.setImageResource(R.drawable.ic_visibility_off)
+            }
+            mBinding.etPassword.setSelection(mBinding.etPassword.text.length)
+        }
     }
 }
