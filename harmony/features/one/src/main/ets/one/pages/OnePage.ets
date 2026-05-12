@@ -2,7 +2,7 @@ import { HMRouter, HMRouterMgr } from "@hadss/hmrouter";
 import { CommonConstants, RouterUrl, AuthManager } from "component";
 
 /**
- * 主页 - 匹配 Android HomeFragment 布局
+ * 首页 - 2列网格卡片，对应 Android HomeFragment
  */
 @HMRouter({ pageUrl: RouterUrl.ONE_TAB_INDEX_PAGE })
 @Entry
@@ -12,97 +12,103 @@ export struct OnePage {
   build() {
     Scroll() {
       Column() {
-        // 标题区域
-        Text('主页')
+        // 标题
+        Text('首页')
           .fontSize(24)
           .fontWeight(FontWeight.Bold)
           .fontColor('#333333')
           .margin({ left: 16, top: 16 })
           .alignSelf(ItemAlign.Start)
 
-        Text('欢迎来到 RN Hybrid Demo')
-          .fontSize(14)
-          .fontColor('#666666')
-          .margin({ left: 16, top: 8 })
-          .alignSelf(ItemAlign.Start)
+        // 2列网格
+        Grid() {
+          // 小仓库（已启用）
+          GridItem() {
+            this.FeatureCard('📦', '小仓库', '密码管理', '#6200EE', true)
+          }
 
-        // React Native 混合开发卡片
-        this.RNCard()
+          // 数据看板
+          GridItem() {
+            this.FeatureCard('📊', '数据看板', '敬请期待', '#2196F3', false)
+          }
 
-        // 功能特性卡片
-        this.FeaturesCard()
+          // 备忘录
+          GridItem() {
+            this.FeatureCard('📝', '备忘录', '敬请期待', '#4CAF50', false)
+          }
+
+          // 消息中心
+          GridItem() {
+            this.FeatureCard('🔔', '消息中心', '敬请期待', '#FF9800', false)
+          }
+
+          // 多媒体
+          GridItem() {
+            this.FeatureCard('🎬', '多媒体', '敬请期待', '#F44336', false)
+          }
+
+          // 系统设置
+          GridItem() {
+            this.FeatureCard('⚙', '系统设置', '敬请期待', '#009688', false)
+          }
+        }
+        .columnsTemplate('1fr 1fr')
+        .columnsGap(8)
+        .rowsGap(8)
+        .width('100%')
+        .padding({ left: 12, right: 12, top: 16, bottom: 16 })
       }
       .width('100%')
+      .alignItems(HorizontalAlign.Start)
     }
     .width('100%')
     .height('100%')
+    .align(Alignment.Top)
     .backgroundColor('#F5F5F5')
     .scrollBar(BarState.Off)
+    .onAppear(() => {})
   }
 
   /**
-   * React Native 混合开发卡片
+   * 功能卡片
    */
   @Builder
-  RNCard() {
+  FeatureCard(icon: string, title: string, subtitle: string, color: string, enabled: boolean) {
     Column() {
-      Text('React Native 混合开发')
-        .fontSize(16)
-        .fontWeight(FontWeight.Bold)
-        .fontColor('#333333')
-        .alignSelf(ItemAlign.Start)
-
-      Text('体验 React Native 与原生的混合开发能力')
-        .fontSize(13)
-        .fontColor('#999999')
-        .margin({ top: 8 })
-        .alignSelf(ItemAlign.Start)
-
-      Button('点击去 RN 页面')
-        .width('100%')
+      // 图标圆形背景
+      Text(icon)
+        .fontSize(22)
+        .width(44)
         .height(44)
-        .fontSize(15)
-        .fontColor(Color.White)
-        .backgroundColor('#6200EE')
-        .borderRadius(8)
-        .margin({ top: 12 })
-        .onClick(() => {
-          this.goToRNPage();
-        })
-    }
-    .width('100%')
-    .padding(16)
-    .backgroundColor(Color.White)
-    .borderRadius(12)
-    .margin({ left: 16, right: 16, top: 24 })
-    .shadow({ radius: 4, color: '#1A000000', offsetY: 2 })
-  }
+        .textAlign(TextAlign.Center)
+        .borderRadius(22)
+        .backgroundColor(color + '20')
+        .fontColor(color)
 
-  /**
-   * 功能特性卡片
-   */
-  @Builder
-  FeaturesCard() {
-    Column() {
-      Text('功能特性')
-        .fontSize(16)
+      Text(title)
+        .fontSize(14)
         .fontWeight(FontWeight.Bold)
-        .fontColor('#333333')
-        .alignSelf(ItemAlign.Start)
-
-      Text('- 原生 + React Native 混合架构\n- 支持热更新 (Pushy)\n- 原生登录 + RN Token 注入\n- Token 过期自动跳转原生登录页\n- 组件化模块设计')
-        .fontSize(13)
-        .fontColor('#666666')
-        .lineHeight(20)
+        .fontColor(enabled ? '#333333' : '#333333')
         .margin({ top: 8 })
-        .alignSelf(ItemAlign.Start)
+
+      Text(subtitle)
+        .fontSize(11)
+        .fontColor(enabled ? '#999999' : '#BBBBBB')
+        .margin({ top: 2 })
     }
     .width('100%')
-    .padding(16)
+    .padding({ top: 20, bottom: 20 })
+    .alignItems(HorizontalAlign.Center)
     .backgroundColor(Color.White)
     .borderRadius(12)
-    .margin({ left: 16, right: 16, top: 12, bottom: 16 })
-    .shadow({ radius: 4, color: '#1A000000', offsetY: 2 })
+    .shadow({ radius: 2, color: '#0F000000', offsetY: 1 })
+    .enabled(enabled)
+    .opacity(enabled ? 1 : 0.6)
+    .onClick(() => {
+      if (enabled) {
+        this.goToRNPage();
+      }
+    })
   }
 
   /**
