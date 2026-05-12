@@ -6,9 +6,9 @@
         "type": "HarmonyOS",
         "material": {
           "storeFile": "./key/debug.p12",
-          "storePassword": "0000001A1005640ACBF02E21D75ECC101D555FD929582B7F6B589B6DFB4291B18672890ACB7F23207818",
-          "keyAlias": "debug",
-          "keyPassword": "0000001A04DFA08798C4544D188A2F43F76DBEB4578F0DE88FF52F503BE10B0555394C140C9FF301B414",
+          "storePassword": "0000001BFE77680045746D7686E4788C6AF66D5670A7334AADC3DEC01C75930692A74435FECCE07B19AD84",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B0B17D05523171E0F83DE9164190DFCF631ED6CE9A3307C80116B93815C25025699D09705CED44D",
           "signAlg": "SHA256withECDSA",
           "profile": "./key/debugDebug.p7b",
           "certpath": "./key/debug.cer"

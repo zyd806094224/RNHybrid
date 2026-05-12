@@ -203,6 +203,7 @@ class HttpClient {
   private buildRequestOptions(config: CustomRequestOptions): http.HttpRequestOptions {
     const headers = { ...this.globalHeaders, ...config.header };
     const extraData = typeof config.data === 'object' ? JSON.stringify(config.data) : config.data;
+    const caPath = AppStorage.get<string>('serverCertPath') ?? '';
 
     return {
       method: config.method || http.RequestMethod.GET,
@@ -210,6 +211,7 @@ class HttpClient {
       extraData: extraData,
       readTimeout: config.readTimeout || 10000,
       connectTimeout: config.connectTimeout || 10000,
+      ...(caPath ? { caPath } : {}),
     };
   }
 

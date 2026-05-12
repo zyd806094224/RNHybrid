@@ -26,3 +26,5 @@ export * from './src/main/ets/components/tab/index'
 export { LazyDataSource } from './src/main/ets/utils/LazyDataSource'
 
 export { BasicDataSource } from './src/main/ets/utils/BasicDataSource'
+
+export { AuthManager } from './src/main/ets/auth/AuthManager'

@@ -1,5 +1,5 @@
 import { HMRouter, HMRouterMgr } from "@hadss/hmrouter";
-import { CommonConstants, RouterUrl } from "component";
+import { CommonConstants, RouterUrl, AuthManager } from "component";
 
 /**
  * 主页 - 匹配 Android HomeFragment 布局
@@ -67,10 +67,7 @@ export struct OnePage {
         .borderRadius(8)
         .margin({ top: 12 })
         .onClick(() => {
-          HMRouterMgr.push({
-            navigationId: CommonConstants.LAUNCHER_NAVIGATION_ID,
-            pageUrl: RouterUrl.RN_PAGE_URL,
-          })
+          this.goToRNPage();
         })
     }
     .width('100%')
@@ -93,7 +90,7 @@ export struct OnePage {
         .fontColor('#333333')
         .alignSelf(ItemAlign.Start)
 
-      Text('- 原生 Android + React Native 混合架构\n- 支持热更新 (Pushy)\n- 单 ReactInstanceManager 实例管理\n- 沉浸式状态栏适配\n- 组件化模块设计')
+      Text('- 原生 + React Native 混合架构\n- 支持热更新 (Pushy)\n- 原生登录 + RN Token 注入\n- Token 过期自动跳转原生登录页\n- 组件化模块设计')
         .fontSize(13)
         .fontColor('#666666')
         .lineHeight(20)
@@ -106,5 +103,23 @@ export struct OnePage {
     .borderRadius(12)
     .margin({ left: 16, right: 16, top: 12, bottom: 16 })
     .shadow({ radius: 4, color: '#1A000000', offsetY: 2 })
+  }
+
+  /**
+   * 跳转 RN 页面，未登录时先跳转登录页
+   */
+  private goToRNPage() {
+    const authManager = AuthManager.getInstance();
+    if (!authManager.isLoggedIn()) {
+      HMRouterMgr.push({
+        navigationId: CommonConstants.LAUNCHER_NAVIGATION_ID,
+        pageUrl: RouterUrl.LOGIN_PAGE_URL,
+      });
+      return;
+    }
+    HMRouterMgr.push({
+      navigationId: CommonConstants.LAUNCHER_NAVIGATION_ID,
+      pageUrl: RouterUrl.RN_PAGE_URL,
+    });
   }
 }

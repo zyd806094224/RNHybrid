@@ -10,8 +10,9 @@ import {
   ComponentBuilderContext,
 } from '@rnoh/react-native-openharmony';
 import { PushyFileJSBundleProvider } from 'pushy';
-import { RouterUrl } from 'component';
+import { RouterUrl, CommonConstants, AuthManager } from 'component';
 import { createRNPackages } from '../RNPackagesFactory';
+import { AuthTurboModule } from 'lib_rn';
 
 @Builder
 export function buildCustomRNComponent(ctx: ComponentBuilderContext) {}
@@ -21,12 +22,14 @@ const wrappedCustomRNComponentBuilder = wrapBuilder(buildCustomRNComponent)
 /**
  * RN 载体页面 - 使用 RNOH 原生渲染 React Native
  * 支持 Metro 开发热加载、Pushy 热更新、内置 Bundle 三种模式
+ * 对应 Android 端的 RNPageActivity，传递 token 并处理 token 过期
  */
 @HMRouter({ pageUrl: RouterUrl.RN_PAGE_URL })
 @Component
 export struct RNPage {
   @StorageLink('RNOHCoreContext') private rnohCoreContext: RNOHCoreContext | undefined = undefined
   private logger!: RNOHLogger
+  private authManager: AuthManager = AuthManager.getInstance()
 
   aboutToAppear(): void {
     this.logger = this.rnohCoreContext!.logger.clone("RNPage")
@@ -35,6 +38,21 @@ export struct RNPage {
       this.rnohCoreContext?.dispatchBackPress();
       return true;
     });
+
+    // 注册 token 过期回调：清除登录态 → 关闭 RN 页面 → 跳转原生登录页
+    AuthTurboModule.tokenExpiredCallback = () => {
+      this.authManager.logout();
+      HMRouterMgr.pop();
+      HMRouterMgr.push({
+        navigationId: CommonConstants.LAUNCHER_NAVIGATION_ID,
+        pageUrl: RouterUrl.LOGIN_PAGE_URL,
+      });
+    };
+  }
+
+  aboutToDisappear(): void {
+    AuthTurboModule.isHandling = false;
+    AuthTurboModule.tokenExpiredCallback = null;
   }
 
   build() {
@@ -55,6 +73,11 @@ export struct RNPage {
             },
           },
           appKey: "RNHybrid",
+          initialProps: {
+            'param1': 'harmony',
+            'token': this.authManager.getToken(),
+            'username': this.authManager.getUsername(),
+          },
           wrappedCustomRNComponentBuilder: wrappedCustomRNComponentBuilder,
           jsBundleProvider: new TraceJSBundleProviderDecorator(
             new AnyJSBundleProvider([

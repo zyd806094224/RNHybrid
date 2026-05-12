@@ -1,7 +1,8 @@
-
 default:
-"keyAlias": "debug"
-"明文密码"："000000Dong"
+"keyAlias": "debugKey"
+"明文密码"：在 DevEco Studio → Project Structure → Signing Configs 中查看
+
+调试签名证书过期时间：2027-05-12（华为开发者后台管理，一年有效）
+生成日期：2026-05-12
 
 release:
-

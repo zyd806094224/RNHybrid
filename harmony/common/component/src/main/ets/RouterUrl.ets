@@ -28,4 +28,9 @@ export class RouterUrl{
    */
   static readonly RN_PAGE_URL: string = 'common/rnPage';
 
+  /**
+   * 登录页面路由地址
+   */
+  static readonly LOGIN_PAGE_URL: string = 'auth/loginPage';
+
 }

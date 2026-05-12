@@ -19,7 +19,11 @@
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\(''''message'''',''''''''\\), d.get\\(''''full_name'''',''''''''\\)\\)\")",
       "Bash(curl -sL https://gitee.com/openharmony-sig/ohos_react_native/raw/0.72.5-ohos-5.0-release/docs/zh-cn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA.md)",
       "Bash(curl -sL https://gitee.com/openharmony-sig/ohos_react_native/raw/0.72.5-ohos-5.0-release/docs/zh-cn/%E8%B0%83%E8%AF%95%E8%B0%83%E6%B5%8B.md)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(find /Users/zhaoyudong/IdeaProjects/RNHybrid/harmony -path */@rnoh/* -name *.d.ts)",
+      "Bash(find /Users/zhaoyudong/IdeaProjects/RNHybrid/harmony -path *rnoh* -type f)",
+      "Bash(find /Users/zhaoyudong/IdeaProjects/RNHybrid/harmony/entry/oh_modules/@rnoh -name *.ets -o -name *.ts -o -name *.d.ts -o -name *.d.ets)",
+      "Bash(find /Users/zhaoyudong/IdeaProjects/RNHybrid/harmony/entry/oh_modules/@rnoh -type f -name *.ets -o -name *.ts -o -name *.d.ets)"
     ]
   }
 }

@@ -1,5 +1,6 @@
 import { HMRouter } from "@hadss/hmrouter";
-import { RouterUrl } from "component";
+import { RouterUrl, AuthManager } from "component";
+import { promptAction } from "@kit.ArkUI";
 
 /**
  * 我的页面 - 匹配 Android MineFragment 布局
@@ -134,7 +135,15 @@ export struct FourPage {
       this.OptionRow('关于', '#333333')
       Divider().color('#F0F0F0')
 
-      this.OptionRow('退出登录', '#FF4444')
+      Row() {
+        Text('退出登录')
+          .fontSize(14)
+          .fontColor('#FF4444')
+      }
+      .width('100%')
+      .height(48)
+      .alignItems(VerticalAlign.Center)
+      .onClick(() => this.handleLogout())
     }
     .width('100%')
     .padding(16)
@@ -157,5 +166,14 @@ export struct FourPage {
     .width('100%')
     .height(48)
     .alignItems(VerticalAlign.Center)
+  }
+
+  /**
+   * 退出登录：清除 token 并提示
+   */
+  private async handleLogout() {
+    const authManager = AuthManager.getInstance();
+    await authManager.logout();
+    promptAction.showToast({ message: '已退出登录' });
   }
 }

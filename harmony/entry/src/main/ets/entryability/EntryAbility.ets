@@ -5,6 +5,7 @@ import { Logger } from 'component';
 import { HMRouterMgr } from '@hadss/hmrouter';
 import { RNInstancesCoordinator, StandardRNOHLogger } from '@rnoh/react-native-openharmony';
 import { fileIo } from '@kit.CoreFileKit';
+import { AuthManager } from 'component';
 
 const DOMAIN = 0x0000;
 
@@ -36,6 +37,9 @@ export default class EntryAbility extends UIAbility {
 
     // 将自签名证书从 rawfile 拷贝到沙箱目录，供 HTTP 请求的 caPath 使用
     this.copyCertToSandbox();
+
+    // 初始化 AuthManager（preferences 持久化存储）
+    AuthManager.getInstance().init(this.context);
 
     this.context.eventHub.on('initCompleted', () => {
       Logger.i(TAG, 'application init completed')
