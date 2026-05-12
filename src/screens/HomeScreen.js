@@ -1,93 +1,69 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
+    TouchableOpacity,
     ScrollView,
-    Alert,
 } from 'react-native';
-import CustomButton from '../components/Button';
 import SafeContainer from '../components/SafeContainer';
 
-const HomeScreen = ({navigation}) => {
-    const [loading, setLoading] = useState(false);
-    const [userList, setUserList] = useState(null);
+// 模块配置 - 新增模块时在此数组添加即可
+const MODULES = [
+    {
+        id: 'password',
+        title: '密码管理',
+        description: '安全管理你的各类账号密码',
+        icon: '\uD83D\uDD10',
+        color: '#4CAF50',
+        screen: 'AccountList',
+    },
+    // 未来新增模块示例：
+    // {
+    //   id: 'notes',
+    //   title: '备忘录',
+    //   description: '随时记录灵感和待办事项',
+    //   icon: '\uD83D\uDCDD',
+    //   color: '#2196F3',
+    //   screen: 'NoteList',
+    // },
+];
 
-    const fetchUserList = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch('https://106.15.7.132:8443/test/user/list', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const json = await response.json();
-            setUserList(json);
-        } catch (error) {
-            Alert.alert('请求失败', error.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+const HomeScreen = ({navigation}) => {
+    const renderModuleCard = (module, index) => (
+        <TouchableOpacity
+            key={module.id}
+            style={[styles.card, {borderLeftColor: module.color}]}
+            onPress={() => navigation.navigate(module.screen)}
+            activeOpacity={0.7}>
+            <View style={styles.cardContent}>
+                <View style={styles.cardLeft}>
+                    <View style={[styles.iconWrap, {backgroundColor: module.color + '15'}]}>
+                        <Text style={styles.icon}>{module.icon}</Text>
+                    </View>
+                    <View style={styles.cardText}>
+                        <Text style={styles.cardTitle}>{module.title}</Text>
+                        <Text style={styles.cardDesc}>{module.description}</Text>
+                    </View>
+                </View>
+                <Text style={styles.cardArrow}> {">"} </Text>
+            </View>
+        </TouchableOpacity>
+    );
 
     return (
         <SafeContainer style={styles.container}>
-            <View style={styles.content}>
-                <Text style={styles.title}>Home Screen</Text>
-                <Text style={styles.description}>Welcome to the React Native App!</Text>
-                <Text style={styles.hotUpdateTag}>Pushy 热更新测试 - 2026.04.24 17:30</Text>
-                <View style={styles.buttonContainer}>
-                    <CustomButton
-                        title="Go to Details"
-                        onPress={() => navigation.navigate('Details')}
-                    />
-                    <View style={styles.spacer}/>
-                    <CustomButton
-                        title="Go to Profile"
-                        onPress={() => navigation.navigate('ProfileScreen', {
-                            testId: 123
-                        })}
-                        style={{backgroundColor: '#FF9800'}}
-                    />
-                    <View style={styles.spacer}/>
-                    <CustomButton
-                        title="Go to FlatList"
-                        onPress={() => navigation.navigate('FlatListScreen')}
-                        style={{backgroundColor: '#9C27B0'}}
-                    />
-                    <View style={styles.spacer}/>
-                    <CustomButton
-                        title="Go to AlgorithmScreen"
-                        onPress={() => navigation.navigate('AlgorithmScreen')}
-                        style={{backgroundColor: '#9C27B0'}}
-                    />
-                    <View style={styles.spacer}/>
-                    <CustomButton
-                        title="Go to TypeScriptScreen"
-                        onPress={() => navigation.navigate('TypeScriptScreen', {message: 'Hello from HomeScreen!'})}
-                        style={{backgroundColor: '#007AFF'}}
-                    />
-                    <View style={styles.spacer}/>
-                    <CustomButton
-                        title="密码管理"
-                        onPress={() => navigation.navigate('AccountList')}
-                        style={{backgroundColor: '#4CAF50'}}
-                    />
-                    <View style={styles.spacer}/>
-                    <CustomButton
-                        title={loading ? '请求中...' : '获取用户列表'}
-                        onPress={fetchUserList}
-                        style={{backgroundColor: '#E91E63'}}
-                    />
+            <ScrollView
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}>
+                <View style={styles.header}>
+                    <Text style={styles.greeting}>工具箱</Text>
+                    <Text style={styles.subtitle}>选择一个功能模块开始使用</Text>
                 </View>
-                {userList && (
-                    <ScrollView style={styles.resultContainer}>
-                        <Text style={styles.resultTitle}>接口返回：</Text>
-                        <Text style={styles.resultText}>{JSON.stringify(userList, null, 2)}</Text>
-                    </ScrollView>
-                )}
-            </View>
+                <View style={styles.moduleList}>
+                    {MODULES.map((module, index) => renderModuleCard(module, index))}
+                </View>
+            </ScrollView>
         </SafeContainer>
     );
 };
@@ -95,57 +71,80 @@ const HomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#f5f6fa',
     },
-    content: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
+    scrollContent: {
+        paddingBottom: 30,
     },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color: '#333',
+    header: {
+        paddingHorizontal: 20,
+        paddingTop: 30,
+        paddingBottom: 20,
     },
-    description: {
-        fontSize: 16,
-        marginBottom: 30,
-        color: '#666',
-        textAlign: 'center',
-    },
-    hotUpdateTag: {
-        fontSize: 14,
-        marginBottom: 20,
-        color: '#4CAF50',
-        fontWeight: 'bold',
-    },
-    buttonContainer: {
-        width: '80%',
-    },
-    spacer: {
-        height: 10,
-    },
-    resultContainer: {
-        marginTop: 20,
-        width: '100%',
-        maxHeight: 200,
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        padding: 12,
-        borderWidth: 1,
-        borderColor: '#ddd',
-    },
-    resultTitle: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: '#333',
+    greeting: {
+        fontSize: 28,
+        fontWeight: '700',
+        color: '#1a1a2e',
         marginBottom: 6,
     },
-    resultText: {
-        fontSize: 12,
-        color: '#666',
+    subtitle: {
+        fontSize: 15,
+        color: '#888',
+    },
+    moduleList: {
+        paddingHorizontal: 16,
+    },
+    card: {
+        backgroundColor: '#fff',
+        borderRadius: 14,
+        marginBottom: 14,
+        borderLeftWidth: 4,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.06,
+        shadowRadius: 6,
+    },
+    cardContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 18,
+    },
+    cardLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+    },
+    iconWrap: {
+        width: 48,
+        height: 48,
+        borderRadius: 14,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 14,
+    },
+    icon: {
+        fontSize: 24,
+    },
+    cardText: {
+        flex: 1,
+    },
+    cardTitle: {
+        fontSize: 17,
+        fontWeight: '600',
+        color: '#1a1a2e',
+        marginBottom: 3,
+    },
+    cardDesc: {
+        fontSize: 13,
+        color: '#999',
+    },
+    cardArrow: {
+        fontSize: 18,
+        color: '#ccc',
+        fontWeight: '300',
+        marginLeft: 10,
     },
 });
 
