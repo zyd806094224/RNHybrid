@@ -20,7 +20,7 @@ const CATEGORY_OPTIONS = [
   CATEGORIES.other,
 ];
 
-const AccountEditScreen = ({ navigation, route, onAuthExpired }) => {
+const AccountEditScreen = ({ navigation, route }) => {
   const isEdit = !!(route.params && route.params.accountId);
   const existing = (route.params && route.params.account) || {};
 
@@ -61,7 +61,6 @@ const AccountEditScreen = ({ navigation, route, onAuthExpired }) => {
       if (isEdit) {
         const res = await updateAccount(existing.accountId, data);
         if (res.code === 401) {
-          onAuthExpired && onAuthExpired();
           return;
         }
         if (res.code !== 0) {
@@ -71,7 +70,6 @@ const AccountEditScreen = ({ navigation, route, onAuthExpired }) => {
       } else {
         const res = await createAccount(data);
         if (res.code === 401) {
-          onAuthExpired && onAuthExpired();
           return;
         }
         if (res.code !== 0) {
@@ -94,7 +92,7 @@ const AccountEditScreen = ({ navigation, route, onAuthExpired }) => {
         onPress: async () => {
           const res = await deleteAccount(existing.accountId);
           if (res.code === 401) {
-            onAuthExpired && onAuthExpired();
+            // 401 已由 API 层通知原生端处理
             return;
           }
           navigation.goBack();

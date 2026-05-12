@@ -13,7 +13,7 @@ import { getAccountList, deleteAccount, CATEGORIES } from '../api/account';
 
 const CATEGORY_LIST = Object.values(CATEGORIES);
 
-const AccountListScreen = ({ navigation, onAuthExpired }) => {
+const AccountListScreen = ({ navigation }) => {
   const [accounts, setAccounts] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
@@ -28,7 +28,6 @@ const AccountListScreen = ({ navigation, onAuthExpired }) => {
         category: activeCategory,
       });
       if (res.code === 401) {
-        onAuthExpired && onAuthExpired();
         return;
       }
       if (res.code === 0) {
@@ -37,7 +36,7 @@ const AccountListScreen = ({ navigation, onAuthExpired }) => {
     } finally {
       setLoading(false);
     }
-  }, [keyword, activeCategory, onAuthExpired]);
+  }, [keyword, activeCategory]);
 
   useEffect(() => {
     fetchData();
@@ -64,7 +63,6 @@ const AccountListScreen = ({ navigation, onAuthExpired }) => {
         onPress: async () => {
           const res = await deleteAccount(item.accountId);
           if (res.code === 401) {
-            onAuthExpired && onAuthExpired();
             return;
           }
           fetchData();

@@ -8,7 +8,7 @@
  * 接口返回 401 时自动清除登录状态
  */
 
-import { getToken, clearAuth, handleTokenExpired } from './auth';
+import { getToken, handleTokenExpired } from './auth';
 
 // ==================== 配置 ====================
 
@@ -52,32 +52,18 @@ async function request(url, options = {}) {
       headers,
     });
 
-    // HTTP 401 表示 token 过期或无效
+    // HTTP 401 表示 token 过期或无效，通知原生端跳转登录页
     if (response.status === 401) {
-      if (handleTokenExpired()) {
-        return { code: 401, data: null, message: '登录已过期，请重新登录' };
-      }
-      await clearAuth();
-      return {
-        code: 401,
-        data: null,
-        message: '登录已过期，请重新登录',
-      };
+      handleTokenExpired();
+      return { code: 401, data: null, message: '登录已过期，请重新登录' };
     }
 
     const json = await response.json();
 
     // 后端业务层也返回了未认证错误码
     if (json.code === 401) {
-      if (handleTokenExpired()) {
-        return { code: 401, data: null, message: '登录已过期，请重新登录' };
-      }
-      await clearAuth();
-      return {
-        code: 401,
-        data: null,
-        message: '登录已过期，请重新登录',
-      };
+      handleTokenExpired();
+      return { code: 401, data: null, message: '登录已过期，请重新登录' };
     }
 
     // 后端成功 code 为 200，前端统一为 0
