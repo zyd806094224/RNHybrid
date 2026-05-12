@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {setAuthFromNative} from '../api/auth';
 import HomeScreen from '../screens/HomeScreen';
 import AccountListScreen from '../screens/AccountListScreen';
 import AccountEditScreen from '../screens/AccountEditScreen';
-import {useEffect} from 'react';
 
+// 定义路由参数类型，解决 TypeScript 类型推断问题
 const Stack = createNativeStackNavigator();
 
 const screenOptions = {
@@ -53,20 +53,18 @@ const AppNavigator = ({nativeToken, nativeUsername}) => {
                 />
                 <Stack.Screen
                     name="AccountList"
+                    component={AccountListScreen}
                     options={{
                         title: '密码管理',
-                        animation: 'slide_from_right',
-                    }}>
-                    {props => <AccountListScreen {...props} />}
-                </Stack.Screen>
+                    }}
+                />
                 <Stack.Screen
                     name="AccountEdit"
+                    component={AccountEditScreen}
                     options={{
                         title: '编辑账号',
-                        animation: 'slide_from_right',
-                    }}>
-                    {props => <AccountEditScreen {...props} />}
-                </Stack.Screen>
+                    }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );
