@@ -3,32 +3,38 @@ import { View, SafeAreaView, Platform, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 /**
+ * @typedef {import('react').PropsWithChildren<import('react-native').ViewProps>} SafeContainerProps
+ */
+
+/**
  * 安全区域容器
  * - iOS/Android: useSafeAreaInsets 精确获取刘海/状态栏高度
  * - 鸿蒙: 安全区域由原生侧处理，直接使用 View
  */
+/** @param {SafeContainerProps} props */
 const SafeContainer = (props) => {
     const { children, style, ...rest } = props;
 
     if (Platform.OS === 'harmony') {
-        return <View style={style} {...rest}>{children}</View>;
+        return React.createElement(View, { ...rest, style }, children);
     }
 
-    return <SafeContainerInner style={style} {...rest}>{children}</SafeContainerInner>;
+    return React.createElement(SafeContainerInner, { ...rest, style }, children);
 };
 
+/** @param {SafeContainerProps} props */
 const SafeContainerInner = (props) => {
     const { children, style, ...rest } = props;
     const insets = useSafeAreaInsets();
 
     if (Platform.OS === 'ios') {
-        return <SafeAreaView style={style} {...rest}>{children}</SafeAreaView>;
+        return React.createElement(SafeAreaView, { ...rest, style }, children);
     }
 
-    return (
-        <View style={[styles.androidContainer, { paddingTop: insets.top }, style]} {...rest}>
-            {children}
-        </View>
+    return React.createElement(
+        View,
+        { ...rest, style: [styles.androidContainer, { paddingTop: insets.top }, style] },
+        children
     );
 };
 
