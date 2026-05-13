@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MainViewController : UITabBarController
+@interface MineViewController : UIViewController
 
 @end
 

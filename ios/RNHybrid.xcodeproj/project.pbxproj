@@ -17,9 +17,16 @@
 		54F0AE22A9816301243AEB20 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE469EE774A6393555B31CF /* Foundation.framework */; };
 		57C4BFEC2D27576600F74713 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE469EE774A6393555B31CF /* Foundation.framework */; };
 		5B8E5B5AF76288AA0DC11E80 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C473F9520F8D082E0EE2D38F /* MainViewController.m */; };
+		491F28DC1B1845D481DD963C /* AuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE51FBEB31F49CB821EA647 /* AuthManager.m */; };
+		18D82E44D3C249F6ACCED6E2 /* AuthModule.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E465BBA324A71B1DC6B45 /* AuthModule.m */; };
+		23C07BADBAA6444793549CFE /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 645FD2FE841546E38F570FF0 /* LoginViewController.m */; };
+		E597755797F74D9A84253BD3 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 427D8ECC9A2943E5BBD6C161 /* HomeViewController.m */; };
+		9AA134854C3A4FA4A50032E2 /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E43B8E8E947640168B867868 /* MineViewController.m */; };
+		F1A61882B68840FE8B35790D /* CustomHTTPRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BE92942A6DD4B2190336358 /* CustomHTTPRequestHandler.m */; };
 		687359BD9E4E4912188B0E76 /* RNViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B1D940EE4BD43590C40F72FA /* RNViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		716F3C85A6B44B0C9D26596A /* AppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 34EA291F78D8F99304529D84 /* AppDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B262B1AACAF725C1E20F56B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 73ABB86FFB07F01E374E6820 /* PrivacyInfo.xcprivacy */; };
+		4D7C44FA816C4F428F5FB5A0 /* server_cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = AC9959EEBBC34F88A4D92D74 /* server_cert.pem */; };
 		B7CBE74AAED6BD61AB72643A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 889A741C91236C16E764C99E /* main.m */; };
 		D70F0C138F9DDDFE4FD8650C /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67DEAB2698C7069A8E65984E /* SplashViewController.m */; };
 		F9FE4CF757EEF9BBD0BCA632 /* libPods-RNHybrid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 702D8E3CEAB5DD074842012F /* libPods-RNHybrid.a */; };
@@ -43,6 +50,19 @@
 		B1D940EE4BD43590C40F72FA /* RNViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNViewController.h; path = RNHybrid/RNViewController.h; sourceTree = "<group>"; };
 		B741EB0E5F886BE73C0EF541 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = RNHybrid/MainViewController.h; sourceTree = "<group>"; };
 		C473F9520F8D082E0EE2D38F /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = RNHybrid/MainViewController.m; sourceTree = "<group>"; };
+		6FEF4EEC66F64851948EF78C /* AuthManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AuthManager.h; path = RNHybrid/AuthManager.h; sourceTree = "<group>"; };
+		5EE51FBEB31F49CB821EA647 /* AuthManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AuthManager.m; path = RNHybrid/AuthManager.m; sourceTree = "<group>"; };
+		ABDF49EC4C344FCDBBC3E3A7 /* AuthModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AuthModule.h; path = RNHybrid/AuthModule.h; sourceTree = "<group>"; };
+		E39E465BBA324A71B1DC6B45 /* AuthModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AuthModule.m; path = RNHybrid/AuthModule.m; sourceTree = "<group>"; };
+		F56745213DFF4675AA212CAA /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = RNHybrid/LoginViewController.h; sourceTree = "<group>"; };
+		645FD2FE841546E38F570FF0 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = RNHybrid/LoginViewController.m; sourceTree = "<group>"; };
+		3EBC3A7321784B9686B07762 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HomeViewController.h; path = RNHybrid/HomeViewController.h; sourceTree = "<group>"; };
+		427D8ECC9A2943E5BBD6C161 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = RNHybrid/HomeViewController.m; sourceTree = "<group>"; };
+		908B89E31B3B40AA8D5B7046 /* MineViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MineViewController.h; path = RNHybrid/MineViewController.h; sourceTree = "<group>"; };
+		E43B8E8E947640168B867868 /* MineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MineViewController.m; path = RNHybrid/MineViewController.m; sourceTree = "<group>"; };
+		AC9959EEBBC34F88A4D92D74 /* server_cert.pem */ = {isa = PBXFileReference; lastKnownFileType = text; name = server_cert.pem; path = RNHybrid/server_cert.pem; sourceTree = "<group>"; };
+		1BC3DD7FBC904263BB123686 /* CustomHTTPRequestHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CustomHTTPRequestHandler.h; path = RNHybrid/CustomHTTPRequestHandler.h; sourceTree = "<group>"; };
+		9BE92942A6DD4B2190336358 /* CustomHTTPRequestHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CustomHTTPRequestHandler.m; path = RNHybrid/CustomHTTPRequestHandler.m; sourceTree = "<group>"; };
 		C61156CF4603A6DB7A3E8A9A /* RNHybrid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNHybrid.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCBBED25898EE1495C43CDCC /* Pods-RNHybrid.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid.debug.xcconfig"; path = "Target Support Files/Pods-RNHybrid/Pods-RNHybrid.debug.xcconfig"; sourceTree = "<group>"; };
 		CD2C06424F0501CEC7CC84DA /* Pods-RNHybrid.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid.release.xcconfig"; path = "Target Support Files/Pods-RNHybrid/Pods-RNHybrid.release.xcconfig"; sourceTree = "<group>"; };
@@ -109,7 +129,20 @@
 				8F575DA5717F827A487A8CF7 /* SplashViewController.h */,
 				67DEAB2698C7069A8E65984E /* SplashViewController.m */,
 				B741EB0E5F886BE73C0EF541 /* MainViewController.h */,
+				6FEF4EEC66F64851948EF78C /* AuthManager.h */,
+				ABDF49EC4C344FCDBBC3E3A7 /* AuthModule.h */,
+				F56745213DFF4675AA212CAA /* LoginViewController.h */,
+				3EBC3A7321784B9686B07762 /* HomeViewController.h */,
+				908B89E31B3B40AA8D5B7046 /* MineViewController.h */,
 				C473F9520F8D082E0EE2D38F /* MainViewController.m */,
+				5EE51FBEB31F49CB821EA647 /* AuthManager.m */,
+				E39E465BBA324A71B1DC6B45 /* AuthModule.m */,
+				645FD2FE841546E38F570FF0 /* LoginViewController.m */,
+				427D8ECC9A2943E5BBD6C161 /* HomeViewController.m */,
+				E43B8E8E947640168B867868 /* MineViewController.m */,
+				AC9959EEBBC34F88A4D92D74 /* server_cert.pem */,
+				1BC3DD7FBC904263BB123686 /* CustomHTTPRequestHandler.h */,
+				9BE92942A6DD4B2190336358 /* CustomHTTPRequestHandler.m */,
 				B1D940EE4BD43590C40F72FA /* RNViewController.h */,
 				827D44DA8E54F0C0A8931C47 /* RNViewController.m */,
 				2A07E9882EB333680027D5D0 /* Media.xcassets */,
@@ -243,6 +276,7 @@
 				2A0BBD3A2EB361930085CC96 /* LaunchScreen.storyboard in Resources */,
 				2A07E9892EB333680027D5D0 /* Media.xcassets in Resources */,
 				8B262B1AACAF725C1E20F56B /* PrivacyInfo.xcprivacy in Resources */,
+				4D7C44FA816C4F428F5FB5A0 /* server_cert.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +372,12 @@
 				B7CBE74AAED6BD61AB72643A /* main.m in Sources */,
 				D70F0C138F9DDDFE4FD8650C /* SplashViewController.m in Sources */,
 				5B8E5B5AF76288AA0DC11E80 /* MainViewController.m in Sources */,
+				491F28DC1B1845D481DD963C /* AuthManager.m in Sources */,
+				18D82E44D3C249F6ACCED6E2 /* AuthModule.m in Sources */,
+				23C07BADBAA6444793549CFE /* LoginViewController.m in Sources */,
+				E597755797F74D9A84253BD3 /* HomeViewController.m in Sources */,
+				9AA134854C3A4FA4A50032E2 /* MineViewController.m in Sources */,
+				F1A61882B68840FE8B35790D /* CustomHTTPRequestHandler.m in Sources */,
 				19F538D290F4EFDE0F2E3A9C /* RNViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -47,7 +47,7 @@ export function setAuthFromNative(token, username) {
  * token 过期时通知原生侧跳转原生登录页
  */
 export function handleTokenExpired() {
-  if (Platform.OS === 'android' || Platform.OS === 'harmony') {
+  if (Platform.OS === 'android' || Platform.OS === 'harmony' || Platform.OS === 'ios') {
     NativeModules.AuthModule.onTokenExpired();
     return true;
   }
