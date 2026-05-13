@@ -117,6 +117,7 @@
 - (void)transitionToMainViewController {
     MainViewController *mainVC = [[MainViewController alloc] init];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:mainVC];
+    navController.navigationBarHidden = YES;
     
     // 设置导航控制器全屏显示（隐藏状态栏）
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
