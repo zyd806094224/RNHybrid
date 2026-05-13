@@ -360,6 +360,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				DEVELOPMENT_TEAM = J275893Q84;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"DEBUG=1",
@@ -372,6 +373,7 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					" ",
+					"-Wl -ld_classic ",
 				);
 				PRODUCT_NAME = RNHybrid;
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
@@ -388,6 +390,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				DEVELOPMENT_TEAM = J275893Q84;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION,
@@ -399,6 +402,7 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					" ",
+					"-Wl -ld_classic ",
 				);
 				PRODUCT_NAME = RNHybrid;
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
