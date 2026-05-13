@@ -1,7 +1,7 @@
 #import "HomeViewController.h"
-#import "RNViewController.h"
-#import "AuthManager.h"
-#import "LoginViewController.h"
+#import "../RNContainer/RNViewController.h"
+#import "../Auth/AuthManager.h"
+#import "../Auth/LoginViewController.h"
 
 @interface HomeViewController ()
 

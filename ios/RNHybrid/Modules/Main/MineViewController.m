@@ -1,6 +1,6 @@
 #import "MineViewController.h"
-#import "AuthManager.h"
-#import "LoginViewController.h"
+#import "../Auth/AuthManager.h"
+#import "../Auth/LoginViewController.h"
 
 @interface MineViewController ()
 

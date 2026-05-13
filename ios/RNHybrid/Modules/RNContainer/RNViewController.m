@@ -2,9 +2,9 @@
 #import <React/RCTRootView.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootViewDelegate.h>
-#import "AuthManager.h"
-#import "AuthModule.h"
-#import "LoginViewController.h"
+#import "../Auth/AuthManager.h"
+#import "../Auth/AuthModule.h"
+#import "../Auth/LoginViewController.h"
 
 /**
  * RNViewController

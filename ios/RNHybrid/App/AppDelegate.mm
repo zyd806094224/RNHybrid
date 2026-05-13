@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-#import "SplashViewController.h"
+#import "../Modules/Main/SplashViewController.h"
 
 @implementation AppDelegate
 

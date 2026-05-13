@@ -17,6 +17,8 @@ xcuserdata
 *.xccheckout
 *.moved-aside
 DerivedData
+Debug-iphonesimulator/
+ios/Debug-iphonesimulator/
 *.hmap
 *.ipa
 *.xcuserstate
