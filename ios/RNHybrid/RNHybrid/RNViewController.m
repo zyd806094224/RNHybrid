@@ -33,6 +33,8 @@
     self.title = @"";
     self.edgesForExtendedLayout = UIRectEdgeAll;
     self.extendedLayoutIncludesOpaqueBars = YES;
+    // 禁止系统自动调整 ScrollView 的 contentInset，由 RN 侧统一处理安全区域
+    self.automaticallyAdjustsScrollViewInsets = NO;
 
     NSLog(@"RNViewController viewDidLoad");
 
