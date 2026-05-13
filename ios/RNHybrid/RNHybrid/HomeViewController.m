@@ -14,7 +14,6 @@
     self.view.backgroundColor = [UIColor colorWithRed:0.96 green:0.96 blue:0.96 alpha:1.0];
     self.edgesForExtendedLayout = UIRectEdgeAll;
     self.extendedLayoutIncludesOpaqueBars = YES;
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
 
     [self setupUI];
 }

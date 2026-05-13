@@ -36,10 +36,6 @@
 
     NSLog(@"RNViewController viewDidLoad");
 
-    // 隐藏导航栏实现全屏，但保留左滑返回手势
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-
     // 添加加载指示器和标签
     [self setupLoadingUI];
 
