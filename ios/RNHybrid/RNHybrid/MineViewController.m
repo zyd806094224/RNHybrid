@@ -16,8 +16,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithRed:0.96 green:0.96 blue:0.96 alpha:1.0];
-    self.title = @"我的";
-    self.navigationItem.title = @"我的";
+    self.edgesForExtendedLayout = UIRectEdgeAll;
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
 
     [self setupUI];
 }
@@ -96,7 +97,7 @@
     // 设置约束
     [NSLayoutConstraint activateConstraints:@[
         // 顶部区域
-        [self.headerView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+        [self.headerView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [self.headerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
         [self.headerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
         [self.headerView.heightAnchor constraintEqualToConstant:140],
