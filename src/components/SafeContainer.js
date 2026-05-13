@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Platform, StyleSheet } from 'react-native';
+import { View, SafeAreaView, Platform, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 /**
  * 安全区域容器
- * - iOS/Android: useSafeAreaInsets 精确获取刘海/状态栏高度，手动设置 paddingTop
+ * - iOS/Android: useSafeAreaInsets 精确获取刘海/状态栏高度
  * - 鸿蒙: 安全区域由原生侧处理，直接使用 View
  */
 const SafeContainer = (props) => {
@@ -21,15 +21,19 @@ const SafeContainerInner = (props) => {
     const { children, style, ...rest } = props;
     const insets = useSafeAreaInsets();
 
+    if (Platform.OS === 'ios') {
+        return <SafeAreaView style={style} {...rest}>{children}</SafeAreaView>;
+    }
+
     return (
-        <View style={[styles.safeContainer, { paddingTop: insets.top }, style]} {...rest}>
+        <View style={[styles.androidContainer, { paddingTop: insets.top }, style]} {...rest}>
             {children}
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    safeContainer: {
+    androidContainer: {
         flex: 1,
     },
 });
