@@ -1,3 +1,13 @@
+/*
+ * @Author: zhaoyudong
+ * @Date: 2026-05-18 16:49:00
+ * @LastEditors: zhaoyudong
+ * @LastEditTime: 2026-05-18 16:49:00
+ * @Description: ----
+ *
+ * 页面功能：
+ *   ----
+ */
 import React from 'react';
 import {
     View,
@@ -18,15 +28,14 @@ const MODULES = [
         color: '#4CAF50',
         screen: 'AccountList',
     },
-    // 未来新增模块示例：
-    // {
-    //   id: 'notes',
-    //   title: '备忘录',
-    //   description: '随时记录灵感和待办事项',
-    //   icon: '\uD83D\uDCDD',
-    //   color: '#2196F3',
-    //   screen: 'NoteList',
-    // },
+    {
+      id: 'memo',
+      title: '备忘录',
+      description: '自定义分类，记录家人、房产等重要信息',
+      icon: '\uD83D\uDCDD',
+      color: '#2196F3',
+      screen: 'MemoList',
+    },
 ];
 
 const HomeScreen = ({navigation}) => {
