@@ -12,8 +12,10 @@ import {
 } from 'react-native';
 import SafeContainer from '../components/SafeContainer';
 import { getMemoList, deleteMemo, getCategoryList } from '../api/memo';
+import { useAppContext } from '../context/AppContext';
 
 const MemoListScreen = ({ navigation }) => {
+  const { username } = useAppContext();
   const [memos, setMemos] = useState([]);
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
@@ -135,6 +137,13 @@ const MemoListScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
+      {/* 用户信息 */}
+      {username ? (
+        <View style={styles.userBar}>
+          <Text style={styles.userGreeting}>{username}，你好</Text>
+        </View>
+      ) : null}
+
       {/* 搜索栏 */}
       <View style={styles.searchBar}>
         <TextInput
@@ -236,6 +245,17 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#4CAF50',
     fontWeight: '600',
+  },
+
+  // User
+  userBar: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: '#fff',
+  },
+  userGreeting: {
+    fontSize: 13,
+    color: '#999',
   },
 
   // Search
