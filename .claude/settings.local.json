@@ -23,7 +23,8 @@
       "Bash(find /Users/zhaoyudong/IdeaProjects/RNHybrid/harmony -path */@rnoh/* -name *.d.ts)",
       "Bash(find /Users/zhaoyudong/IdeaProjects/RNHybrid/harmony -path *rnoh* -type f)",
       "Bash(find /Users/zhaoyudong/IdeaProjects/RNHybrid/harmony/entry/oh_modules/@rnoh -name *.ets -o -name *.ts -o -name *.d.ts -o -name *.d.ets)",
-      "Bash(find /Users/zhaoyudong/IdeaProjects/RNHybrid/harmony/entry/oh_modules/@rnoh -type f -name *.ets -o -name *.ts -o -name *.d.ets)"
+      "Bash(find /Users/zhaoyudong/IdeaProjects/RNHybrid/harmony/entry/oh_modules/@rnoh -type f -name *.ets -o -name *.ts -o -name *.d.ets)",
+      "Bash(grep -E \"\\\\.\\(yml|yaml|json|xml\\)$\")"
     ]
   }
 }

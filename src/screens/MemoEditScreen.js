@@ -1,13 +1,3 @@
-/*
- * @Author: zhaoyudong
- * @Date: 2026-05-18 16:47:49
- * @LastEditors: zhaoyudong 
- * @LastEditTime: 2026-05-18 16:55:18
- * @Description: ----
- *
- * 页面功能：
- *   ----
- */
 import React, { useState, useEffect } from 'react';
 import {
   View,

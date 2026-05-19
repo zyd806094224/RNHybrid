@@ -1,13 +1,3 @@
-/*
- * @Author: zhaoyudong
- * @Date: 2026-05-18 16:47:49
- * @LastEditors: zhaoyudong
- * @LastEditTime: 2026-05-18 16:47:49
- * @Description: ----
- *
- * 页面功能：
- *   ----
- */
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
@@ -15,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  ScrollView,
   StyleSheet,
   Alert,
   RefreshControl,
@@ -213,9 +204,6 @@ const MemoListScreen = ({ navigation }) => {
     </SafeContainer>
   );
 };
-
-// ScrollView 需要额外导入
-import { ScrollView } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {

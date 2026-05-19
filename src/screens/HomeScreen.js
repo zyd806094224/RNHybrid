@@ -1,13 +1,3 @@
-/*
- * @Author: zhaoyudong
- * @Date: 2026-05-18 16:49:00
- * @LastEditors: zhaoyudong
- * @LastEditTime: 2026-05-18 16:49:00
- * @Description: ----
- *
- * 页面功能：
- *   ----
- */
 import React from 'react';
 import {
     View,

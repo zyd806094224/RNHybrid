@@ -1,66 +1,8 @@
-/*
- * @Author: zhaoyudong
- * @Date: 2026-05-18 16:47:47
- * @LastEditors: zhaoyudong
- * @LastEditTime: 2026-05-18 16:47:47
- * @Description: ----
- *
- * 页面功能：
- *   ----
- */
 /**
  * 备忘录管理 - API 接口层
  */
 
-import { getToken, handleTokenExpired } from './auth';
-
-const BASE_URL = 'https://106.15.7.132:8443';
-
-async function request(url, options = {}) {
-  const token = getToken();
-  const headers = {
-    'Content-Type': 'application/json',
-    ...options.headers,
-  };
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  try {
-    const response = await fetch(`${BASE_URL}${url}`, {
-      ...options,
-      headers,
-    });
-
-    if (response.status === 401) {
-      handleTokenExpired();
-      return { code: 401, data: null, message: '登录已过期，请重新登录' };
-    }
-
-    const json = await response.json();
-
-    if (json.code === 401) {
-      handleTokenExpired();
-      return { code: 401, data: null, message: '登录已过期，请重新登录' };
-    }
-
-    if (json.code === 200) {
-      return { code: 0, data: json.data ?? json.rows ?? null, total: json.total ?? 0 };
-    }
-
-    return {
-      code: json.code || -1,
-      data: null,
-      message: json.msg || '请求失败',
-    };
-  } catch (error) {
-    return {
-      code: -1,
-      data: null,
-      message: error.message || '网络异常，请检查网络连接',
-    };
-  }
-}
+import { request } from './request';
 
 // ==================== 分类 ====================
 
