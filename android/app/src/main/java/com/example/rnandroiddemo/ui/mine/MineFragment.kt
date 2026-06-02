@@ -27,12 +27,14 @@ class MineFragment : BaseFragment() {
         val tvUserName = view.findViewById<TextView>(R.id.tv_user_name)
         val tvSubtitle = view.findViewById<TextView>(R.id.tv_user_subtitle)
         val tvLogout = view.findViewById<TextView>(R.id.tv_logout)
+        val layoutUserHeader = view.findViewById<View>(R.id.layout_user_header)
 
         if (AuthManager.isLoggedIn()) {
             tvUserName.text = AuthManager.getUsername()
             tvSubtitle.text = "已登录"
             tvLogout.text = "退出登录"
             tvLogout.setTextColor(resources.getColor(R.color.red, null))
+            layoutUserHeader.setOnClickListener(null)
             tvLogout.setOnClickListener {
                 AlertDialog.Builder(requireContext())
                     .setTitle("提示")
@@ -49,12 +51,15 @@ class MineFragment : BaseFragment() {
             tvSubtitle.text = "点击去登录"
             tvLogout.text = "登录"
             tvLogout.setTextColor(resources.getColor(R.color.purple_500, null))
-            tvLogout.setOnClickListener {
-                ARouter.getInstance()
-                    .build("/auth/login")
-                    .greenChannel()
-                    .navigation()
-            }
+            layoutUserHeader.setOnClickListener { goLogin() }
+            tvLogout.setOnClickListener { goLogin() }
         }
+    }
+
+    private fun goLogin() {
+        ARouter.getInstance()
+            .build("/auth/login")
+            .greenChannel()
+            .navigation()
     }
 }

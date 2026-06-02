@@ -12,9 +12,13 @@
 
         <!-- 顶部个人信息区域 -->
         <LinearLayout
+            android:id="@+id/layout_user_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/purple_500"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingTop="40dp"
