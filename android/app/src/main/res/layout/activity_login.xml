@@ -233,7 +233,7 @@
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:backgroundTint="#3F9699"
+                    app:backgroundTint="#FF6B6B"
                     app:cornerRadius="8dp"
                     app:elevation="0dp" />
 
@@ -268,7 +268,7 @@
                 android:layout_height="18dp"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_shield"
-                app:tint="#3F9699" />
+                app:tint="#18BFAE" />
 
             <TextView
                 android:layout_width="0dp"

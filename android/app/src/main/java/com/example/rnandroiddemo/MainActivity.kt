@@ -53,7 +53,7 @@ class MainActivity : BaseActivity() {
         StatusBarUtil.setStatusBarDarkMode(this)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = Color.parseColor("#4A9FA3")
+            window.statusBarColor = Color.parseColor("#18BFAE")
         }
         var visibility = window.decorView.systemUiVisibility
         visibility = visibility or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -78,7 +78,7 @@ class MainActivity : BaseActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.statusBarColor = Color.parseColor("#EAF7F5")
+            window.statusBarColor = Color.parseColor("#E9FFF8")
         }
         StatusBarUtil.setStatusBarLightMode(this)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
