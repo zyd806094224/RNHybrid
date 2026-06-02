@@ -28,6 +28,7 @@ class MineFragment : BaseFragment() {
         val tvUserName = view.findViewById<TextView>(R.id.tv_user_name)
         val tvSubtitle = view.findViewById<TextView>(R.id.tv_user_subtitle)
         val tvLogout = view.findViewById<TextView>(R.id.tv_logout)
+        val layoutLogoutRow = view.findViewById<View>(R.id.layout_logout_row)
         val layoutUserHeader = view.findViewById<View>(R.id.layout_user_header)
 
         if (AuthManager.isLoggedIn()) {
@@ -35,8 +36,9 @@ class MineFragment : BaseFragment() {
             tvSubtitle.text = "已登录"
             tvLogout.text = "退出登录"
             tvLogout.setTextColor(resources.getColor(R.color.red, null))
+            layoutLogoutRow.visibility = View.VISIBLE
             layoutUserHeader.setOnClickListener(null)
-            tvLogout.setOnClickListener {
+            layoutLogoutRow.setOnClickListener {
                 AlertDialog.Builder(requireContext())
                     .setTitle("提示")
                     .setMessage("确定要退出登录吗？")
@@ -50,10 +52,9 @@ class MineFragment : BaseFragment() {
         } else {
             tvUserName.text = "未登录"
             tvSubtitle.text = "点击去登录"
-            tvLogout.text = "登录"
-            tvLogout.setTextColor(resources.getColor(R.color.purple_500, null))
+            layoutLogoutRow.visibility = View.GONE
             layoutUserHeader.setOnClickListener { goLogin() }
-            tvLogout.setOnClickListener { goLogin() }
+            layoutLogoutRow.setOnClickListener(null)
         }
     }
 

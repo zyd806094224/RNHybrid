@@ -586,15 +586,40 @@
                         android:layout_marginStart="48dp"
                         android:background="#F2F4F7" />
 
-                    <TextView
-                        android:id="@+id/tv_logout"
+                    <LinearLayout
+                        android:id="@+id/layout_logout_row"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
                         android:gravity="center_vertical"
-                        android:text="退出登录"
-                        android:textColor="#DC2626"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <FrameLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_circle_red">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_logout"
+                                app:tint="#DC2626" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/tv_logout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:text="退出登录"
+                            android:textColor="#DC2626"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
