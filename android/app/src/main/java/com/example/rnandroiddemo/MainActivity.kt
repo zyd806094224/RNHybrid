@@ -36,10 +36,10 @@ class MainActivity : BaseActivity() {
         navController.setGraph(R.navigation.mobile_navigation)
         navView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.navi_mine) {
-                applyMineStatusBar()
-            } else {
-                applyDefaultStatusBar()
+            when (destination.id) {
+                R.id.navi_mine -> applyMineStatusBar()
+                R.id.navi_home -> applyHomeStatusBar()
+                else -> applyDefaultStatusBar()
             }
         }
     }
@@ -71,5 +71,24 @@ class MainActivity : BaseActivity() {
         StatusBarSettingHelper.statusBarLightMode(this, true)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
         StatusBarSettingHelper.setRootViewFitsSystemWindows(this, true)
+    }
+
+    private fun applyHomeStatusBar() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.statusBarColor = Color.parseColor("#EAF7F5")
+        }
+        StatusBarUtil.setStatusBarLightMode(this)
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+        var visibility = window.decorView.systemUiVisibility
+        visibility = visibility or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            visibility = visibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+        window.decorView.systemUiVisibility = visibility
+        findViewById<View>(com.demo.framework.R.id.immersion_status_bar_view)?.visibility = View.GONE
+        StatusBarSettingHelper.setRootViewFitsSystemWindows(this, false)
     }
 }
