@@ -58,13 +58,19 @@ object PendingRoute {
      */
     fun continueRoute(): Boolean {
         val targetPath = path ?: return false
-        val targetExtras = extras
+        val targetExtras = Bundle().apply {
+            extras?.let { putAll(it) }
+            if (targetPath == "/rn/page" || getBoolean("needLogin", false)) {
+                putString("token", AuthManager.getToken())
+                putString("username", AuthManager.getUsername())
+            }
+        }
 
         clear()
 
         ARouter.getInstance()
             .build(targetPath)
-            .apply { targetExtras?.let { with(it) } }
+            .with(targetExtras)
             .greenChannel() // 已登录，直接走绿色通道
             .navigation()
 
