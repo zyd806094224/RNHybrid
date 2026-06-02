@@ -1,15 +1,19 @@
 package com.example.rnandroiddemo.auth
 
 import android.app.Activity
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
-import android.widget.ImageView
+import android.view.WindowManager
 import android.widget.Toast
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.demo.framework.base.BaseMvvmActivity
 import com.demo.framework.utils.StatusBarSettingHelper
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.example.rnandroiddemo.R
 import com.example.rnandroiddemo.databinding.ActivityLoginBinding
 import com.example.rnandroiddemo.rn.AuthModule
@@ -19,9 +23,7 @@ import com.example.rnandroiddemo.ui.login.LoginViewModel
 class LoginActivity : BaseMvvmActivity<ActivityLoginBinding, LoginViewModel>() {
 
     override fun initView(savedInstanceState: Bundle?) {
-        StatusBarSettingHelper.setStatusBarTranslucent(this)
-        StatusBarSettingHelper.statusBarLightMode(this, true)
-        StatusBarSettingHelper.setRootViewFitsSystemWindows(this, true)
+        setupStatusBar()
 
         observeViewModel()
         setupPasswordToggle()
@@ -79,6 +81,17 @@ class LoginActivity : BaseMvvmActivity<ActivityLoginBinding, LoginViewModel>() {
     }
 
     private var passwordVisible = false
+
+    private fun setupStatusBar() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.statusBarColor = Color.parseColor("#DFF2EF")
+        }
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+        StatusBarSettingHelper.setRootViewFitsSystemWindows(this, false)
+    }
 
     private fun setupPasswordToggle() {
         mBinding.ivTogglePwd.setOnClickListener {
