@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.demo.framework.base.BaseFragment
+import com.demo.framework.manager.AppManager
 import com.example.rnandroiddemo.R
 import com.example.rnandroiddemo.auth.AuthManager
 
@@ -14,6 +15,7 @@ class MineFragment : BaseFragment() {
     override fun getLayoutResId(): Int = R.layout.fragment_mine
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
+        applyHeaderInsets(view)
         refreshUI(view)
     }
 
@@ -60,5 +62,20 @@ class MineFragment : BaseFragment() {
             .build("/auth/login")
             .greenChannel()
             .navigation()
+    }
+
+    private fun applyHeaderInsets(view: View) {
+        val layoutUserHeader = view.findViewById<View>(R.id.layout_user_header_fixed)
+        val topPadding = AppManager.getStatusBarHeight() + dp(6)
+        layoutUserHeader.setPadding(
+            layoutUserHeader.paddingLeft,
+            topPadding,
+            layoutUserHeader.paddingRight,
+            layoutUserHeader.paddingBottom
+        )
+    }
+
+    private fun dp(value: Int): Int {
+        return (value * resources.displayMetrics.density + 0.5f).toInt()
     }
 }
