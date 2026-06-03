@@ -87,7 +87,7 @@ class LoginActivity : BaseMvvmActivity<ActivityLoginBinding, LoginViewModel>() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.statusBarColor = Color.parseColor("#E9FFF8")
+            window.statusBarColor = Color.parseColor("#E6FFF8")
         }
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
         StatusBarSettingHelper.setRootViewFitsSystemWindows(this, false)
