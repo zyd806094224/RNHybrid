@@ -21,6 +21,10 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="android:windowBackground">@drawable/bg_splash_page</item>
         <item name="android:windowFullscreen">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">#E9FFF8</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:navigationBarColor">#F7FAFC</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
 </resources>

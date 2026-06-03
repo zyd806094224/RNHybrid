@@ -32,13 +32,15 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun setupStatusBar() {
-        WindowCompat.setDecorFitsSystemWindows(window, true)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             window.statusBarColor = Color.parseColor("#E9FFF8")
+            window.navigationBarColor = Color.parseColor("#F7FAFC")
         }
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
-        StatusBarSettingHelper.setRootViewFitsSystemWindows(this, true)
+        StatusBarSettingHelper.setRootViewFitsSystemWindows(this, false)
     }
 }
