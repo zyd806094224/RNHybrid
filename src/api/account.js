@@ -15,12 +15,18 @@ export const CATEGORIES = {
 
 /**
  * 获取账号列表
- * GET /api/accounts?keyword=xxx&category=xxx
- * @param {Object} params - { keyword?: string, category?: string }
- * @returns {Promise<{ code: number, data: Account[] }>}
+ * GET /api/accounts?pageNum=1&pageSize=10&title=xxx&category=xxx
+ * @param {Object} params - { keyword?: string, category?: string, pageNum?: number, pageSize?: number }
+ * @returns {Promise<{ code: number, data: Account[], total?: number }>}
  */
 export async function getAccountList(params = {}) {
   const query = new URLSearchParams();
+  if (params.pageNum) {
+    query.append('pageNum', params.pageNum);
+  }
+  if (params.pageSize) {
+    query.append('pageSize', params.pageSize);
+  }
   if (params.keyword) {
     query.append('title', params.keyword);
   }

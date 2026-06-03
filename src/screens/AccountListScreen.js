@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -7,11 +7,13 @@ import {
   FlatList,
   StyleSheet,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import SafeContainer from '../components/SafeContainer';
 import { getAccountList, deleteAccount, CATEGORIES } from '../api/account';
 
 const CATEGORY_LIST = Object.values(CATEGORIES);
+const PAGE_SIZE = 10;
 
 const AccountListScreen = ({ navigation }) => {
   const [accounts, setAccounts] = useState([]);
@@ -19,24 +21,74 @@ const AccountListScreen = ({ navigation }) => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [visiblePasswords, setVisiblePasswords] = useState({});
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [pageNum, setPageNum] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const loadingMoreRef = useRef(false);
+  const listRequestIdRef = useRef(0);
 
-  const fetchData = useCallback(async () => {
-    setLoading(true);
+  const fetchPage = useCallback(async (nextPage, append) => {
+    if (append && loadingMoreRef.current) {
+      return;
+    }
+
+    const requestId = append
+      ? listRequestIdRef.current
+      : listRequestIdRef.current + 1;
+    if (!append) {
+      listRequestIdRef.current = requestId;
+      setLoading(true);
+    } else {
+      loadingMoreRef.current = true;
+      setLoadingMore(true);
+    }
+
     try {
       const res = await getAccountList({
         keyword: keyword.trim(),
         category: activeCategory,
+        pageNum: nextPage,
+        pageSize: PAGE_SIZE,
       });
+      if (requestId !== listRequestIdRef.current) {
+        return;
+      }
       if (res.code === 401) {
         return;
       }
       if (res.code === 0) {
-        setAccounts(res.data);
+        const list = Array.isArray(res.data) ? res.data : [];
+        const totalCount = Number(res.total) || 0;
+        setAccounts(prev => (append ? [...prev, ...list] : list));
+        setPageNum(nextPage);
+        setTotal(totalCount);
+        setHasMore(
+          totalCount > 0
+            ? nextPage * PAGE_SIZE < totalCount
+            : list.length === PAGE_SIZE
+        );
       }
     } finally {
-      setLoading(false);
+      if (append) {
+        loadingMoreRef.current = false;
+        setLoadingMore(false);
+      } else if (requestId === listRequestIdRef.current) {
+        setLoading(false);
+      }
     }
   }, [keyword, activeCategory]);
+
+  const fetchData = useCallback(() => {
+    return fetchPage(1, false);
+  }, [fetchPage]);
+
+  const loadMore = useCallback(() => {
+    if (loading || loadingMore || !hasMore) {
+      return;
+    }
+    fetchPage(pageNum + 1, true);
+  }, [loading, loadingMore, hasMore, pageNum, fetchPage]);
 
   useEffect(() => {
     fetchData();
@@ -166,6 +218,29 @@ const AccountListScreen = ({ navigation }) => {
     </View>
   );
 
+  const renderFooter = () => {
+    if (loadingMore) {
+      return (
+        <View style={styles.footer}>
+          <ActivityIndicator size="small" color="#2196F3" />
+          <Text style={styles.footerText}>加载更多...</Text>
+        </View>
+      );
+    }
+
+    if (!hasMore && accounts.length > 0) {
+      return (
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>
+            {total > 0 ? `已加载全部 ${total} 条` : '没有更多了'}
+          </Text>
+        </View>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <SafeContainer style={styles.container}>
       {/* 自定义标题栏 */}
@@ -217,14 +292,17 @@ const AccountListScreen = ({ navigation }) => {
       {/* 列表 */}
       <FlatList
         data={accounts}
-        keyExtractor={item => item.accountId}
+        keyExtractor={item => String(item.accountId)}
         renderItem={renderItem}
         ListEmptyComponent={renderEmpty}
+        ListFooterComponent={renderFooter}
         contentContainerStyle={
           accounts.length === 0 ? styles.listEmpty : styles.listContent
         }
         refreshing={loading}
         onRefresh={fetchData}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.35}
         showsVerticalScrollIndicator={false}
       />
 
@@ -323,6 +401,17 @@ const styles = StyleSheet.create({
   },
   listEmpty: {
     flexGrow: 1,
+  },
+  footer: {
+    minHeight: 42,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  footerText: {
+    fontSize: 12,
+    color: '#999',
+    marginLeft: 6,
   },
 
   // Card
