@@ -6,11 +6,11 @@
         <item name="android:windowBackground">@drawable/bg_splash_page</item>
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">#E9FFF8</item>
+        <item name="android:statusBarColor">#E4FFF8</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:navigationBarColor">#F7FAFC</item>
-        <item name="android:windowSplashScreenBackground" tools:targetApi="31">#E9FFF8</item>
-        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@drawable/ic_splash_logo</item>
-        <item name="android:windowSplashScreenIconBackgroundColor" tools:targetApi="31">#E9FFF8</item>
+        <item name="android:navigationBarColor">#FFFFFF</item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="31">#E4FFF8</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@drawable/img_splash_qingxia</item>
+        <item name="android:windowSplashScreenIconBackgroundColor" tools:targetApi="31">#E4FFF8</item>
     </style>
 </resources>
