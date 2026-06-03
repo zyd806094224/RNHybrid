@@ -16,22 +16,27 @@ export struct FourPage {
   private hasLifecycleObserver: boolean = false
 
   aboutToAppear(): void {
+    this.applyMineStatusBar()
+
+    this.refreshUI()
+    if (!this.hasLifecycleObserver) {
+      this.hasLifecycleObserver = true
+      // Android 在 onResume 刷新登录态和状态栏；鸿蒙侧登录页 pop 回来只触发 onShown。
+      const owner = HMRouterMgr.getCurrentLifecycleOwner();
+      owner?.addObserver(HMLifecycleState.onShown, () => {
+        this.applyMineStatusBar()
+        this.refreshUI()
+      });
+    }
+  }
+
+  private applyMineStatusBar(): void {
     // Android MineFragment 使用青绿色沉浸状态栏，状态栏和头像头图区要是一整块颜色。
     WindowUtils.setWindowLayoutFullScreen(true).catch(() => {})
     WindowUtils.setStatusBar({
       statusBarColor: '#18BFAE',
       statusBarContentColor: '#FFFFFF',
     }).catch(() => {})
-
-    this.refreshUI()
-    if (!this.hasLifecycleObserver) {
-      this.hasLifecycleObserver = true
-      // Android 在 onResume 刷新登录态；鸿蒙侧监听 onShown，保证登录页 pop 回来后立即更新。
-      const owner = HMRouterMgr.getCurrentLifecycleOwner();
-      owner?.addObserver(HMLifecycleState.onShown, () => {
-        this.refreshUI()
-      });
-    }
   }
 
   private refreshUI() {
