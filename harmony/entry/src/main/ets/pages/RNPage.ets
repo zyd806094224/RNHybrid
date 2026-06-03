@@ -39,7 +39,7 @@ export struct RNPage {
       return true;
     });
 
-    // 注册 token 过期回调：清除登录态 → 关闭 RN 页面 → 跳转原生登录页
+    // RN 侧 401 会通过 AuthModule 回到这里；原生侧负责清登录态并回到登录页。
     AuthTurboModule.tokenExpiredCallback = () => {
       this.authManager.logout();
       HMRouterMgr.pop();
@@ -67,6 +67,7 @@ export struct RNPage {
             arkTsComponentNames: [],
             caPathProvider: (url: string) => {
               if (url && url.includes('106.15.7.132')) {
+                // RN fetch 也访问同一个自签名 HTTPS 服务，需要和原生登录请求共用证书。
                 return AppStorage.get<string>('serverCertPath') ?? '';
               }
               return '';

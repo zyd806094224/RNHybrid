@@ -9,7 +9,7 @@
  * 2. Context 调用：useAppContext()（供 React 组件使用）
  */
 
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform, TurboModuleRegistry } from 'react-native';
 
 const store = {};
 
@@ -49,13 +49,38 @@ export function syncAuthFromContext(token, username) {
 
 // ==================== Token 过期处理 ====================
 
+function getNativeAuthModule() {
+  if (NativeModules.AuthModule) {
+    return NativeModules.AuthModule;
+  }
+
+  try {
+    // Android exposes AuthModule through NativeModules. Harmony RNOH custom
+    // modules are registered as TurboModules, so they must be resolved through
+    // TurboModuleRegistry instead.
+    return TurboModuleRegistry.get('AuthModule');
+  } catch {
+    return null;
+  }
+}
+
 /**
  * token 过期时通知原生侧跳转原生登录页
  */
 export function handleTokenExpired() {
-  if (Platform.OS === 'android' || Platform.OS === 'harmony' || Platform.OS === 'ios') {
-    NativeModules.AuthModule.onTokenExpired();
-    return true;
+  if (Platform.OS !== 'android' && Platform.OS !== 'harmony' && Platform.OS !== 'ios') {
+    return false;
   }
-  return false;
+
+  const authModule = getNativeAuthModule();
+  const hasHandler = typeof authModule?.onTokenExpired === 'function';
+  try {
+    if (!hasHandler) {
+      return false;
+    }
+    authModule.onTokenExpired();
+    return true;
+  } catch {
+    return false;
+  }
 }

@@ -22,5 +22,7 @@ set(NODE_MODULES "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../node_modules")
 set(PUSHY_CPP_DIR "${NODE_MODULES}/react-native-update/harmony/pushy/src/main/cpp")
 target_include_directories(rnoh_app PRIVATE "${PUSHY_CPP_DIR}")
 target_sources(rnoh_app PRIVATE "${PUSHY_CPP_DIR}/PushyTurboModule.cpp")
+# AuthModule is resolved by RN JS through TurboModuleRegistry on Harmony.
+target_sources(rnoh_app PRIVATE "./AuthTurboModule.cpp")
 
 target_link_libraries(rnoh_app PUBLIC rnoh)

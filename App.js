@@ -16,8 +16,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from './src/navigation/AppNavigator';
 
 const App = (props) => {
-    const {param1, token, username} = props
-    console.log('props', param1)
+    const {token, username} = props
 
     // Pushy hot update for all platforms
     const {Pushy, UpdateProvider} = require('react-native-update');
