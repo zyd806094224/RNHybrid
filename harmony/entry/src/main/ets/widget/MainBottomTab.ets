@@ -23,7 +23,7 @@ export struct MainBottomTab {
    */
   build() {
     Column() {
-      // 分割线
+      // Android BottomNavigationView 是白底 + 顶部分割线；这里同步同样的视觉基线。
       Divider()
         .color($r('app.color.app_tab_line_color'))
         .width(CommonConstants.MATCH_PARENT)
@@ -63,7 +63,7 @@ export struct MainBottomTab {
             }
           })
         })
-      }.height($r('app.float.size_50'))
+      }.height(56)
     }
   }
 
@@ -75,8 +75,8 @@ export struct MainBottomTab {
   TabContent(item: FooterTab) {
     Column() {
       Image(this.currentPage === item.getPath() ? item.getIconSelected() : item.getIcon())
-        .width($r('app.float.size_20'))
-        .height($r('app.float.size_20'))
+        .width(24)
+        .height(24)
       Text(item.getName())
         .margin({ top: $r('app.float.size_4') })
         .fontSize($r('app.float.size_12'))

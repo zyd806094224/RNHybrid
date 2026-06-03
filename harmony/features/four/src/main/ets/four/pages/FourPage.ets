@@ -1,10 +1,9 @@
-import { HMRouter, HMRouterMgr, HMLifecycleState } from "@hadss/hmrouter";
-import { RouterUrl, CommonConstants, AuthManager } from "component";
-import { promptAction } from "@kit.ArkUI";
+import { HMRouter, HMRouterMgr, HMLifecycleState } from '@hadss/hmrouter';
+import { RouterUrl, CommonConstants, AuthManager, WindowUtils } from 'component';
 
 /**
- * 我的页面 - 对应 Android MineFragment
- * 根据登录态动态切换：未登录显示"点击去登录"，已登录显示用户名 + 退出登录二次确认
+ * 我的页面 - 对应 Android MineFragment。
+ * 根据登录态动态切换：未登录点击头部去登录，已登录显示用户名和退出登录入口。
  */
 @HMRouter({ pageUrl: RouterUrl.FOUR_TAB_INDEX_PAGE })
 @Entry
@@ -12,200 +11,351 @@ import { promptAction } from "@kit.ArkUI";
 export struct FourPage {
   @Local userName: string = '未登录'
   @Local userSubtitle: string = '点击去登录'
-  @Local logoutText: string = '登录'
-  @Local isLogoutTextColor: string = '#6200EE'
+  @Local isLoggedInState: boolean = false
+
+  private hasLifecycleObserver: boolean = false
 
   aboutToAppear(): void {
+    // Android MineFragment 使用青绿色沉浸状态栏，状态栏和头像头图区要是一整块颜色。
+    WindowUtils.setWindowLayoutFullScreen(true).catch(() => {})
+    WindowUtils.setStatusBar({
+      statusBarColor: '#18BFAE',
+      statusBarContentColor: '#FFFFFF',
+    }).catch(() => {})
+
     this.refreshUI()
-    // 监听页面重新显示（从 LoginPage pop 回来时触发）
-    const owner = HMRouterMgr.getCurrentLifecycleOwner();
-    owner?.addObserver(HMLifecycleState.onShown, () => {
-      this.refreshUI()
-    });
+    if (!this.hasLifecycleObserver) {
+      this.hasLifecycleObserver = true
+      // Android 在 onResume 刷新登录态；鸿蒙侧监听 onShown，保证登录页 pop 回来后立即更新。
+      const owner = HMRouterMgr.getCurrentLifecycleOwner();
+      owner?.addObserver(HMLifecycleState.onShown, () => {
+        this.refreshUI()
+      });
+    }
   }
 
   private refreshUI() {
     const authManager = AuthManager.getInstance()
-    if (authManager.isLoggedIn()) {
+    this.isLoggedInState = authManager.isLoggedIn()
+    if (this.isLoggedInState) {
       this.userName = authManager.getUsername()
       this.userSubtitle = '已登录'
-      this.logoutText = '退出登录'
-      this.isLogoutTextColor = '#F44336'
     } else {
       this.userName = '未登录'
       this.userSubtitle = '点击去登录'
-      this.logoutText = '登录'
-      this.isLogoutTextColor = '#6200EE'
     }
   }
 
   build() {
-    Scroll() {
-      Column() {
-        // 顶部个人信息区域（紫色背景）
-        this.ProfileHeader()
-
-        // 个人信息卡片
-        this.ProfileInfoCard()
-
-        // 设置选项卡片
-        this.SettingsCard()
+    Column() {
+      Scroll() {
+        Column() {
+          this.ProfileHeader()
+          this.AccountInfoCard()
+          this.ShortcutCard()
+          this.SettingsCard()
+        }
+        .width('100%')
+        .padding({ bottom: 24 })
+        .alignItems(HorizontalAlign.Start)
       }
-      .width('100%')
-      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+      .backgroundColor('#F7FAFC')
+      .scrollBar(BarState.Off)
+      .align(Alignment.Top)
     }
     .width('100%')
     .height('100%')
-    .align(Alignment.Top)
-    .backgroundColor('#F5F5F5')
-    .scrollBar(BarState.Off)
+    .backgroundColor('#F7FAFC')
   }
 
   /**
-   * 顶部个人信息区域
+   * 顶部个人信息区域按 Android bg_mine_header 同步。
    */
   @Builder
   ProfileHeader() {
     Column() {
-      Image($r('app.media.layered_image'))
+      Row() {
+        Stack() {
+          Text('👤')
+            .fontSize(30)
+            .fontColor('#18BFAE')
+        }
         .width(64)
         .height(64)
-        .borderRadius(32)
+        .backgroundColor('#E9FFFB')
+        .borderRadius(8)
 
-      Text(this.userName)
+        Column() {
+          Text(this.userName)
+            .fontSize(21)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(Color.White)
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+
+          Text(this.userSubtitle)
+            .fontSize(12)
+            .fontColor('#EAF2FF')
+            .padding({ left: 10, right: 10, top: 4, bottom: 4 })
+            .margin({ top: 6 })
+            .backgroundColor('#26FFFFFF')
+            .borderRadius(8)
+        }
+        .layoutWeight(1)
+        .margin({ left: 14 })
+        .alignItems(HorizontalAlign.Start)
+
+        Text('›')
+          .fontSize(28)
+          .fontColor('#CCFFFFFF')
+      }
+      .width('100%')
+      .margin({ top: 18 })
+      .alignItems(VerticalAlign.Center)
+
+      Row() {
+        this.HeaderMetric('0', '收藏')
+        this.HeaderMetric('0', '优惠券')
+        this.HeaderMetric('0', '消息')
+      }
+      .width('100%')
+      .margin({ top: 18 })
+      .justifyContent(FlexAlign.SpaceBetween)
+    }
+    .width('100%')
+    .padding({ left: 20, right: 20, top: 38, bottom: 20 })
+    .backgroundColor('#18BFAE')
+    .onClick(() => {
+      if (!this.isLoggedInState) {
+        this.goLogin()
+      }
+    })
+  }
+
+  @Builder
+  HeaderMetric(value: string, label: string) {
+    Column() {
+      Text(value)
         .fontSize(18)
         .fontWeight(FontWeight.Bold)
         .fontColor(Color.White)
-        .margin({ top: 12 })
 
-      Text(this.userSubtitle)
+      Text(label)
         .fontSize(12)
-        .fontColor('#B3FFFFFF')
+        .fontColor('#CCEAF2FF')
         .margin({ top: 4 })
     }
-    .width('100%')
-    .padding({ top: 40, bottom: 28 })
+    .layoutWeight(1)
+    .height(60)
+    .margin({ left: label === '收藏' ? 0 : 10 })
     .justifyContent(FlexAlign.Center)
-    .backgroundColor('#6200EE')
+    .alignItems(HorizontalAlign.Center)
+    .backgroundColor('#20FFFFFF')
+    .borderRadius(8)
   }
 
-  /**
-   * 个人信息卡片
-   */
   @Builder
-  ProfileInfoCard() {
+  AccountInfoCard() {
     Column() {
-      Text('个人信息')
-        .fontSize(15)
+      Text('账户信息')
+        .fontSize(16)
         .fontWeight(FontWeight.Bold)
-        .fontColor('#333333')
+        .fontColor('#101828')
         .alignSelf(ItemAlign.Start)
 
-      this.InfoRow('手机号', '未绑定')
-      Divider().color('#F0F0F0')
-
-      this.InfoRow('邮箱', '未绑定')
+      this.InfoRow('☎', '#EAF1FF', '#155EEF', '手机号', '未绑定')
+      Divider()
+        .color('#F2F4F7')
+        .margin({ left: 48 })
+      this.InfoRow('✉', '#CCF7F3', '#008E7D', '邮箱', '未绑定')
     }
     .width('100%')
     .padding(16)
     .backgroundColor(Color.White)
-    .borderRadius(12)
-    .margin({ left: 12, right: 12, top: 16 })
-    .shadow({ radius: 2, color: '#0F000000', offsetY: 1 })
+    .border({ width: 1, color: '#0F101828' })
+    .borderRadius(8)
+    .margin({ left: 16, right: 16, top: 14 })
   }
 
-  /**
-   * 设置选项卡片
-   */
+  @Builder
+  ShortcutCard() {
+    Grid() {
+      GridItem() {
+        this.ShortcutItem('💼', '#FFF4E5', '钱包')
+      }
+      GridItem() {
+        this.ShortcutItem('券', '#EAF8EF', '卡券')
+      }
+      GridItem() {
+        this.ShortcutItem('☎', '#FEECEC', '客服')
+      }
+      GridItem() {
+        this.ShortcutItem('⚙', '#F1ECFE', '设置')
+      }
+    }
+    .columnsTemplate('1fr 1fr 1fr 1fr')
+    .width('100%')
+    .padding({ top: 18, bottom: 16 })
+    .backgroundColor(Color.White)
+    .border({ width: 1, color: '#0F101828' })
+    .borderRadius(8)
+    .margin({ left: 16, right: 16, top: 12 })
+  }
+
+  @Builder
+  ShortcutItem(icon: string, iconBg: string, label: string) {
+    Column() {
+      Stack() {
+        Text(icon)
+          .fontSize(20)
+      }
+      .width(42)
+      .height(42)
+      .backgroundColor(iconBg)
+      .borderRadius(21)
+
+      Text(label)
+        .fontSize(13)
+        .fontColor('#344054')
+        .margin({ top: 9 })
+    }
+    .width('100%')
+    .height(82)
+    .justifyContent(FlexAlign.Center)
+    .alignItems(HorizontalAlign.Center)
+  }
+
   @Builder
   SettingsCard() {
     Column() {
-      Text('设置')
-        .fontSize(15)
-        .fontWeight(FontWeight.Bold)
-        .fontColor('#333333')
-        .alignSelf(ItemAlign.Start)
+      this.ActionRow('🛡', '#EAF8EF', '账户安全', '待完善', false, '#344054')
+      Divider()
+        .color('#F2F4F7')
+        .margin({ left: 48 })
+      this.ActionRow('ⓘ', '#EAF1FF', '关于我们', '', true, '#344054')
 
-      Row() {
-        Text('关于')
-          .fontSize(14)
-          .fontColor('#333333')
+      if (this.isLoggedInState) {
+        Divider()
+          .color('#F2F4F7')
+          .margin({ left: 48 })
+        this.LogoutRow()
       }
-      .width('100%')
-      .height(46)
-      .margin({ top: 8 })
-      .alignItems(VerticalAlign.Center)
-
-      Divider().color('#F0F0F0')
-
-      // 登录 / 退出登录
-      Row() {
-        Text(this.logoutText)
-          .fontSize(14)
-          .fontColor(this.isLogoutTextColor)
-      }
-      .width('100%')
-      .height(46)
-      .alignItems(VerticalAlign.Center)
-      .onClick(() => this.handleLogoutOrLogin())
     }
     .width('100%')
-    .padding(16)
+    .padding({ left: 16, right: 16, top: 8, bottom: 8 })
     .backgroundColor(Color.White)
-    .borderRadius(12)
-    .margin({ left: 12, right: 12, top: 10, bottom: 16 })
-    .shadow({ radius: 2, color: '#0F000000', offsetY: 1 })
+    .border({ width: 1, color: '#0F101828' })
+    .borderRadius(8)
+    .margin({ left: 16, right: 16, top: 12, bottom: 16 })
   }
 
-  /**
-   * 个人信息行
-   */
   @Builder
-  InfoRow(label: string, value: string) {
+  InfoRow(icon: string, iconBg: string, iconColor: string, label: string, value: string) {
     Row() {
+      this.RoundIcon(icon, iconBg, iconColor, 36)
+
       Text(label)
         .fontSize(14)
-        .fontColor('#666666')
+        .fontColor('#344054')
         .layoutWeight(1)
+        .margin({ left: 12 })
 
       Text(value)
         .fontSize(14)
-        .fontColor('#999999')
+        .fontColor('#98A2B3')
     }
     .width('100%')
-    .height(46)
-    .margin({ top: 8 })
+    .height(54)
+    .margin({ top: 12 })
     .alignItems(VerticalAlign.Center)
   }
 
-  /**
-   * 处理登录/退出登录
-   */
-  private handleLogoutOrLogin() {
-    const authManager = AuthManager.getInstance()
-    if (authManager.isLoggedIn()) {
-      // 已登录 → 二次确认退出
-      AlertDialog.show({
-        title: '提示',
-        message: '确定要退出登录吗？',
-        primaryButton: {
-          value: '取消',
-          action: () => {}
-        },
-        secondaryButton: {
-          value: '确定',
-          action: async () => {
-            await authManager.logout()
-            this.refreshUI()
-          }
-        }
-      })
-    } else {
-      // 未登录 → 跳转登录页
-      HMRouterMgr.push({
-        navigationId: CommonConstants.LAUNCHER_NAVIGATION_ID,
-        pageUrl: RouterUrl.LOGIN_PAGE_URL,
-      })
+  @Builder
+  ActionRow(icon: string, iconBg: string, label: string, rightText: string, showArrow: boolean, labelColor: string) {
+    Row() {
+      this.RoundIcon(icon, iconBg, labelColor, 36)
+
+      Text(label)
+        .fontSize(14)
+        .fontColor(labelColor)
+        .layoutWeight(1)
+        .margin({ left: 12 })
+
+      if (rightText.length > 0) {
+        Text(rightText)
+          .fontSize(13)
+          .fontColor('#98A2B3')
+      }
+
+      if (showArrow || rightText.length > 0) {
+        Text('›')
+          .fontSize(22)
+          .fontColor('#98A2B3')
+          .margin({ left: 6 })
+      }
     }
+    .width('100%')
+    .height(56)
+    .alignItems(VerticalAlign.Center)
+  }
+
+  @Builder
+  LogoutRow() {
+    Row() {
+      this.RoundIcon('↩', '#FEECEC', '#DC2626', 36)
+
+      Text('退出登录')
+        .fontSize(14)
+        .fontColor('#DC2626')
+        .fontWeight(FontWeight.Bold)
+        .layoutWeight(1)
+        .margin({ left: 12 })
+    }
+    .width('100%')
+    .height(56)
+    .alignItems(VerticalAlign.Center)
+    .onClick(() => this.handleLogout())
+  }
+
+  @Builder
+  RoundIcon(icon: string, bg: string, color: string, size: number) {
+    Stack() {
+      Text(icon)
+        .fontSize(size === 42 ? 21 : 18)
+        .fontColor(color)
+    }
+    .width(size)
+    .height(size)
+    .backgroundColor(bg)
+    .borderRadius(size / 2)
+  }
+
+  /**
+   * 退出登录只在已登录时展示，与 Android layout_logout_row 的 gone/visible 行为一致。
+   */
+  private handleLogout() {
+    AlertDialog.show({
+      title: '提示',
+      message: '确定要退出登录吗？',
+      primaryButton: {
+        value: '取消',
+        action: () => {}
+      },
+      secondaryButton: {
+        value: '确定',
+        action: async () => {
+          await AuthManager.getInstance().logout()
+          this.refreshUI()
+        }
+      }
+    })
+  }
+
+  private goLogin() {
+    HMRouterMgr.push({
+      navigationId: CommonConstants.LAUNCHER_NAVIGATION_ID,
+      pageUrl: RouterUrl.LOGIN_PAGE_URL,
+    })
   }
 }

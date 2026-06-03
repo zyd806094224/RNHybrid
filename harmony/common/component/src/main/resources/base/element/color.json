@@ -2,11 +2,11 @@
   "color": [
     {
       "name": "app_tab_text_select_color",
-      "value": "#dd3030"
+      "value": "#12BFA5"
     },
     {
       "name": "app_tab_text_default_color",
-      "value": "#999999"
+      "value": "#AAB4C0"
     },
     {
       "name": "white",
@@ -18,11 +18,11 @@
     },
     {
       "name": "app_tab_background_color",
-      "value": "#E0FFFFFF"
+      "value": "#FFFFFF"
     },
     {
       "name": "app_tab_line_color",
-      "value": "#CCCCCC"
+      "value": "#F2F4F7"
     },
     {
       "name": "default_text_color",

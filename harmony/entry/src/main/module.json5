@@ -23,7 +23,7 @@
         "name": "EntryAbility",
         "srcEntry": "./ets/entryability/EntryAbility.ets",
         "description": "$string:EntryAbility_desc",
-        "icon": "$media:layered_image",
+        "icon": "$media:ic_qingxia_launcher",
         "label": "$string:app_name",
         "startWindowIcon": "$media:startIcon",
         "startWindowBackground": "$color:start_window_background",

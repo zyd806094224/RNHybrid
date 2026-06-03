@@ -10,7 +10,7 @@ import {
   ComponentBuilderContext,
 } from '@rnoh/react-native-openharmony';
 import { PushyFileJSBundleProvider } from 'pushy';
-import { RouterUrl, CommonConstants, AuthManager } from 'component';
+import { RouterUrl, CommonConstants, AuthManager, WindowUtils } from 'component';
 import { createRNPackages } from '../RNPackagesFactory';
 import { AuthTurboModule } from 'lib_rn';
 
@@ -33,6 +33,10 @@ export struct RNPage {
 
   aboutToAppear(): void {
     this.logger = this.rnohCoreContext!.logger.clone("RNPage")
+    // RN 侧 SafeContainer 在 Harmony 分支不再额外加安全区 padding，
+    // 因此 RN 容器页必须恢复非 fullscreen，让原生窗口把 RNOH surface 放在状态栏下方。
+    this.applyRNStatusBar()
+
     const owner = HMRouterMgr.getCurrentLifecycleOwner();
     owner?.addObserver(HMLifecycleState.onBackPressed, () => {
       this.rnohCoreContext?.dispatchBackPress();
@@ -53,6 +57,7 @@ export struct RNPage {
   aboutToDisappear(): void {
     AuthTurboModule.isHandling = false;
     AuthTurboModule.tokenExpiredCallback = null;
+    this.restoreMainStatusBar()
   }
 
   build() {
@@ -96,5 +101,30 @@ export struct RNPage {
     }
     .height('100%')
     .width('100%')
+  }
+
+  private applyRNStatusBar(): void {
+    WindowUtils.setWindowLayoutFullScreen(false).catch(() => {})
+    WindowUtils.setStatusBar({
+      statusBarColor: '#FFFFFF',
+      statusBarContentColor: '#203033',
+    }).catch(() => {})
+  }
+
+  private restoreMainStatusBar(): void {
+    WindowUtils.setWindowLayoutFullScreen(true).catch(() => {})
+    const currentPage = AppStorage.get<string>('currentPage') ?? ''
+    if (currentPage === RouterUrl.FOUR_TAB_INDEX_PAGE) {
+      WindowUtils.setStatusBar({
+        statusBarColor: '#18BFAE',
+        statusBarContentColor: '#FFFFFF',
+      }).catch(() => {})
+      return
+    }
+
+    WindowUtils.setStatusBar({
+      statusBarColor: '#E9FFF8',
+      statusBarContentColor: '#223033',
+    }).catch(() => {})
   }
 }

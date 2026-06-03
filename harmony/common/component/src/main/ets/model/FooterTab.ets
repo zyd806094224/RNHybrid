@@ -14,15 +14,15 @@ export class MainTabModel {
       new FooterTab(
         '主页',
         RouterUrl.ONE_TAB_INDEX_PAGE,
-        $r("app.media.icon_tab_news_unselect"),
-        $r('app.media.icon_tab_news_selected'),
+        $r('app.media.icon_tab_home_unselect'),
+        $r('app.media.icon_tab_home_select'),
         null
       ),
       new FooterTab(
         '我的',
         RouterUrl.FOUR_TAB_INDEX_PAGE,
-        $r("app.media.icon_tab_mine_unselect"),
-        $r("app.media.icon_tab_mine_select"),
+        $r('app.media.icon_tab_mine_android_unselect'),
+        $r('app.media.icon_tab_mine_android_select'),
         null
       )
     ];

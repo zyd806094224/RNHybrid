@@ -1,6 +1,6 @@
-import { HMDefaultGlobalAnimator, HMNavigation, HMRouter, HMRouterMgr } from '@hadss/hmrouter'
+import { HMDefaultGlobalAnimator, HMNavigation, HMRouter } from '@hadss/hmrouter'
 import { AttributeUpdater, uiObserver } from '@kit.ArkUI'
-import { Logger, RouterUrl } from 'component'
+import { RouterUrl, WindowUtils } from 'component'
 import { MainConstants } from '../common/MainConstants'
 import { MainBottomTab } from '../widget/MainBottomTab'
 
@@ -38,7 +38,7 @@ export struct Main {
    * 组件即将显示
    */
   aboutToAppear(): void {
-    Logger.e("zzz","Main-aboutToAppear")
+    this.applyStatusBarForPage(this.pageTabs[0])
     // 监听Tab切换, navDestinationSwitch为type类型，非字符串
     uiObserver.on('navDestinationSwitch', this.getUIContext(), {
       navigationId: MainConstants.MAIN_NAVIGATION_ID
@@ -46,6 +46,8 @@ export struct Main {
       let newPageName = (info.to as NavDestinationInfo).name.toString();
       if (this.pageTabs.includes(newPageName)) {
         AppStorage.setOrCreate('currentPage', newPageName);
+        // 对齐 Android MainActivity 的目的页监听：主页/我的切换时同步状态栏颜色。
+        this.applyStatusBarForPage(newPageName)
       }
     })
   }
@@ -80,5 +82,21 @@ export struct Main {
       MainBottomTab()
     }.height('100%')
     .width('100%')
+  }
+
+  private applyStatusBarForPage(pageName: string): void {
+    WindowUtils.setWindowLayoutFullScreen(true).catch(() => {})
+    if (pageName === RouterUrl.FOUR_TAB_INDEX_PAGE) {
+      WindowUtils.setStatusBar({
+        statusBarColor: '#18BFAE',
+        statusBarContentColor: '#FFFFFF',
+      }).catch(() => {})
+      return
+    }
+
+    WindowUtils.setStatusBar({
+      statusBarColor: '#E9FFF8',
+      statusBarContentColor: '#223033',
+    }).catch(() => {})
   }
 }

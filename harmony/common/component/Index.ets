@@ -27,4 +27,6 @@ export { LazyDataSource } from './src/main/ets/utils/LazyDataSource'
 
 export { BasicDataSource } from './src/main/ets/utils/BasicDataSource'
 
+export { WindowUtils } from './src/main/ets/utils/WindowUtils'
+
 export { AuthManager } from './src/main/ets/auth/AuthManager'

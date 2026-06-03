@@ -1,6 +1,10 @@
 {
   "string": [
     {
+      "name": "app_name",
+      "value": "轻匣"
+    },
+    {
       "name": "module_desc",
       "value": "module description"
     },
@@ -10,7 +14,7 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "label"
+      "value": "轻匣"
     }
   ]
 }
