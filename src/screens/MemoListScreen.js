@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,10 +9,13 @@ import {
   StyleSheet,
   Alert,
   RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 import SafeContainer from '../components/SafeContainer';
 import { getMemoList, deleteMemo, getCategoryList } from '../api/memo';
 import { useAppContext } from '../context/AppContext';
+
+const PAGE_SIZE = 10;
 
 const MemoListScreen = ({ navigation }) => {
   const { username } = useAppContext();
@@ -21,6 +24,12 @@ const MemoListScreen = ({ navigation }) => {
   const [activeCategory, setActiveCategory] = useState(null);
   const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [pageNum, setPageNum] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const loadingMoreRef = useRef(false);
+  const listRequestIdRef = useRef(0);
 
   const fetchCategories = async () => {
     const res = await getCategoryList();
@@ -29,10 +38,24 @@ const MemoListScreen = ({ navigation }) => {
     }
   };
 
-  const fetchData = useCallback(async () => {
-    setLoading(true);
+  const fetchPage = useCallback(async (nextPage, append) => {
+    if (append && loadingMoreRef.current) {
+      return;
+    }
+
+    const requestId = append
+      ? listRequestIdRef.current
+      : listRequestIdRef.current + 1;
+    if (!append) {
+      listRequestIdRef.current = requestId;
+      setLoading(true);
+    } else {
+      loadingMoreRef.current = true;
+      setLoadingMore(true);
+    }
+
     try {
-      const params = { pageNum: 1, pageSize: 100 };
+      const params = { pageNum: nextPage, pageSize: PAGE_SIZE };
       if (activeCategory) {
         params.categoryId = activeCategory;
       }
@@ -40,14 +63,42 @@ const MemoListScreen = ({ navigation }) => {
         params.memoName = keyword.trim();
       }
       const res = await getMemoList(params);
+      if (requestId !== listRequestIdRef.current) {
+        return;
+      }
       if (res.code === 401) return;
       if (res.code === 0) {
-        setMemos(res.data || []);
+        const list = Array.isArray(res.data) ? res.data : [];
+        const totalCount = Number(res.total) || 0;
+        setMemos(prev => (append ? [...prev, ...list] : list));
+        setPageNum(nextPage);
+        setTotal(totalCount);
+        setHasMore(
+          totalCount > 0
+            ? nextPage * PAGE_SIZE < totalCount
+            : list.length === PAGE_SIZE
+        );
       }
     } finally {
-      setLoading(false);
+      if (append) {
+        loadingMoreRef.current = false;
+        setLoadingMore(false);
+      } else if (requestId === listRequestIdRef.current) {
+        setLoading(false);
+      }
     }
   }, [activeCategory, keyword]);
+
+  const fetchData = useCallback(() => {
+    return fetchPage(1, false);
+  }, [fetchPage]);
+
+  const loadMore = useCallback(() => {
+    if (loading || loadingMore || !hasMore) {
+      return;
+    }
+    fetchPage(pageNum + 1, true);
+  }, [loading, loadingMore, hasMore, pageNum, fetchPage]);
 
   useEffect(() => {
     fetchCategories();
@@ -123,6 +174,29 @@ const MemoListScreen = ({ navigation }) => {
     </View>
   );
 
+  const renderFooter = () => {
+    if (loadingMore) {
+      return (
+        <View style={styles.footer}>
+          <ActivityIndicator size="small" color="#2196F3" />
+          <Text style={styles.footerText}>加载更多...</Text>
+        </View>
+      );
+    }
+
+    if (!hasMore && memos.length > 0) {
+      return (
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>
+            {total > 0 ? `已加载全部 ${total} 条` : '没有更多了'}
+          </Text>
+        </View>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <SafeContainer style={styles.container}>
       {/* 标题栏 */}
@@ -194,12 +268,15 @@ const MemoListScreen = ({ navigation }) => {
         keyExtractor={item => String(item.memoId)}
         renderItem={renderItem}
         ListEmptyComponent={renderEmpty}
+        ListFooterComponent={renderFooter}
         contentContainerStyle={
           memos.length === 0 ? styles.listEmpty : styles.listContent
         }
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={fetchData} />
         }
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.35}
         showsVerticalScrollIndicator={false}
       />
 
@@ -308,6 +385,17 @@ const styles = StyleSheet.create({
   },
   listEmpty: {
     flexGrow: 1,
+  },
+  footer: {
+    minHeight: 42,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  footerText: {
+    fontSize: 12,
+    color: '#999',
+    marginLeft: 6,
   },
 
   // Card
