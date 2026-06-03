@@ -51,9 +51,7 @@ export struct FourPage {
       Scroll() {
         Column() {
           this.ProfileHeader()
-          this.AccountInfoCard()
-          this.ShortcutCard()
-          this.SettingsCard()
+          this.CardGroup()
         }
         .width('100%')
         .padding({ bottom: 24 })
@@ -156,6 +154,19 @@ export struct FourPage {
   }
 
   @Builder
+  CardGroup() {
+    // ArkUI 中 width('100%') 再叠加左右 margin 会向外溢出；
+    // 外层统一 padding，卡片内部保持 100%，右侧边框才不会跑出屏幕。
+    Column() {
+      this.AccountInfoCard()
+      this.ShortcutCard()
+      this.SettingsCard()
+    }
+    .width('100%')
+    .padding({ left: 16, right: 16 })
+  }
+
+  @Builder
   AccountInfoCard() {
     Column() {
       Text('账户信息')
@@ -175,7 +186,7 @@ export struct FourPage {
     .backgroundColor(Color.White)
     .border({ width: 1, color: '#0F101828' })
     .borderRadius(8)
-    .margin({ left: 16, right: 16, top: 14 })
+    .margin({ top: 14 })
   }
 
   @Builder
@@ -200,7 +211,7 @@ export struct FourPage {
     .backgroundColor(Color.White)
     .border({ width: 1, color: '#0F101828' })
     .borderRadius(8)
-    .margin({ left: 16, right: 16, top: 12 })
+    .margin({ top: 12 })
   }
 
   @Builder
@@ -247,7 +258,7 @@ export struct FourPage {
     .backgroundColor(Color.White)
     .border({ width: 1, color: '#0F101828' })
     .borderRadius(8)
-    .margin({ left: 16, right: 16, top: 12, bottom: 16 })
+    .margin({ top: 12, bottom: 16 })
   }
 
   @Builder
