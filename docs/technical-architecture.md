@@ -62,8 +62,8 @@
 | 原生桥 | `AuthModule` | `AuthModule` | `AuthTurboModule` |
 | Token 存储 | MMKV | Keychain | ArkData Preferences |
 | 用户名存储 | MMKV | `NSUserDefaults` | ArkData Preferences |
-| Debug Bundle | Metro | Metro | Metro |
-| Release Bundle | Pushy / assets | Documents 本地 Bundle | Pushy / rawfile |
+| Debug Bundle | Metro / assets | Metro / App 内置 Bundle | Metro / rawfile |
+| Release Bundle | Pushy / assets | Documents 更新包 / App 内置 Bundle | Pushy / rawfile |
 
 平台具体结构见 [Android](../android/README.md)、[iOS](../ios/README.md) 和 [HarmonyOS](../harmony/README.md) 说明。
 
@@ -116,12 +116,14 @@ Android Debug 同时配置 APK 内置 BundleLoader：Metro 不可用且没有可
 
 HarmonyOS Debug 使用 RNOH `AnyJSBundleProvider` 按 `MetroJSBundleProvider`、`ResourceJSBundleProvider` 的顺序加载。Metro 无法连接时回退到 HAP 内置 `bundle.harmony.js`，但不读取 Pushy 热更新文件。使用 `npm run bundle:harmony:debug-fallback` 手动刷新该兜底 Bundle。
 
-Android 和 HarmonyOS 在 Metro 已连接但 Bundle 编译失败时都会保留开发错误，不会自动回退旧 Bundle。
+iOS Debug 使用 React Native 官方 `RCTBundleURLProvider` 探测 Metro。Metro 无法连接时回退 App 内置 `main.jsbundle`，但不读取 Documents 更新包。使用 `npm run bundle:ios:debug-fallback` 手动刷新该兜底 Bundle。
+
+三端在 Metro 已连接但 Bundle 编译失败时都会保留开发错误，不会自动回退旧 Bundle。
 
 ### Release
 
 - Android：`ReactNativeManager` 通过 `UpdateContext` 选择 Pushy 已下载更新包，未命中时回退到 `assets://index.android.bundle`。
-- iOS：`RNViewController` 优先读取 Documents 中的 `index.ios.bundle`，文件不存在时从配置的服务端下载。该流程目前是自定义实现，且没有内置离线 Bundle 兜底。
+- iOS：`RNViewController` 优先读取 Documents 中的 `index.ios.bundle`，文件不存在时从配置的服务端下载，下载不可用或失败时回退 App 内置 `main.jsbundle`。使用 `npm run bundle:ios:release` 刷新生产模式内置 Bundle。
 - HarmonyOS：RNOH 按 `PushyFileJSBundleProvider`、`ResourceJSBundleProvider` 的顺序加载，使用 `npm run bundle:harmony:release` 刷新生产模式内置 Bundle。
 
 `App.js` 统一接入 `react-native-update` 的更新客户端，但三个原生容器的 Release Bundle 解析方式并不完全相同。发布前应分别验证三端基线包、更新包、回退能力和无可用 Bundle 时的错误处理。

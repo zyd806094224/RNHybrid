@@ -54,10 +54,10 @@ RN 不持久化 Token。`RNViewController` 从 `AuthManager` 读取登录态并�
 
 ## RN Bundle
 
-- Debug：通过 `RCTBundleURLProvider` 连接 Metro。
-- Release：优先读取 Documents 目录中的 `index.ios.bundle`；文件不存在时，由 `RNViewController` 从配置的 Bundle 服务下载后加载。
+- Debug：通过 `RCTBundleURLProvider` 优先连接 Metro，Metro 不可用时回退 App 内置 `main.jsbundle`，且不读取 Documents 更新包。
+- Release：优先读取 Documents 目录中的 `index.ios.bundle`；文件不存在时，由 `RNViewController` 从配置的 Bundle 服务下载；下载不可用或失败时回退 App 内置 `main.jsbundle`。
 
-当前 Release 加载是 iOS 自定义实现，与 Android、HarmonyOS 的原生 Pushy Bundle Provider 不完全一致，并且没有内置离线 Bundle 兜底。调整更新策略时需要同时验证下载失败、文件无效和首次离线启动场景。
+Metro 已连接但返回 Bundle 编译错误时，会保留 React Native 开发错误页面，不会回退旧 Bundle。当前 Release 更新加载仍是 iOS 自定义实现，与 Android、HarmonyOS 的原生 Pushy Bundle Provider 不完全一致。
 
 ## 构建与运行
 
@@ -71,6 +71,20 @@ npm run ios
 ```
 
 也可使用 Xcode 打开 `ios/RNHybrid.xcworkspace`，选择 `RNHybrid` Scheme 和目标设备运行。
+
+刷新 Debug 模式的 App 内置 RN 兜底 Bundle：
+
+```bash
+npm run bundle:ios:debug-fallback
+```
+
+发布 Release 前生成生产模式内置 Bundle：
+
+```bash
+npm run bundle:ios:release
+```
+
+两个命令都会覆盖 `RNHybrid/Resources/main.jsbundle` 和配套 `assets/`，构建 App 前应执行与目标构建模式对应的命令。
 
 命令行构建模拟器 Debug 包：
 

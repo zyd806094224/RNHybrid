@@ -107,6 +107,13 @@ cd android
 cd ios
 pod install
 cd ..
+
+# 刷新 Debug 模式的 App 内置 RN 兜底 Bundle
+npm run bundle:ios:debug-fallback
+
+# 发布 Release 前生成生产模式内置 Bundle
+npm run bundle:ios:release
+
 npm run ios
 ```
 

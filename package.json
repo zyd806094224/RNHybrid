@@ -5,6 +5,8 @@
   "scripts": {
     "android": "react-native run-android",
     "bundle:android:debug-fallback": "react-native bundle --platform android --dev true --minify true --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "bundle:ios:debug-fallback": "react-native bundle --platform ios --dev true --minify true --entry-file index.js --bundle-output ios/RNHybrid/Resources/main.jsbundle --assets-dest ios/RNHybrid/Resources",
+    "bundle:ios:release": "react-native bundle --platform ios --dev false --minify true --entry-file index.js --bundle-output ios/RNHybrid/Resources/main.jsbundle --assets-dest ios/RNHybrid/Resources",
     "bundle:harmony:debug-fallback": "react-native bundle-harmony --dev true --minify true",
     "bundle:harmony:release": "react-native bundle-harmony --dev false --minify true",
     "ios": "react-native run-ios",

@@ -6,6 +6,9 @@
 #import "../Auth/AuthModule.h"
 #import "../Auth/LoginViewController.h"
 
+static NSString * const RNEmbeddedBundleName = @"main";
+static NSString * const RNEmbeddedBundleExtension = @"jsbundle";
+
 /**
  * RNViewController
  * React Native 容器页面，对标 Android RNPageActivity
@@ -51,7 +54,7 @@
     };
 
 #if DEBUG
-    [self initializeReactNativeWithBundle:nil];
+    [self loadDebugBundle];
 #else
     [self downloadBundleFile];
 #endif
@@ -131,6 +134,49 @@
     [self.loadingIndicator startAnimating];
 }
 
+- (NSURL *)embeddedBundleURL {
+    NSURL *bundleURL = [[NSBundle mainBundle] URLForResource:RNEmbeddedBundleName
+                                               withExtension:RNEmbeddedBundleExtension];
+    if (!bundleURL) {
+        NSLog(@"Embedded React Native bundle is missing.");
+    }
+    return bundleURL;
+}
+
+- (void)loadDebugBundle {
+    self.loadingLabel.text = @"正在连接开发服务...";
+    NSURL *embeddedBundleURL = [self embeddedBundleURL];
+
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        NSURL *bundleURL = [[RCTBundleURLProvider sharedSettings]
+            jsBundleURLForBundleRoot:@"index"
+                 fallbackURLProvider:^NSURL * {
+                     return embeddedBundleURL;
+                 }];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (bundleURL.isFileURL) {
+                NSLog(@"DEBUG mode: Metro unavailable, using embedded bundle.");
+            } else {
+                NSLog(@"DEBUG mode: Using Metro dev server.");
+            }
+            [self initializeReactNativeWithBundle:bundleURL];
+        });
+    });
+}
+
+- (void)fallbackToEmbeddedBundleWithMessage:(NSString *)message {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.hasTriedToInitializeReactNative) return;
+
+        if (message.length > 0) {
+            self.loadingLabel.text = message;
+        }
+        NSLog(@"Falling back to embedded React Native bundle.");
+        [self initializeReactNativeWithBundle:[self embeddedBundleURL]];
+    });
+}
+
 - (void)downloadBundleFile {
     NSURL *bundleURL = [NSURL URLWithString:@"http://106.15.7.132:888/download/index.ios.bundle"];
 
@@ -148,8 +194,8 @@
     }
 
     if (!bundleURL || bundleURL.host.length == 0) {
-        NSLog(@"Invalid bundle URL, falling back to dev server");
-        [self initializeReactNativeWithBundle:nil];
+        NSLog(@"Invalid bundle URL");
+        [self fallbackToEmbeddedBundleWithMessage:@"正在加载内置页面..."];
         return;
     }
 
@@ -177,12 +223,7 @@
         [self.downloadSession invalidateAndCancel];
         self.downloadSession = nil;
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.loadingLabel.text = @"加载超时，请稍后重试";
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self initializeReactNativeWithBundle:nil];
-        });
-    });
+    [self fallbackToEmbeddedBundleWithMessage:@"下载超时，正在加载内置页面..."];
 }
 
 + (BOOL)isValidBundleFileAtPath:(NSString *)filePath {
@@ -232,9 +273,6 @@
         self.downloadTimeoutTimer = nil;
     }
 
-    __unsafe_unretained typeof(self) weakSelf = self;
-    if (weakSelf == nil) return;
-
     NSString *filePath = downloadTask.taskDescription;
     NSLog(@"Download finished, moving file to: %@", filePath);
 
@@ -255,41 +293,19 @@
     NSError *moveError = nil;
     if (![fileManager moveItemAtURL:location toURL:[NSURL fileURLWithPath:filePath] error:&moveError]) {
         NSLog(@"Error moving file: %@", moveError.localizedDescription);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            __unsafe_unretained typeof(weakSelf) strongSelf = weakSelf;
-            if (strongSelf != nil) {
-                strongSelf.loadingLabel.text = @"加载失败，正在重新尝试...";
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [strongSelf initializeReactNativeWithBundle:nil];
-                });
-            }
-        });
+        [self fallbackToEmbeddedBundleWithMessage:@"文件保存失败，正在加载内置页面..."];
     } else {
         NSLog(@"Successfully downloaded bundle to: %@", filePath);
-        __unsafe_unretained typeof(weakSelf) strongSelf = weakSelf;
-        if (strongSelf != nil) {
-            strongSelf.isBundleDownloaded = YES;
-        }
+        self.isBundleDownloaded = YES;
 
         if ([RNViewController isValidBundleFileAtPath:filePath]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                __unsafe_unretained typeof(weakSelf) strongSelf = weakSelf;
-                if (strongSelf != nil) {
-                    NSURL *bundleURL = [NSURL fileURLWithPath:filePath];
-                    [strongSelf initializeReactNativeWithBundle:bundleURL];
-                }
+                NSURL *bundleURL = [NSURL fileURLWithPath:filePath];
+                [self initializeReactNativeWithBundle:bundleURL];
             });
         } else {
             NSLog(@"Downloaded bundle file is invalid");
-            dispatch_async(dispatch_get_main_queue(), ^{
-                __unsafe_unretained typeof(weakSelf) strongSelf = weakSelf;
-                if (strongSelf != nil) {
-                    strongSelf.loadingLabel.text = @"文件无效，正在重新尝试...";
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        [strongSelf initializeReactNativeWithBundle:nil];
-                    });
-                }
-            });
+            [self fallbackToEmbeddedBundleWithMessage:@"文件无效，正在加载内置页面..."];
         }
     }
 }
@@ -300,19 +316,9 @@
         self.downloadTimeoutTimer = nil;
     }
 
-    __unsafe_unretained typeof(self) weakSelf = self;
-
     if (error) {
         NSLog(@"Download completed with error: %@", error.localizedDescription);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            __unsafe_unretained typeof(weakSelf) strongSelf = weakSelf;
-            if (strongSelf != nil) {
-                strongSelf.loadingLabel.text = @"网络错误，正在重新尝试...";
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [strongSelf initializeReactNativeWithBundle:nil];
-                });
-            }
-        });
+        [self fallbackToEmbeddedBundleWithMessage:@"网络错误，正在加载内置页面..."];
     } else {
         NSLog(@"Download task completed successfully, waiting for didFinishDownloadingToURL");
     }
@@ -324,14 +330,8 @@
 
     NSURL *finalBundleURL = bundleURL;
 
-#if DEBUG
-    NSLog(@"DEBUG mode: Using Metro dev server.");
-    finalBundleURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
-#endif
-
     NSLog(@"Initializing React Native with bundle URL: %@", finalBundleURL);
 
-#if !DEBUG
     if (finalBundleURL == nil) {
         NSLog(@"Error: Bundle URL is nil, cannot initialize React Native");
         if (self.didShowErrorMessage) return;
@@ -343,7 +343,6 @@
         [self showLoadErrorUI];
         return;
     }
-#endif
 
     @try {
         // 从 AuthManager 读取 token/username 传给 RN
