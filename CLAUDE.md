@@ -1,92 +1,73 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with this repository.
 
 ## 项目概述
 
-RNHybrid 是一个 React Native 混合开发示例项目，演示如何在原生 Android 和鸿蒙（HarmonyOS）应用中集成 RN 页面。一套 JS 代码同时支持 Android、iOS、鸿蒙三个平台。
+RNHybrid 是轻匣的三端 React Native 混合移动工程。Android、iOS、HarmonyOS 使用原生壳实现启动页、主页、我的、登录和系统导航，账号与备忘等业务页面由 `src/` 下的 React Native 代码跨端复用。
 
-**技术栈：** React Native 0.72.5、React 18.2.0、React Navigation 6.x、TypeScript、Kotlin（Android）、ArkTS/ETS（鸿蒙）。
+开始修改前先阅读：
+
+- `README.md`：应用介绍、技术栈和文档导航
+- `docs/technical-architecture.md`：三端架构边界、鉴权和 Bundle 策略
+- `android/README.md`、`ios/README.md`、`harmony/README.md`：平台实现说明
+- `docs/harmony-rn-integration.md`：HarmonyOS RNOH、Stub 和返回键实现
 
 ## 常用命令
 
 ```bash
-# 安装依赖
 npm install
-
-# 启动 Metro 打包服务
 npm start
-
-# 运行 Android 应用
 npm run android
-
-# 构建 Android APK
-cd android && ./gradlew assembleDebug
-
-# 鸿蒙：打包开发模式 JS Bundle（生成 bundle.harmony.js）
+npm run ios
 npm run dev
-
-# 运行测试
 npm test
-
-# 代码检查
 npm run lint
 ```
 
-## 架构说明
+Android Debug 构建：
 
-### 三端混合结构
+```bash
+cd android
+./gradlew assembleDebug
+```
 
-- **`src/`** — 共享的 RN JS/TS 代码（页面、组件、导航、stub）
-- **`android/`** — 原生 Android 应用，集成 RN
-  - `android/app/` — 主应用模块（Kotlin，Navigation Component）
-  - `android/lib_rn/` — RN 集成库（`RNPageActivity.kt`、`ReactNativeManager.kt`）
-- **`harmony/`** — 鸿蒙应用（ArkTS/ETS，DevEco Studio 工程）
-  - `harmony/entry/` — 主模块，包含 RNPage.ets、EntryAbility.ets
-  - `harmony/features/` — 业务特性模块（one、two、three、four）
-  - `harmony/common/` — 公共组件（refresh、skeleton、tab、safeArea）
+iOS 首次安装或原生依赖变化后：
 
-### Android 原生 ↔ RN 桥接
+```bash
+cd ios
+pod install
+```
 
-- `ReactNativeManager.kt` — 单例管理 `ReactInstanceManager`（混编项目中必须全局共享，避免重复创建导致 native 库加载失败）
-- `RNPageActivity.kt` — 承载 `ReactRootView` 的 Activity，处理生命周期和返回键
-- RN 模块注册名为 `"RNHybrid"`，通过 `ReactRootView.startReactApplication()` 启动
-- 原生通过 `Bundle` 向 RN 传参（如 `putString("param1", "android")`）
+HarmonyOS 使用 DevEco Studio 打开 `harmony/` 并运行 `entry` 模块。
 
-### 鸿蒙原生 ↔ RN 桥接
+## 架构约束
 
-- 使用 `@rnoh/react-native-openharmony`（RNOH）作为 RN 桥接层
-- `EntryAbility.ets` 初始化 `RNInstancesCoordinator` 并存入 `AppStorage`
-- `RNPage.ets` 渲染 `RNApp` 组件，三种 Bundle 加载策略（按优先级）：Metro 热加载 → Pushy 热更新 → Resource 内置包兜底
-- 物理返回键协作处理：`RNPage.ets` 拦截 → 转发给 RN `BackHandler` → stub 导航栈处理栈内返回 → 根页面时 `BackHandler.exitApp()` 通知原生侧退出
+- 原生层是持久化登录态的事实来源；RN 不直接持久化 Token。
+- 原生 RN 容器通过 `initialProps` 注入 `token` 和 `username`。
+- RN 请求收到 401 后，通过平台 `AuthModule` 通知原生层退出登录并打开登录页。
+- Android 的 `ReactInstanceManager` 必须保持单例。
+- iOS Token 使用 Keychain，用户名使用 `NSUserDefaults`。
+- HarmonyOS 使用 RNOH `RNApp`，Bundle 顺序为 Metro、Pushy、本地 rawfile。
+- HarmonyOS Stub 只在 `Platform.OS === 'harmony'` 时生效，不应影响 Android/iOS。
+- 服务地址、App Key、签名凭据和生产 Token 不应新增到说明文档或业务源码。
 
-### 鸿蒙 Stub 机制
+## RN 共享业务
 
-`src/stubs/` 存放鸿蒙暂无原生实现的库的 JS 替代实现。仅当 `platform === 'harmony'` 时通过 `metro.config.js` 的 `resolveRequest` 钩子激活，不影响 Android/iOS：
+`src/navigation/AppNavigator.js` 当前注册：
 
-| 原库 | Stub 文件 | 说明 |
-|------|-----------|------|
-| `react-native-screens` | `react-native-screens.js` | 空 View 包装 |
-| `react-native-safe-area-context` | `react-native-safe-area-context.js` | 返回零 inset 的 SafeArea |
-| `@react-navigation/native` | `@react-navigation-native.js` | NavigationContainer 包装为 View |
-| `@react-navigation/native-stack` | `@react-navigation-native-stack.js` | **完整的 JS 端导航栈，含 BackHandler 支持** |
+- `Home`
+- `AccountList`
+- `AccountEdit`
+- `MemoList`
+- `MemoDetail`
+- `MemoEdit`
 
-### 导航
+新增 RN 页面时，在 `src/screens/` 实现并在 `src/navigation/AppNavigator.js` 注册。修改共享 API 时，应保持三端原生注入参数和 401 回调协议兼容。
 
-- `AppNavigator.js` — React Navigation Native Stack，注册路由：Home、Details、ProfileScreen、FlatListScreen、AlgorithmScreen、TypeScriptScreen
-- `SafeContainer.js` — 平台适配安全区域：Android/iOS 使用 `SafeAreaView`，鸿蒙使用普通 `View`（安全区域由原生侧处理）
+## 发布约束
 
-### 热更新（Pushy）
-
-- 集成 `react-native-update`，三端独立 `appKey`
-- Debug 模式策略 `alwaysAlert`，Release 模式 `silentAndLater`
-- 鸿蒙端：`PushyFileJSBundleProvider` 加载已下载的热更包，`ResourceJSBundleProvider` 加载 rawfile 中的 `bundle.harmony.js`
-- **关键约束**：上传到 Pushy 的包和上架应用市场的包必须是同一次构建产物（通过 `meta.json` 中的 `pushy_build_time` 匹配）
-
-## 开发约定
-
-- 新增 RN 页面时，在 `src/navigation/AppNavigator.js` 中注册路由
-- 鸿蒙 Stub 必须保持与原库一致的 API 接口
-- Android 端 `ReactInstanceManager` 必须保持单例，禁止创建多个实例
-- 鸿蒙平台判断使用 `Platform.OS === 'harmony'`
-- 详细的鸿蒙集成指南见 `docs/harmony-rn-integration.md`，包含 Pushy 操作流程和物理返回键适配
+- 原生代码、依赖、权限和资源变化必须发布新的原生包。
+- 热更新必须分别验证 Android、iOS、HarmonyOS 的 Release Bundle 加载与回退行为。
+- Pushy 基线包和实际发布包应来自同一次构建。
+- HarmonyOS 修改 ArkTS、C++、依赖或资源后必须重新构建应用。
