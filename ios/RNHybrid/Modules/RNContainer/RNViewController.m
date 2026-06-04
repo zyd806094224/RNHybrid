@@ -78,8 +78,13 @@
         UIViewController *visibleVC = [self topViewController];
         if (visibleVC) {
             LoginViewController *loginVC = [[LoginViewController alloc] init];
-            loginVC.modalPresentationStyle = UIModalPresentationFullScreen;
-            [visibleVC presentViewController:loginVC animated:YES completion:nil];
+            loginVC.hidesBottomBarWhenPushed = YES;
+            if (visibleVC.navigationController) {
+                [visibleVC.navigationController pushViewController:loginVC animated:YES];
+            } else {
+                loginVC.modalPresentationStyle = UIModalPresentationFullScreen;
+                [visibleVC presentViewController:loginVC animated:YES completion:nil];
+            }
         }
     });
 }
