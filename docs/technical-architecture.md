@@ -112,6 +112,8 @@ RN 接口返回 401
 npm start
 ```
 
+Android Debug 同时配置 APK 内置 BundleLoader：Metro 不可用且没有可用 Metro 缓存时，回退到 `assets://index.android.bundle`，但不读取 Pushy 热更新文件。使用 `npm run bundle:android:debug-fallback` 手动刷新该兜底 Bundle。
+
 ### Release
 
 - Android：`ReactNativeManager` 通过 `UpdateContext` 选择 Pushy 已下载更新包，未命中时回退到 `assets://index.android.bundle`。

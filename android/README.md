@@ -41,8 +41,16 @@ MMKV 是通用持久化方案，不等同于系统安全凭据存储。生产环
 
 ## RN Bundle
 
-- Debug：连接 Metro，不指定本地 Bundle。
+- Debug：优先连接 Metro；Metro 不可用且没有可用 Metro 缓存时，回退到 APK 内置的 `app/src/main/assets/index.android.bundle`。Debug 不读取 Pushy 热更新文件。
 - Release：通过 `UpdateContext.getBundleUrl()` 加载 Pushy 更新包，未命中时回退到 `app/src/main/assets/index.android.bundle`。
+
+Debug 兜底 Bundle 需要在共享 RN 代码发生关键变化后手动刷新：
+
+```bash
+npm run bundle:android:debug-fallback
+```
+
+Metro 可以连接但 Bundle 编译或下载失败时，React Native 仍会显示开发错误页，不会自动回退。由于 RN 实例是进程级单例，首次使用兜底 Bundle 后，需要 Reload 或重启进程才能重新连接 Metro。
 
 ## 构建与运行
 

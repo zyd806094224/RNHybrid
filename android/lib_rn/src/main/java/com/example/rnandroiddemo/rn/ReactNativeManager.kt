@@ -39,7 +39,9 @@ object ReactNativeManager {
                 .setInitialLifecycleState(LifecycleState.RESUMED)
 
             if (BuildConfig.DEBUG) {
-                // Debug 模式：不设置 JSBundleFile，连接 Metro 开发服务器实现热更新
+                // Debug 模式优先连接 Metro；Metro 不可用时回退到 APK 内置 Bundle。
+                // 不通过 UpdateContext 解析，避免 Debug 环境加载 Pushy 热更新文件。
+                builder.setBundleAssetName("index.android.bundle")
             } else {
                 // Release 模式：加载离线包或热更新包
                 builder.setJSBundleFile(UpdateContext.getBundleUrl(application, "assets://index.android.bundle"))

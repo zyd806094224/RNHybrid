@@ -93,6 +93,9 @@ npm start
 ```bash
 npm run android
 
+# 刷新 Debug 模式的 APK 内置 RN 兜底 Bundle
+npm run bundle:android:debug-fallback
+
 # 构建 Android Debug 包
 cd android
 ./gradlew assembleDebug
