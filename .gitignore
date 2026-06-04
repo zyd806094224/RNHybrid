@@ -37,6 +37,11 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# HarmonyOS 内置 RN Bundle 依赖的静态资源需要随 Bundle 入库。
+!harmony/entry/src/main/resources/rawfile/assets/
+!harmony/entry/src/main/resources/rawfile/assets/node_modules/
+!harmony/entry/src/main/resources/rawfile/assets/node_modules/**
+
 # BUCK
 buck-out/
 \.buckd/

@@ -114,11 +114,15 @@ npm start
 
 Android Debug 同时配置 APK 内置 BundleLoader：Metro 不可用且没有可用 Metro 缓存时，回退到 `assets://index.android.bundle`，但不读取 Pushy 热更新文件。使用 `npm run bundle:android:debug-fallback` 手动刷新该兜底 Bundle。
 
+HarmonyOS Debug 使用 RNOH `AnyJSBundleProvider` 按 `MetroJSBundleProvider`、`ResourceJSBundleProvider` 的顺序加载。Metro 无法连接时回退到 HAP 内置 `bundle.harmony.js`，但不读取 Pushy 热更新文件。使用 `npm run bundle:harmony:debug-fallback` 手动刷新该兜底 Bundle。
+
+Android 和 HarmonyOS 在 Metro 已连接但 Bundle 编译失败时都会保留开发错误，不会自动回退旧 Bundle。
+
 ### Release
 
 - Android：`ReactNativeManager` 通过 `UpdateContext` 选择 Pushy 已下载更新包，未命中时回退到 `assets://index.android.bundle`。
 - iOS：`RNViewController` 优先读取 Documents 中的 `index.ios.bundle`，文件不存在时从配置的服务端下载。该流程目前是自定义实现，且没有内置离线 Bundle 兜底。
-- HarmonyOS：RNOH 按 `MetroJSBundleProvider`、`PushyFileJSBundleProvider`、`ResourceJSBundleProvider` 的顺序加载。
+- HarmonyOS：RNOH 按 `PushyFileJSBundleProvider`、`ResourceJSBundleProvider` 的顺序加载，使用 `npm run bundle:harmony:release` 刷新生产模式内置 Bundle。
 
 `App.js` 统一接入 `react-native-update` 的更新客户端，但三个原生容器的 Release Bundle 解析方式并不完全相同。发布前应分别验证三端基线包、更新包、回退能力和无可用 Bundle 时的错误处理。
 

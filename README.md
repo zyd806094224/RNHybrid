@@ -115,7 +115,11 @@ npm run ios
 使用 DevEco Studio 打开 `harmony/` 并运行 `entry` 模块。需要生成内置 RN Bundle 时执行：
 
 ```bash
-npm run dev
+# 刷新 Debug 模式的 HAP 内置 RN 兜底 Bundle
+npm run bundle:harmony:debug-fallback
+
+# 发布 Release 前生成生产模式内置 Bundle
+npm run bundle:harmony:release
 ```
 
 ## 开发约定

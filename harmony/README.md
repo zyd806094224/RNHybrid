@@ -46,11 +46,12 @@ Preferences 属于通用持久化方案。生产环境如需更高安全等级�
 
 ## RN Bundle
 
-`RNPage` 按以下优先级选择 Bundle：
+`RNPage` 根据 `BuildProfile.DEBUG` 选择 Bundle：
 
-1. `MetroJSBundleProvider`：Debug 开发调试。
-2. `PushyFileJSBundleProvider`：加载已下载的热更新包。
-3. `ResourceJSBundleProvider`：回退到 `entry/src/main/resources/rawfile/bundle.harmony.js`。
+- Debug：`MetroJSBundleProvider` → `ResourceJSBundleProvider`。
+- Release：`PushyFileJSBundleProvider` → `ResourceJSBundleProvider`。
+
+Debug 下 Metro 无法连接时，会回退到 `entry/src/main/resources/rawfile/bundle.harmony.js`，且不会读取 Pushy 热更新文件。Metro 已连接但返回 Bundle 编译错误时，会保留开发错误页面，不会回退旧 Bundle。
 
 详细集成、Stub 机制和返回键处理见 [HarmonyOS 集成 React Native](../docs/harmony-rn-integration.md)。
 
@@ -72,11 +73,19 @@ npm start
 hdc rport tcp:8081 tcp:8081
 ```
 
-生成 HarmonyOS 内置 RN Bundle：
+刷新 Debug 模式的 HAP 内置 RN 兜底 Bundle：
 
 ```bash
-npm run dev
+npm run bundle:harmony:debug-fallback
 ```
+
+发布 Release 前生成生产模式内置 Bundle：
+
+```bash
+npm run bundle:harmony:release
+```
+
+两个命令都会覆盖同一个 `entry/src/main/resources/rawfile/bundle.harmony.js`，构建 HAP 前应执行与目标构建模式对应的命令。
 
 ## 应用名称、图标与启动页
 

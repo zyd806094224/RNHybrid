@@ -112,9 +112,9 @@ npx pushy hdiff <origin.ppk> <next.ppk>
 
 | 平台 | 当前原生 Bundle 加载方式 |
 |------|--------------------------|
-| Android | `UpdateContext` 选择 Pushy 更新包或内置 Bundle |
+| Android | Debug 使用 Metro 或 APK 内置兜底；Release 使用 `UpdateContext` 选择 Pushy 更新包或内置 Bundle |
 | iOS | `RNViewController` 自定义下载并读取本地 Bundle |
-| HarmonyOS | `PushyFileJSBundleProvider` 或 rawfile 内置 Bundle |
+| HarmonyOS | Debug 使用 Metro 或 rawfile 内置兜底；Release 使用 `PushyFileJSBundleProvider` 或 rawfile 内置 Bundle |
 
 `App.js` 已接入 `Pushy` 客户端和 `UpdateProvider`，但三端原生容器的 Release 加载方式并不完全一致。每次发布前需要分别验证基线包、更新下载、生效时机和回退行为。
 

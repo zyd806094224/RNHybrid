@@ -86,29 +86,42 @@ RNApp({
 
 ## 5. Bundle 加载策略
 
-`RNPage` 使用 `AnyJSBundleProvider` 按顺序尝试：
+`RNPage` 使用 `BuildProfile.DEBUG` 区分加载策略：
 
 ```typescript
-new AnyJSBundleProvider([
-  new MetroJSBundleProvider(),
+if (BuildProfile.DEBUG) {
+  return new AnyJSBundleProvider([
+    new MetroJSBundleProvider(),
+    new ResourceJSBundleProvider(resourceManager, 'bundle.harmony.js'),
+  ])
+}
+
+return new AnyJSBundleProvider([
   new PushyFileJSBundleProvider(context),
   new ResourceJSBundleProvider(resourceManager, 'bundle.harmony.js'),
 ])
 ```
 
-| 优先级 | Provider | 用途 |
-|--------|----------|------|
-| 1 | `MetroJSBundleProvider` | Debug 开发调试 |
-| 2 | `PushyFileJSBundleProvider` | 加载已下载热更新包 |
-| 3 | `ResourceJSBundleProvider` | 加载 rawfile 内置 Bundle |
+| 构建模式 | 加载顺序 |
+|----------|----------|
+| Debug | Metro → rawfile 内置 Bundle |
+| Release | Pushy 已下载更新包 → rawfile 内置 Bundle |
 
-Release 发布前必须确认内置 `bundle.harmony.js` 可用，确保热更新包不存在或加载失败时仍能进入业务页面。
+Debug 下 Metro 无法连接时，`AnyJSBundleProvider` 会加载 rawfile 内置 Bundle，且不会读取 Pushy 热更新文件。Metro 已连接但返回 Bundle 编译错误时，RNOH 会展示开发错误，不会回退旧 Bundle。Release 发布前必须确认内置 `bundle.harmony.js` 可用，确保热更新包不存在或加载失败时仍能进入业务页面。
 
-生成内置 Bundle：
+刷新 Debug 兜底 Bundle：
 
 ```bash
-npm run dev
+npm run bundle:harmony:debug-fallback
 ```
+
+生成 Release 内置 Bundle：
+
+```bash
+npm run bundle:harmony:release
+```
+
+两个命令都会覆盖同一个 `bundle.harmony.js`，构建 HAP 前应执行与目标构建模式对应的命令。生成命令同时更新 `rawfile/assets/`，这些静态资源需要与 Bundle 一起提交。
 
 ## 6. Package 注册
 

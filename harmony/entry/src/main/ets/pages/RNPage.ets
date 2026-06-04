@@ -13,6 +13,7 @@ import { PushyFileJSBundleProvider } from 'pushy';
 import { RouterUrl, CommonConstants, AuthManager, WindowUtils } from 'component';
 import { createRNPackages } from '../RNPackagesFactory';
 import { AuthTurboModule } from 'lib_rn';
+import BuildProfile from 'BuildProfile';
 
 @Builder
 export function buildCustomRNComponent(ctx: ComponentBuilderContext) {}
@@ -86,14 +87,7 @@ export struct RNPage {
           },
           wrappedCustomRNComponentBuilder: wrappedCustomRNComponentBuilder,
           jsBundleProvider: new TraceJSBundleProviderDecorator(
-            new AnyJSBundleProvider([
-              new MetroJSBundleProvider(),
-              new PushyFileJSBundleProvider(this.rnohCoreContext!.uiAbilityContext),
-              new ResourceJSBundleProvider(
-                this.rnohCoreContext!.uiAbilityContext.resourceManager,
-                'bundle.harmony.js'
-              ),
-            ]),
+            this.createJSBundleProvider(),
             this.rnohCoreContext!.logger
           ),
         })
@@ -101,6 +95,25 @@ export struct RNPage {
     }
     .height('100%')
     .width('100%')
+  }
+
+  private createJSBundleProvider(): AnyJSBundleProvider {
+    const resourceProvider = new ResourceJSBundleProvider(
+      this.rnohCoreContext!.uiAbilityContext.resourceManager,
+      'bundle.harmony.js'
+    )
+
+    if (BuildProfile.DEBUG) {
+      return new AnyJSBundleProvider([
+        new MetroJSBundleProvider(),
+        resourceProvider,
+      ])
+    }
+
+    return new AnyJSBundleProvider([
+      new PushyFileJSBundleProvider(this.rnohCoreContext!.uiAbilityContext),
+      resourceProvider,
+    ])
   }
 
   private applyRNStatusBar(): void {
