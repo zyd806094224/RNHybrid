@@ -586,7 +586,11 @@ static UIImage *QXLoginSystemImage(NSString *name) {
             NSString *msg = json[@"msg"] ?: @"登录失败";
 
             if (code == 200 && token.length > 0) {
-                [[AuthManager sharedInstance] saveLoginWithToken:token username:username];
+                BOOL saved = [[AuthManager sharedInstance] saveLoginWithToken:token username:username];
+                if (!saved) {
+                    [self showAlertWithTitle:@"错误" message:@"登录凭证保存失败，请重试"];
+                    return;
+                }
                 [self closeAfterLogin];
             } else {
                 [self showAlertWithTitle:@"提示" message:msg];

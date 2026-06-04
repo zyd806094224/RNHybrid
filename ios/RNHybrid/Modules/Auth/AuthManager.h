@@ -4,13 +4,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * 登录态管理器
- * 使用 NSUserDefaults 持久化存储 token/username，对标 Android AuthManager.kt
+ * token 使用 Keychain 安全存储，username 使用 NSUserDefaults 持久化
  */
 @interface AuthManager : NSObject
 
 + (instancetype)sharedInstance;
 
-- (void)saveLoginWithToken:(NSString *)token username:(NSString *)username;
+- (void)prepareForLaunch;
+- (BOOL)saveLoginWithToken:(NSString *)token username:(NSString *)username;
 - (NSString *)getToken;
 - (NSString *)getUsername;
 - (BOOL)isLoggedIn;
