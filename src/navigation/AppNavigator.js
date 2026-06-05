@@ -1,23 +1,26 @@
-import React, { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AuthProvider, useAppContext } from '../context/AuthProvider';
+import React, {useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {AuthProvider, useAppContext} from '../context/AuthProvider';
 import ErrorBoundary from '../components/ErrorBoundary';
-import { setAuthFromNative, syncAuthFromContext } from '../api/auth';
+import {setAuthFromNative, syncAuthFromContext} from '../api/auth';
 import HomeScreen from '../screens/HomeScreen';
 import AccountListScreen from '../screens/AccountListScreen';
 import AccountEditScreen from '../screens/AccountEditScreen';
 import MemoListScreen from '../screens/MemoListScreen';
 import MemoDetailScreen from '../screens/MemoDetailScreen';
 import MemoEditScreen from '../screens/MemoEditScreen';
+import ReminderListScreen from '../screens/ReminderListScreen';
+import ReminderDetailScreen from '../screens/ReminderDetailScreen';
+import ReminderEditScreen from '../screens/ReminderEditScreen';
 
 const Stack = createNativeStackNavigator();
 
 /**
  * 内层导航器，消费 Context 并同步 token 到模块级 store
  */
-const AppNavigatorInner = ({ nativeToken, nativeUsername }) => {
-  const { setAuth } = useAppContext();
+const AppNavigatorInner = ({nativeToken, nativeUsername}) => {
+  const {setAuth} = useAppContext();
 
   useEffect(() => {
     if (nativeToken) {
@@ -40,7 +43,8 @@ const AppNavigatorInner = ({ nativeToken, nativeUsername }) => {
           animation: 'slide_from_right',
           animationDuration: 300,
           presentation: 'card',
-        }}>
+        }}
+      >
         <Stack.Screen
           name="Home"
           component={HomeScreen}
@@ -84,6 +88,27 @@ const AppNavigatorInner = ({ nativeToken, nativeUsername }) => {
             title: '编辑备忘录',
           }}
         />
+        <Stack.Screen
+          name="ReminderList"
+          component={ReminderListScreen}
+          options={{
+            title: '提醒事项',
+          }}
+        />
+        <Stack.Screen
+          name="ReminderDetail"
+          component={ReminderDetailScreen}
+          options={{
+            title: '提醒详情',
+          }}
+        />
+        <Stack.Screen
+          name="ReminderEdit"
+          component={ReminderEditScreen}
+          options={{
+            title: '编辑提醒事项',
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -92,7 +117,7 @@ const AppNavigatorInner = ({ nativeToken, nativeUsername }) => {
 /**
  * 导出组件：AuthProvider 包裹导航器，提供全局状态
  */
-const AppNavigator = (props) => (
+const AppNavigator = props => (
   <ErrorBoundary>
     <AuthProvider>
       <AppNavigatorInner {...props} />
