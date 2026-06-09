@@ -5,6 +5,7 @@
 #import "../Auth/AuthManager.h"
 #import "../Auth/AuthModule.h"
 #import "../Auth/LoginViewController.h"
+#import <react-native-update/RCTPushy.h>
 
 static NSString * const RNEmbeddedBundleName = @"main";
 static NSString * const RNEmbeddedBundleExtension = @"jsbundle";
@@ -14,17 +15,14 @@ static NSString * const RNEmbeddedBundleExtension = @"jsbundle";
  * React Native 容器页面，对标 Android RNPageActivity
  * 从 AuthManager 读取 token/username 传给 RN
  */
-@interface RNViewController () <RCTRootViewDelegate, NSURLSessionDownloadDelegate, UIGestureRecognizerDelegate>
+@interface RNViewController () <RCTRootViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) RCTRootView *reactRootView;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, strong) UILabel *loadingLabel;
-@property (nonatomic, assign) BOOL isBundleDownloaded;
 @property (nonatomic, assign) BOOL hasTriedToInitializeReactNative;
 @property (nonatomic, assign) BOOL isViewFirstTimeAppeared;
 @property (nonatomic, assign) BOOL didShowErrorMessage;
-@property (nonatomic, strong) NSURLSession *downloadSession;
-@property (nonatomic, strong) NSTimer *downloadTimeoutTimer;
 
 @end
 
@@ -42,8 +40,7 @@ static NSString * const RNEmbeddedBundleExtension = @"jsbundle";
     // 添加加载指示器和标签
     [self setupLoadingUI];
 
-    // 初始化下载状态
-    self.isBundleDownloaded = NO;
+    // 初始化状态
     self.hasTriedToInitializeReactNative = NO;
     self.isViewFirstTimeAppeared = NO;
     self.didShowErrorMessage = NO;
@@ -56,17 +53,11 @@ static NSString * const RNEmbeddedBundleExtension = @"jsbundle";
 #if DEBUG
     [self loadDebugBundle];
 #else
-    [self downloadBundleFile];
+    [self loadPushyBundle];
 #endif
 }
 
 - (void)dealloc {
-    if (self.downloadSession) {
-        [self.downloadSession invalidateAndCancel];
-    }
-    if (self.downloadTimeoutTimer) {
-        [self.downloadTimeoutTimer invalidate];
-    }
     AuthModule.isHandling = NO;
     AuthModule.tokenExpiredCallback = nil;
     NSLog(@"RNViewController deallocated");
@@ -177,61 +168,16 @@ static NSString * const RNEmbeddedBundleExtension = @"jsbundle";
     });
 }
 
-- (void)downloadBundleFile {
-    NSURL *bundleURL = [NSURL URLWithString:@"http://106.15.7.132:888/download/index.ios.bundle"];
-
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"index.ios.bundle"];
-
-    NSLog(@"Downloading bundle to path: %@", filePath);
-
-    if ([RNViewController isValidBundleFileAtPath:filePath]) {
-        NSLog(@"Using existing local bundle file");
-        NSURL *localBundleURL = [NSURL fileURLWithPath:filePath];
-        [self initializeReactNativeWithBundle:localBundleURL];
-        return;
-    }
-
-    if (!bundleURL || bundleURL.host.length == 0) {
-        NSLog(@"Invalid bundle URL");
+- (void)loadPushyBundle {
+    self.loadingLabel.text = @"正在加载...";
+    NSURL *pushyURL = [RCTPushy bundleURL];
+    if (pushyURL) {
+        NSLog(@"Loading Pushy hot update bundle: %@", pushyURL);
+        [self initializeReactNativeWithBundle:pushyURL];
+    } else {
+        NSLog(@"No Pushy update found, falling back to embedded bundle.");
         [self fallbackToEmbeddedBundleWithMessage:@"正在加载内置页面..."];
-        return;
     }
-
-    self.downloadTimeoutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
-                                                                 target:self
-                                                               selector:@selector(downloadTimeout:)
-                                                               userInfo:nil
-                                                                repeats:NO];
-
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    configuration.timeoutIntervalForRequest = 30.0;
-    configuration.timeoutIntervalForResource = 60.0;
-
-    self.downloadSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[[NSOperationQueue alloc] init]];
-    NSURLRequest *request = [NSURLRequest requestWithURL:bundleURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30.0];
-    NSURLSessionDownloadTask *downloadTask = [self.downloadSession downloadTaskWithRequest:request];
-    downloadTask.taskDescription = [filePath copy];
-    [downloadTask resume];
-    [self.loadingIndicator startAnimating];
-}
-
-- (void)downloadTimeout:(NSTimer *)timer {
-    NSLog(@"Download timeout after 30 seconds");
-    if (self.downloadSession) {
-        [self.downloadSession invalidateAndCancel];
-        self.downloadSession = nil;
-    }
-    [self fallbackToEmbeddedBundleWithMessage:@"下载超时，正在加载内置页面..."];
-}
-
-+ (BOOL)isValidBundleFileAtPath:(NSString *)filePath {
-    if (!filePath || ![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-        NSLog(@"Bundle file does not exist at path: %@", filePath);
-        return NO;
-    }
-    return YES;
 }
 
 - (void)showLoadErrorUI {
@@ -263,65 +209,6 @@ static NSString * const RNEmbeddedBundleExtension = @"jsbundle";
             [backButton.topAnchor constraintEqualToAnchor:errorLabel.bottomAnchor constant:20]
         ]];
     });
-}
-
-#pragma mark - NSURLSessionDownloadDelegate
-
-- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location {
-    if (self.downloadTimeoutTimer) {
-        [self.downloadTimeoutTimer invalidate];
-        self.downloadTimeoutTimer = nil;
-    }
-
-    NSString *filePath = downloadTask.taskDescription;
-    NSLog(@"Download finished, moving file to: %@", filePath);
-
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *directory = [filePath stringByDeletingLastPathComponent];
-    NSError *createDirError = nil;
-    if (![fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:&createDirError]) {
-        NSLog(@"Error creating directory: %@", createDirError.localizedDescription);
-    }
-
-    if ([fileManager fileExistsAtPath:filePath]) {
-        NSError *removeError = nil;
-        if (![fileManager removeItemAtPath:filePath error:&removeError]) {
-            NSLog(@"Error removing existing file: %@", removeError.localizedDescription);
-        }
-    }
-
-    NSError *moveError = nil;
-    if (![fileManager moveItemAtURL:location toURL:[NSURL fileURLWithPath:filePath] error:&moveError]) {
-        NSLog(@"Error moving file: %@", moveError.localizedDescription);
-        [self fallbackToEmbeddedBundleWithMessage:@"文件保存失败，正在加载内置页面..."];
-    } else {
-        NSLog(@"Successfully downloaded bundle to: %@", filePath);
-        self.isBundleDownloaded = YES;
-
-        if ([RNViewController isValidBundleFileAtPath:filePath]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSURL *bundleURL = [NSURL fileURLWithPath:filePath];
-                [self initializeReactNativeWithBundle:bundleURL];
-            });
-        } else {
-            NSLog(@"Downloaded bundle file is invalid");
-            [self fallbackToEmbeddedBundleWithMessage:@"文件无效，正在加载内置页面..."];
-        }
-    }
-}
-
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
-    if (self.downloadTimeoutTimer) {
-        [self.downloadTimeoutTimer invalidate];
-        self.downloadTimeoutTimer = nil;
-    }
-
-    if (error) {
-        NSLog(@"Download completed with error: %@", error.localizedDescription);
-        [self fallbackToEmbeddedBundleWithMessage:@"网络错误，正在加载内置页面..."];
-    } else {
-        NSLog(@"Download task completed successfully, waiting for didFinishDownloadingToURL");
-    }
 }
 
 - (void)initializeReactNativeWithBundle:(NSURL *)bundleURL {
