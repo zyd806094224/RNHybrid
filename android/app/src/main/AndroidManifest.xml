@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.rnandroiddemo">
 
+    <!-- KMP shared 模块 minSdk=23，允许在 minSdk=21 的项目中使用 -->
+    <uses-sdk tools:overrideLibrary="com.demo.shared" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 

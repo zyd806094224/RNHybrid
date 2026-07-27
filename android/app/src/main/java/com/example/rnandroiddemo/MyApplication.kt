@@ -30,6 +30,9 @@ class MyApplication : Application() {
         AuthManager.init(this)
         DeviceInfoUtils.init(this)
 
+        // KMP shared IM 模块初始化（网络检测 + SSL 证书策略需要 Application Context）
+        com.demo.shared.network.SharedAndroidContext.init(this, BuildConfig.DEBUG)
+
         // Activity 生命周期管理
         registerActivityLifecycle()
 
