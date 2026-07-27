@@ -27,9 +27,11 @@
 		716F3C85A6B44B0C9D26596A /* AppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 34EA291F78D8F99304529D84 /* AppDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B262B1AACAF725C1E20F56B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 73ABB86FFB07F01E374E6820 /* PrivacyInfo.xcprivacy */; };
 		4D7C44FA816C4F428F5FB5A0 /* server_cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = AC9959EEBBC34F88A4D92D74 /* server_cert.pem */; };
+		D20000000000000000000002 /* server_cert.der in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000001 /* server_cert.der */; };
 		AB0000000000000000000001 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000003 /* main.jsbundle */; };
 		AB0000000000000000000002 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000004 /* assets */; };
 		B7CBE74AAED6BD61AB72643A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 889A741C91236C16E764C99E /* main.m */; };
+		C10000000000000000000003 /* IMConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000002 /* IMConversationViewController.m */; };
 		D70F0C138F9DDDFE4FD8650C /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67DEAB2698C7069A8E65984E /* SplashViewController.m */; };
 		F9FE4CF757EEF9BBD0BCA632 /* libPods-RNHybrid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 702D8E3CEAB5DD074842012F /* libPods-RNHybrid.a */; };
 /* End PBXBuildFile section */
@@ -52,6 +54,8 @@
 		B1D940EE4BD43590C40F72FA /* RNViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNViewController.h; path = RNViewController.h; sourceTree = "<group>"; };
 		B741EB0E5F886BE73C0EF541 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = MainViewController.h; sourceTree = "<group>"; };
 		C473F9520F8D082E0EE2D38F /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = MainViewController.m; sourceTree = "<group>"; };
+		C10000000000000000000001 /* IMConversationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IMConversationViewController.h; path = IMConversationViewController.h; sourceTree = "<group>"; };
+		C10000000000000000000002 /* IMConversationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = IMConversationViewController.m; path = IMConversationViewController.m; sourceTree = "<group>"; };
 		6FEF4EEC66F64851948EF78C /* AuthManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AuthManager.h; path = AuthManager.h; sourceTree = "<group>"; };
 		5EE51FBEB31F49CB821EA647 /* AuthManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AuthManager.m; path = AuthManager.m; sourceTree = "<group>"; };
 		ABDF49EC4C344FCDBBC3E3A7 /* AuthModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AuthModule.h; path = AuthModule.h; sourceTree = "<group>"; };
@@ -63,6 +67,7 @@
 		908B89E31B3B40AA8D5B7046 /* MineViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MineViewController.h; path = MineViewController.h; sourceTree = "<group>"; };
 		E43B8E8E947640168B867868 /* MineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MineViewController.m; path = MineViewController.m; sourceTree = "<group>"; };
 		AC9959EEBBC34F88A4D92D74 /* server_cert.pem */ = {isa = PBXFileReference; lastKnownFileType = text; name = server_cert.pem; path = server_cert.pem; sourceTree = "<group>"; };
+		D20000000000000000000001 /* server_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; name = server_cert.der; path = server_cert.der; sourceTree = "<group>"; };
 		AB0000000000000000000003 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		AB0000000000000000000004 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		1BC3DD7FBC904263BB123686 /* CustomHTTPRequestHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CustomHTTPRequestHandler.h; path = CustomHTTPRequestHandler.h; sourceTree = "<group>"; };
@@ -140,6 +145,7 @@
 				AA0000000000000000000003 /* Main */,
 				AA0000000000000000000004 /* Auth */,
 				AA0000000000000000000005 /* RNContainer */,
+				C10000000000000000000004 /* IM */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -183,6 +189,15 @@
 			path = RNContainer;
 			sourceTree = "<group>";
 		};
+		C10000000000000000000004 /* IM */ = {
+			isa = PBXGroup;
+			children = (
+				C10000000000000000000001 /* IMConversationViewController.h */,
+				C10000000000000000000002 /* IMConversationViewController.m */,
+			);
+			path = IM;
+			sourceTree = "<group>";
+		};
 		AA0000000000000000000006 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -190,6 +205,7 @@
 				2A0BBD392EB361930085CC96 /* LaunchScreen.storyboard */,
 				73ABB86FFB07F01E374E6820 /* PrivacyInfo.xcprivacy */,
 				AC9959EEBBC34F88A4D92D74 /* server_cert.pem */,
+				D20000000000000000000001 /* server_cert.der */,
 				AB0000000000000000000003 /* main.jsbundle */,
 				AB0000000000000000000004 /* assets */,
 			);
@@ -341,6 +357,7 @@
 				2A07E9892EB333680027D5D0 /* Media.xcassets in Resources */,
 				8B262B1AACAF725C1E20F56B /* PrivacyInfo.xcprivacy in Resources */,
 				4D7C44FA816C4F428F5FB5A0 /* server_cert.pem in Resources */,
+				D20000000000000000000002 /* server_cert.der in Resources */,
 				AB0000000000000000000001 /* main.jsbundle in Resources */,
 				AB0000000000000000000002 /* assets in Resources */,
 			);
@@ -445,6 +462,7 @@
 				9AA134854C3A4FA4A50032E2 /* MineViewController.m in Sources */,
 				F1A61882B68840FE8B35790D /* CustomHTTPRequestHandler.m in Sources */,
 				19F538D290F4EFDE0F2E3A9C /* RNViewController.m in Sources */,
+				C10000000000000000000003 /* IMConversationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

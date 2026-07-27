@@ -6,7 +6,8 @@
  * 对标 Android CustomOkHttpClientFactory
  *
  * Debug 模式：信任所有证书（方便 Charles/Fiddler 抓包）
- * Release 模式：仅信任内置的自签名 server_cert.pem
+ * Release 模式：106.15.7.132 使用内置 server_cert.der 做完整证书固定，
+ *              其他 HTTPS 使用系统默认校验
  */
 @interface CustomHTTPRequestHandler : NSObject <RCTURLRequestHandler, RCTInvalidating>
 

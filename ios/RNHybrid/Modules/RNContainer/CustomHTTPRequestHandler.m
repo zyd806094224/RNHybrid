@@ -1,5 +1,6 @@
 #import "CustomHTTPRequestHandler.h"
 #import <React/RCTBridge.h>
+#import <Security/Security.h>
 
 @interface CustomHTTPRequestHandler () <NSURLSessionDataDelegate>
 
@@ -145,18 +146,28 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
     }
 
     SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
+    if (!serverTrust) {
+        completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
+        return;
+    }
 
 #ifdef DEBUG
-    // Debug 模式：信任所有证书，方便 Charles/Fiddler 抓包
+    // Debug 模式保留抓包能力。
     NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
     completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
 #else
-    // Release 模式：校验内置自签名证书
+    // 仅为当前自签名证书服务启用证书固定，其他 HTTPS 保持系统默认校验。
+    if (![challenge.protectionSpace.host isEqualToString:@"106.15.7.132"]) {
+        completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+        return;
+    }
+
     if ([self validateServerTrust:serverTrust]) {
         NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
         completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
     } else {
-        NSLog(@"[SSL] RN 网络请求证书校验失败，拒绝连接: %@", challenge.protectionSpace.host);
+        NSLog(@"[SSL] RN 网络请求证书校验失败，拒绝连接: %@",
+              challenge.protectionSpace.host);
         completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
     }
 #endif
@@ -165,34 +176,18 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 #pragma mark - 证书校验
 
 - (BOOL)validateServerTrust:(SecTrustRef)serverTrust {
-    NSString *certPath = [[NSBundle mainBundle] pathForResource:@"server_cert" ofType:@"pem"];
-    if (!certPath) {
-        NSLog(@"[SSL] 内置证书未找到");
-        return NO;
+    NSString *certPath = [[NSBundle mainBundle] pathForResource:@"server_cert" ofType:@"der"];
+    NSData *pinnedCertData = certPath ? [NSData dataWithContentsOfFile:certPath] : nil;
+    SecCertificateRef serverCert = SecTrustGetCertificateAtIndex(serverTrust, 0);
+    CFDataRef serverCertData = serverCert ? SecCertificateCopyData(serverCert) : NULL;
+    BOOL certificateMatches = pinnedCertData && serverCertData &&
+        [pinnedCertData isEqualToData:(__bridge NSData *)serverCertData];
+
+    if (serverCertData) {
+        CFRelease(serverCertData);
     }
 
-    NSData *certData = [NSData dataWithContentsOfFile:certPath];
-    SecCertificateRef pinnedCert = SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certData);
-    if (!pinnedCert) {
-        NSLog(@"[SSL] 内置证书解析失败");
-        return NO;
-    }
-
-    SecTrustSetAnchorCertificates(serverTrust, (__bridge CFArrayRef)@[ (__bridge id)pinnedCert ]);
-    SecTrustSetAnchorCertificatesOnly(serverTrust, true);
-
-    SecTrustResultType result;
-    OSStatus status = SecTrustEvaluate(serverTrust, &result);
-
-    CFRelease(pinnedCert);
-
-    if (status == errSecSuccess && (result == kSecTrustResultUnspecified || result == kSecTrustResultProceed)) {
-        NSLog(@"[SSL] RN 网络请求证书校验通过");
-        return YES;
-    }
-
-    NSLog(@"[SSL] 证书校验失败 (status: %d, result: %d)", (int)status, (int)result);
-    return NO;
+    return certificateMatches;
 }
 
 #pragma mark - Helper

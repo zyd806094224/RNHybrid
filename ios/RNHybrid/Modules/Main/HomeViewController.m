@@ -2,6 +2,7 @@
 #import "../RNContainer/RNViewController.h"
 #import "../Auth/AuthManager.h"
 #import "../Auth/LoginViewController.h"
+#import "../IM/IMConversationViewController.h"
 
 static UIColor *QXHomeColor(NSUInteger hex) {
     return [UIColor colorWithRed:((hex >> 16) & 0xFF) / 255.0
@@ -131,7 +132,7 @@ static UIColor *QXHomeColorAlpha(NSUInteger hex, CGFloat alpha) {
         @{@"emoji": @"📦", @"title": @"小仓库", @"subtitle": @"密码管理", @"color": @(0xDFF8F4), @"active": @(YES)},
         @{@"emoji": @"📊", @"title": @"数据看板", @"subtitle": @"敬请期待", @"color": @(0xEEF4FF), @"active": @(NO)},
         @{@"emoji": @"📝", @"title": @"备忘录", @"subtitle": @"敬请期待", @"color": @(0xECFDF3), @"active": @(NO)},
-        @{@"emoji": @"🔔", @"title": @"消息中心", @"subtitle": @"敬请期待", @"color": @(0xFFF7ED), @"active": @(NO)},
+        @{@"emoji": @"💬", @"title": @"消息中心", @"subtitle": @"即时通讯", @"color": @(0xFFF7ED), @"active": @(YES)},
         @{@"emoji": @"🎬", @"title": @"多媒体", @"subtitle": @"敬请期待", @"color": @(0xFEF3F2), @"active": @(NO)},
         @{@"emoji": @"⚙️", @"title": @"系统设置", @"subtitle": @"敬请期待", @"color": @(0xF4F3FF), @"active": @(NO)},
     ];
@@ -215,7 +216,7 @@ static UIColor *QXHomeColorAlpha(NSUInteger hex, CGFloat alpha) {
     UILabel *subtitleLabel = [[UILabel alloc] init];
     subtitleLabel.text = subtitle;
     subtitleLabel.font = [UIFont systemFontOfSize:11 weight:UIFontWeightRegular];
-    subtitleLabel.textColor = [subtitle isEqualToString:@"密码管理"] ? QXHomeColor(0x98A2B3) : QXHomeColor(0xB8C0C8);
+    subtitleLabel.textColor = active ? QXHomeColor(0x98A2B3) : QXHomeColor(0xB8C0C8);
     subtitleLabel.textAlignment = NSTextAlignmentCenter;
     [stack addArrangedSubview:subtitleLabel];
 
@@ -235,6 +236,8 @@ static UIColor *QXHomeColorAlpha(NSUInteger hex, CGFloat alpha) {
 - (void)cardTapped:(UITapGestureRecognizer *)gesture {
     if (gesture.view.tag == 0) {
         [self goToRNPage];
+    } else if (gesture.view.tag == 3) {
+        [self goToIMPage];
     }
 }
 
@@ -243,12 +246,28 @@ static UIColor *QXHomeColorAlpha(NSUInteger hex, CGFloat alpha) {
         LoginViewController *loginVC = [[LoginViewController alloc] init];
         loginVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:loginVC animated:YES];
+        [loginVC release];
         return;
     }
 
     RNViewController *rnVC = [[RNViewController alloc] init];
     rnVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:rnVC animated:YES];
+}
+
+- (void)goToIMPage {
+    if (![[AuthManager sharedInstance] isLoggedIn]) {
+        LoginViewController *loginVC = [[LoginViewController alloc] init];
+        loginVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:loginVC animated:YES];
+        [loginVC release];
+        return;
+    }
+
+    IMConversationViewController *imVC = [[IMConversationViewController alloc] init];
+    imVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:imVC animated:YES];
+    [imVC release];
 }
 
 @end

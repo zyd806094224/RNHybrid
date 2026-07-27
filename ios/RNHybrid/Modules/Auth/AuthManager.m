@@ -1,5 +1,6 @@
 #import "AuthManager.h"
 #import <Security/Security.h>
+#import <Shared/Shared.h>
 
 static NSString * const kAuthLegacyTokenKey = @"auth_token";
 static NSString * const kAuthUsernameKey = @"auth_username";
@@ -62,6 +63,13 @@ static NSString * const kAuthKeychainServiceSuffix = @".authentication";
     }
 
     [defaults synchronize];
+
+    NSString *token = [self getToken];
+    if (token.length > 0) {
+        [[SharedTokenManager shared] saveTokenToken:token];
+    } else {
+        [[SharedTokenManager shared] clearToken];
+    }
 }
 
 - (BOOL)saveLoginWithToken:(NSString *)token username:(NSString *)username {
@@ -75,6 +83,7 @@ static NSString * const kAuthKeychainServiceSuffix = @".authentication";
     [defaults removeObjectForKey:kAuthLegacyTokenKey];
     [defaults removeObjectForKey:kAuthKeychainResetPendingKey];
     [defaults synchronize];
+    [[SharedTokenManager shared] saveTokenToken:token];
     return YES;
 }
 
@@ -101,6 +110,7 @@ static NSString * const kAuthKeychainServiceSuffix = @".authentication";
     [defaults removeObjectForKey:kAuthLegacyTokenKey];
     [defaults removeObjectForKey:kAuthUsernameKey];
     [defaults synchronize];
+    [[SharedTokenManager shared] clearToken];
 }
 
 - (NSString *)keychainService {

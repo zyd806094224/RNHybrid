@@ -647,42 +647,36 @@ static UIImage *QXLoginSystemImage(NSString *name) {
     }
 
     SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
+    if (!serverTrust) {
+        completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
+        return;
+    }
 
 #ifdef DEBUG
+    // Debug 模式保留抓包能力。
     NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
     completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
 #else
-    NSString *certPath = [[NSBundle mainBundle] pathForResource:@"server_cert" ofType:@"pem"];
-    if (!certPath) {
-        NSLog(@"[SSL] 内置证书未找到，拒绝连接");
+    // 当前自签名证书不满足 Apple 的标准 SSL 策略，因此 Release 使用完整 DER 固定。
+    NSString *certPath = [[NSBundle mainBundle] pathForResource:@"server_cert" ofType:@"der"];
+    NSData *pinnedCertData = certPath ? [NSData dataWithContentsOfFile:certPath] : nil;
+    SecCertificateRef serverCert = SecTrustGetCertificateAtIndex(serverTrust, 0);
+    CFDataRef serverCertData = serverCert ? SecCertificateCopyData(serverCert) : NULL;
+    BOOL certificateMatches = pinnedCertData && serverCertData &&
+        [pinnedCertData isEqualToData:(__bridge NSData *)serverCertData];
+
+    if (serverCertData) {
+        CFRelease(serverCertData);
+    }
+
+    if (!certificateMatches) {
+        NSLog(@"[SSL] 登录请求服务器证书与内置证书不一致，拒绝连接");
         completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
         return;
     }
 
-    NSData *certData = [NSData dataWithContentsOfFile:certPath];
-    SecCertificateRef pinnedCert = SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certData);
-    if (!pinnedCert) {
-        NSLog(@"[SSL] 内置证书解析失败，拒绝连接");
-        completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
-        return;
-    }
-
-    SecTrustSetAnchorCertificates(serverTrust, (__bridge CFArrayRef)@[ (__bridge id)pinnedCert ]);
-    SecTrustSetAnchorCertificatesOnly(serverTrust, true);
-
-    SecTrustResultType result;
-    OSStatus status = SecTrustEvaluate(serverTrust, &result);
-
-    CFRelease(pinnedCert);
-
-    if (status == errSecSuccess && (result == kSecTrustResultUnspecified || result == kSecTrustResultProceed)) {
-        NSLog(@"[SSL] 证书校验通过");
-        NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
-        completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
-    } else {
-        NSLog(@"[SSL] 证书校验失败，拒绝连接 (result: %d)", result);
-        completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
-    }
+    NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
+    completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
 #endif
 }
 
