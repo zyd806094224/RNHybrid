@@ -1,0 +1,62 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk rootProject.ext.compileSdkVersion
+    namespace "com.example.rnandroiddemo.im"
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        // ARouter
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+}
+
+dependencies {
+    // KMP shared IM 模块（从 GitHub Packages 拉取，POM 自动传递 ktor/coroutines/serialization 依赖）
+    api "com.github.zyd806094224:shared:1.0.0"
+
+    // 框架基类（BaseMvvmActivity / BaseActivity / 状态栏工具）
+    api project(path: ':lib_framework')
+
+    // AndroidX
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.recyclerview
+    implementation libs.lifecycleRuntimeKtx
+    implementation libs.viewModelKtx
+
+    // ARouter
+    implementation libs.arouterApi
+    kapt libs.arouterCompiler
+}

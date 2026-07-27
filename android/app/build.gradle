@@ -113,4 +113,5 @@ dependencies {
     implementation project(path: ':lib_framework')
     implementation project(path: ':lib_network')
     implementation project(path: ':lib_rn')
+    implementation project(path: ':lib_im')
 }

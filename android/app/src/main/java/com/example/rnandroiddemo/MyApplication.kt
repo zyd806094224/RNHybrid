@@ -12,6 +12,7 @@ import com.demo.framework.manager.AppFrontBackListener
 import com.demo.framework.manager.AppManager
 import com.demo.framework.utils.DeviceInfoUtils
 import com.example.rnandroiddemo.auth.AuthManager
+import com.example.rnandroiddemo.im.ImTokenProvider
 import com.example.rnandroiddemo.rn.CustomOkHttpClientFactory
 import com.example.rnandroiddemo.rn.RNPageActivity
 import com.facebook.react.modules.network.OkHttpClientProvider
@@ -31,7 +32,12 @@ class MyApplication : Application() {
         DeviceInfoUtils.init(this)
 
         // KMP shared IM 模块初始化（网络检测 + SSL 证书策略需要 Application Context）
-        com.demo.shared.network.SharedAndroidContext.init(this, BuildConfig.DEBUG)
+        // isDebug 强制传 false：让 IM 接口始终走生产环境（https://106.15.7.132:8443），
+        // 与 RNHybrid 业务登录（lib_network 写死生产地址）保持同源，避免 token 跨环境 401。
+        com.demo.shared.network.SharedAndroidContext.init(this, false)
+
+        // IM 模块 token 桥接：lib_im 通过此 provider 读取 RNHybrid 业务 token（复用登录态）
+        ImTokenProvider.get = { AuthManager.getToken() }
 
         // Activity 生命周期管理
         registerActivityLifecycle()

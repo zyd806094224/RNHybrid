@@ -46,6 +46,7 @@ rootProject.name = "android"
 include ':lib_framework'
 include ':lib_network'
 include ':lib_rn'
+include ':lib_im'
 include ':app'
 
 // RN 模块

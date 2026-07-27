@@ -262,10 +262,14 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_im"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
@@ -285,14 +289,14 @@
                             android:layout_height="44dp"
                             android:background="@drawable/bg_icon_circle_red"
                             android:gravity="center"
-                            android:text="🎬"
+                            android:text="💬"
                             android:textSize="22sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="多媒体"
+                            android:text="即时消息"
                             android:textColor="#223033"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -301,8 +305,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="敬请期待"
-                            android:textColor="#B8C0C8"
+                            android:text="KMP-IM 聊天"
+                            android:textColor="#98A2B3"
                             android:textSize="11sp" />
 
                     </LinearLayout>

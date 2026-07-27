@@ -2,6 +2,7 @@ package com.example.rnandroiddemo.ui.home
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.alibaba.android.arouter.launcher.ARouter
 import com.demo.framework.base.BaseFragment
 import com.demo.framework.manager.AppManager
@@ -22,6 +23,19 @@ class HomeFragment : BaseFragment() {
                 .withBoolean("needLogin", true)
                 .withString("token", AuthManager.getToken())
                 .withString("username", AuthManager.getUsername())
+                .navigation()
+        }
+
+        // 即时消息 → KMP-IM 会话列表（复用 RNHybrid 业务登录态）
+        view.findViewById<View>(R.id.card_im).setOnClickListener {
+            if (!AuthManager.isLoggedIn()) {
+                Toast.makeText(requireContext(), "请先登录", Toast.LENGTH_SHORT).show()
+                ARouter.getInstance().build("/auth/login").greenChannel().navigation()
+                return@setOnClickListener
+            }
+            ARouter.getInstance()
+                .build("/im/conversation/activity")
+                .greenChannel()
                 .navigation()
         }
     }
