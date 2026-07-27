@@ -44,7 +44,7 @@ android {
 
 dependencies {
     // KMP shared IM 模块（从 GitHub Packages 拉取，POM 自动传递 ktor/coroutines/serialization 依赖）
-    api "com.github.zyd806094224:shared:1.0.0"
+    api "com.github.zyd806094224:shared:1.0.2"
 
     // 框架基类（BaseMvvmActivity / BaseActivity / 状态栏工具）
     api project(path: ':lib_framework')
