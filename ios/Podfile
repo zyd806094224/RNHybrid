@@ -8,8 +8,9 @@ target 'RNHybrid' do
   platform :ios, '12.4'
   config = use_native_modules!
 
-  # KMP shared IM 模块（本地源码联调）
-  pod 'shared', :path => '../../../AndroidStudioProjects/AndroidSeedProject/shared'
+  # KMP shared IM 模块（GitHub Release 二进制 XCFramework）
+  pod 'shared',
+      :podspec => 'https://github.com/zyd806094224/AndroidSeedProject/releases/download/shared-ios-1.0.2/shared.podspec'
 
   # Flags change depending on the env values.
   flags = get_default_flags()

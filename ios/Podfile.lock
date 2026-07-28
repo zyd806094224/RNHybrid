@@ -407,7 +407,7 @@ PODS:
   - RNScreens (3.20.0):
     - React-Core
     - React-RCTImage
-  - shared (1.0.0)
+  - shared (1.0.2)
   - SocketRocket (0.6.1)
   - SSZipArchive (2.4.3)
   - Yoga (1.14.0)
@@ -454,7 +454,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - shared (from `../../../AndroidStudioProjects/AndroidSeedProject/shared`)
+  - shared (from `https://github.com/zyd806094224/AndroidSeedProject/releases/download/shared-ios-1.0.2/shared.podspec`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -545,7 +545,7 @@ EXTERNAL SOURCES:
   RNScreens:
     :path: "../node_modules/react-native-screens"
   shared:
-    :path: "../../../AndroidStudioProjects/AndroidSeedProject/shared"
+    :podspec: https://github.com/zyd806094224/AndroidSeedProject/releases/download/shared-ios-1.0.2/shared.podspec
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -591,11 +591,11 @@ SPEC CHECKSUMS:
   React-utils: 5b4df8692e966fd50e2d75c0f9659e176a292384
   ReactCommon: dab8c31069604c833aacc7409ad5ce729ef6ee62
   RNScreens: c6ae949c292bee8ed7f355ab2adcfc9a51629951
-  shared: b5943dedc77bd5346e370b1729149346076a49e5
+  shared: 34d34c63af3253b83bfe5297dda07c49a0ebaa29
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
   Yoga: 86fed2e4d425ee4c6eab3813ba1791101ee153c6
 
-PODFILE CHECKSUM: 7759171a370f1b3f823d707aa68e17a56f3b26bc
+PODFILE CHECKSUM: a8b71399500e63d095ee1431f3cb33de97e1176b
 
 COCOAPODS: 1.16.2

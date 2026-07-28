@@ -9,74 +9,74 @@
 /* Begin PBXBuildFile section */
 		06FCF057F03D324F33229790 /* libPods-RNHybrid-RNHybridTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6D131540C26F11841FEF40 /* libPods-RNHybrid-RNHybridTests.a */; };
 		084F1854EA1A538469741784 /* MainViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B741EB0E5F886BE73C0EF541 /* MainViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		18D82E44D3C249F6ACCED6E2 /* AuthModule.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E465BBA324A71B1DC6B45 /* AuthModule.m */; };
 		19DD6122E327FACB19BC56B3 /* SplashViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F575DA5717F827A487A8CF7 /* SplashViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		19F538D290F4EFDE0F2E3A9C /* RNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 827D44DA8E54F0C0A8931C47 /* RNViewController.m */; };
+		23C07BADBAA6444793549CFE /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 645FD2FE841546E38F570FF0 /* LoginViewController.m */; };
 		2A07E9892EB333680027D5D0 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A07E9882EB333680027D5D0 /* Media.xcassets */; };
 		2A0BBD3A2EB361930085CC96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A0BBD392EB361930085CC96 /* LaunchScreen.storyboard */; };
 		39CBE1F1249B002C43E543F5 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0009959CF533A0A6929752A4 /* AppDelegate.mm */; };
+		491F28DC1B1845D481DD963C /* AuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE51FBEB31F49CB821EA647 /* AuthManager.m */; };
+		4D7C44FA816C4F428F5FB5A0 /* server_cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = AC9959EEBBC34F88A4D92D74 /* server_cert.pem */; };
 		54F0AE22A9816301243AEB20 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE469EE774A6393555B31CF /* Foundation.framework */; };
 		57C4BFEC2D27576600F74713 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE469EE774A6393555B31CF /* Foundation.framework */; };
 		5B8E5B5AF76288AA0DC11E80 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C473F9520F8D082E0EE2D38F /* MainViewController.m */; };
-		491F28DC1B1845D481DD963C /* AuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE51FBEB31F49CB821EA647 /* AuthManager.m */; };
-		18D82E44D3C249F6ACCED6E2 /* AuthModule.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E465BBA324A71B1DC6B45 /* AuthModule.m */; };
-		23C07BADBAA6444793549CFE /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 645FD2FE841546E38F570FF0 /* LoginViewController.m */; };
-		E597755797F74D9A84253BD3 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 427D8ECC9A2943E5BBD6C161 /* HomeViewController.m */; };
-		9AA134854C3A4FA4A50032E2 /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E43B8E8E947640168B867868 /* MineViewController.m */; };
-		F1A61882B68840FE8B35790D /* CustomHTTPRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BE92942A6DD4B2190336358 /* CustomHTTPRequestHandler.m */; };
 		687359BD9E4E4912188B0E76 /* RNViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B1D940EE4BD43590C40F72FA /* RNViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		716F3C85A6B44B0C9D26596A /* AppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 34EA291F78D8F99304529D84 /* AppDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B262B1AACAF725C1E20F56B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 73ABB86FFB07F01E374E6820 /* PrivacyInfo.xcprivacy */; };
-		4D7C44FA816C4F428F5FB5A0 /* server_cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = AC9959EEBBC34F88A4D92D74 /* server_cert.pem */; };
-		D20000000000000000000002 /* server_cert.der in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000001 /* server_cert.der */; };
+		9AA134854C3A4FA4A50032E2 /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E43B8E8E947640168B867868 /* MineViewController.m */; };
 		AB0000000000000000000001 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000003 /* main.jsbundle */; };
 		AB0000000000000000000002 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000004 /* assets */; };
 		B7CBE74AAED6BD61AB72643A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 889A741C91236C16E764C99E /* main.m */; };
 		C10000000000000000000003 /* IMConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000002 /* IMConversationViewController.m */; };
+		D20000000000000000000002 /* server_cert.der in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000001 /* server_cert.der */; };
 		D70F0C138F9DDDFE4FD8650C /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67DEAB2698C7069A8E65984E /* SplashViewController.m */; };
+		E597755797F74D9A84253BD3 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 427D8ECC9A2943E5BBD6C161 /* HomeViewController.m */; };
+		F1A61882B68840FE8B35790D /* CustomHTTPRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BE92942A6DD4B2190336358 /* CustomHTTPRequestHandler.m */; };
 		F9FE4CF757EEF9BBD0BCA632 /* libPods-RNHybrid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 702D8E3CEAB5DD074842012F /* libPods-RNHybrid.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0009959CF533A0A6929752A4 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = AppDelegate.mm; sourceTree = "<group>"; };
 		003933657EB86D5787CD71B7 /* RNHybrid.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNHybrid.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BC3DD7FBC904263BB123686 /* CustomHTTPRequestHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CustomHTTPRequestHandler.h; path = CustomHTTPRequestHandler.h; sourceTree = "<group>"; };
 		2A07E9882EB333680027D5D0 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		2A0BBD392EB361930085CC96 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		34EA291F78D8F99304529D84 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3A3C4A5EE05DB3326A0BE5CF /* Pods-RNHybrid-RNHybridTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid-RNHybridTests.debug.xcconfig"; path = "Target Support Files/Pods-RNHybrid-RNHybridTests/Pods-RNHybrid-RNHybridTests.debug.xcconfig"; sourceTree = "<group>"; };
+		3EBC3A7321784B9686B07762 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HomeViewController.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		427D8ECC9A2943E5BBD6C161 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = HomeViewController.m; sourceTree = "<group>"; };
 		5A6D131540C26F11841FEF40 /* libPods-RNHybrid-RNHybridTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNHybrid-RNHybridTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EE51FBEB31F49CB821EA647 /* AuthManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AuthManager.m; path = AuthManager.m; sourceTree = "<group>"; };
+		645FD2FE841546E38F570FF0 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = LoginViewController.m; sourceTree = "<group>"; };
 		67DEAB2698C7069A8E65984E /* SplashViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SplashViewController.m; path = SplashViewController.m; sourceTree = "<group>"; };
+		6FEF4EEC66F64851948EF78C /* AuthManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AuthManager.h; path = AuthManager.h; sourceTree = "<group>"; };
 		702D8E3CEAB5DD074842012F /* libPods-RNHybrid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNHybrid.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		73ABB86FFB07F01E374E6820 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xcprivacy; name = PrivacyInfo.xcprivacy; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		827D44DA8E54F0C0A8931C47 /* RNViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNViewController.m; path = RNViewController.m; sourceTree = "<group>"; };
 		889A741C91236C16E764C99E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = main.m; sourceTree = "<group>"; };
 		8F575DA5717F827A487A8CF7 /* SplashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SplashViewController.h; path = SplashViewController.h; sourceTree = "<group>"; };
-		A93FF24637B9B342189619FF /* Pods-RNHybrid-RNHybridTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid-RNHybridTests.release.xcconfig"; path = "Target Support Files/Pods-RNHybrid-RNHybridTests/Pods-RNHybrid-RNHybridTests.release.xcconfig"; sourceTree = "<group>"; };
-		B1D940EE4BD43590C40F72FA /* RNViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNViewController.h; path = RNViewController.h; sourceTree = "<group>"; };
-		B741EB0E5F886BE73C0EF541 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = MainViewController.h; sourceTree = "<group>"; };
-		C473F9520F8D082E0EE2D38F /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = MainViewController.m; sourceTree = "<group>"; };
-		C10000000000000000000001 /* IMConversationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IMConversationViewController.h; path = IMConversationViewController.h; sourceTree = "<group>"; };
-		C10000000000000000000002 /* IMConversationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = IMConversationViewController.m; path = IMConversationViewController.m; sourceTree = "<group>"; };
-		6FEF4EEC66F64851948EF78C /* AuthManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AuthManager.h; path = AuthManager.h; sourceTree = "<group>"; };
-		5EE51FBEB31F49CB821EA647 /* AuthManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AuthManager.m; path = AuthManager.m; sourceTree = "<group>"; };
-		ABDF49EC4C344FCDBBC3E3A7 /* AuthModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AuthModule.h; path = AuthModule.h; sourceTree = "<group>"; };
-		E39E465BBA324A71B1DC6B45 /* AuthModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AuthModule.m; path = AuthModule.m; sourceTree = "<group>"; };
-		F56745213DFF4675AA212CAA /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		645FD2FE841546E38F570FF0 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = LoginViewController.m; sourceTree = "<group>"; };
-		3EBC3A7321784B9686B07762 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HomeViewController.h; path = HomeViewController.h; sourceTree = "<group>"; };
-		427D8ECC9A2943E5BBD6C161 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = HomeViewController.m; sourceTree = "<group>"; };
 		908B89E31B3B40AA8D5B7046 /* MineViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MineViewController.h; path = MineViewController.h; sourceTree = "<group>"; };
-		E43B8E8E947640168B867868 /* MineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MineViewController.m; path = MineViewController.m; sourceTree = "<group>"; };
-		AC9959EEBBC34F88A4D92D74 /* server_cert.pem */ = {isa = PBXFileReference; lastKnownFileType = text; name = server_cert.pem; path = server_cert.pem; sourceTree = "<group>"; };
-		D20000000000000000000001 /* server_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; name = server_cert.der; path = server_cert.der; sourceTree = "<group>"; };
+		9BE92942A6DD4B2190336358 /* CustomHTTPRequestHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CustomHTTPRequestHandler.m; path = CustomHTTPRequestHandler.m; sourceTree = "<group>"; };
+		A93FF24637B9B342189619FF /* Pods-RNHybrid-RNHybridTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid-RNHybridTests.release.xcconfig"; path = "Target Support Files/Pods-RNHybrid-RNHybridTests/Pods-RNHybrid-RNHybridTests.release.xcconfig"; sourceTree = "<group>"; };
+		AA0000000000000000000008 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB0000000000000000000003 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		AB0000000000000000000004 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
-		1BC3DD7FBC904263BB123686 /* CustomHTTPRequestHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CustomHTTPRequestHandler.h; path = CustomHTTPRequestHandler.h; sourceTree = "<group>"; };
-		9BE92942A6DD4B2190336358 /* CustomHTTPRequestHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CustomHTTPRequestHandler.m; path = CustomHTTPRequestHandler.m; sourceTree = "<group>"; };
+		ABDF49EC4C344FCDBBC3E3A7 /* AuthModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AuthModule.h; path = AuthModule.h; sourceTree = "<group>"; };
+		AC9959EEBBC34F88A4D92D74 /* server_cert.pem */ = {isa = PBXFileReference; lastKnownFileType = text; name = server_cert.pem; path = server_cert.pem; sourceTree = "<group>"; };
+		B1D940EE4BD43590C40F72FA /* RNViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNViewController.h; path = RNViewController.h; sourceTree = "<group>"; };
+		B741EB0E5F886BE73C0EF541 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = MainViewController.h; sourceTree = "<group>"; };
+		C10000000000000000000001 /* IMConversationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IMConversationViewController.h; path = IMConversationViewController.h; sourceTree = "<group>"; };
+		C10000000000000000000002 /* IMConversationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = IMConversationViewController.m; path = IMConversationViewController.m; sourceTree = "<group>"; };
+		C473F9520F8D082E0EE2D38F /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = MainViewController.m; sourceTree = "<group>"; };
 		C61156CF4603A6DB7A3E8A9A /* RNHybrid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNHybrid.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCBBED25898EE1495C43CDCC /* Pods-RNHybrid.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid.debug.xcconfig"; path = "Target Support Files/Pods-RNHybrid/Pods-RNHybrid.debug.xcconfig"; sourceTree = "<group>"; };
 		CD2C06424F0501CEC7CC84DA /* Pods-RNHybrid.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNHybrid.release.xcconfig"; path = "Target Support Files/Pods-RNHybrid/Pods-RNHybrid.release.xcconfig"; sourceTree = "<group>"; };
+		D20000000000000000000001 /* server_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; name = server_cert.der; path = server_cert.der; sourceTree = "<group>"; };
+		E39E465BBA324A71B1DC6B45 /* AuthModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AuthModule.m; path = AuthModule.m; sourceTree = "<group>"; };
+		E43B8E8E947640168B867868 /* MineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MineViewController.m; path = MineViewController.m; sourceTree = "<group>"; };
+		F56745213DFF4675AA212CAA /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		FEE469EE774A6393555B31CF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		AA0000000000000000000008 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,15 +189,6 @@
 			path = RNContainer;
 			sourceTree = "<group>";
 		};
-		C10000000000000000000004 /* IM */ = {
-			isa = PBXGroup;
-			children = (
-				C10000000000000000000001 /* IMConversationViewController.h */,
-				C10000000000000000000002 /* IMConversationViewController.m */,
-			);
-			path = IM;
-			sourceTree = "<group>";
-		};
 		AA0000000000000000000006 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +209,15 @@
 				AA0000000000000000000008 /* Info.plist */,
 			);
 			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		C10000000000000000000004 /* IM */ = {
+			isa = PBXGroup;
+			children = (
+				C10000000000000000000001 /* IMConversationViewController.h */,
+				C10000000000000000000002 /* IMConversationViewController.m */,
+			);
+			path = IM;
 			sourceTree = "<group>";
 		};
 		C672A79B10C56E791ECB8981 /* RNHybrid */ = {
