@@ -102,7 +102,7 @@ dependencies {
     implementation libs.xxPermissions
 
     // KMP shared IM 模块（从 GitHub Packages 拉取，POM 自动传递 ktor/coroutines/serialization 依赖）
-    implementation "com.github.zyd806094224:shared:1.0.2"
+    implementation "com.github.zyd806094224:shared:1.0.3"
 
     // Test
     testImplementation libs.junit

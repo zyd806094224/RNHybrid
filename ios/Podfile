@@ -10,7 +10,7 @@ target 'RNHybrid' do
 
   # KMP shared IM 模块（GitHub Release 二进制 XCFramework）
   pod 'shared',
-      :podspec => 'https://github.com/zyd806094224/AndroidSeedProject/releases/download/shared-ios-1.0.2/shared.podspec'
+      :podspec => 'https://github.com/zyd806094224/AndroidSeedProject/releases/download/shared-ios-1.0.3/shared.podspec'
 
   # Flags change depending on the env values.
   flags = get_default_flags()
